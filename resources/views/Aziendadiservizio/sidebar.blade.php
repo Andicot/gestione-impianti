@@ -90,15 +90,29 @@
             <div class="menu-item">
                 <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\ResponsabileImpiantoController::class,'index'])}}">
                     <span class="menu-icon">
-<i class="ki-duotone ki-badge fs-2">
- <span class="path1"></span>
- <span class="path2"></span>
- <span class="path3"></span>
- <span class="path4"></span>
- <span class="path5"></span>
-</i>
-                            </span>
+                        <i class="ki-duotone ki-badge fs-2">
+                         <span class="path1"></span>
+                         <span class="path2"></span>
+                         <span class="path3"></span>
+                         <span class="path4"></span>
+                         <span class="path5"></span>
+                        </i>
+                    </span>
                     <span class="menu-title">Responsabili Impianto</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\ImportazioneController::class,'index'])}}">
+                    <span class="menu-icon">
+                       <i class="ki-duotone ki-cloud-upload fs-2">
+                         <span class="path1"></span>
+                         <span class="path2"></span>
+                         <span class="path3"></span>
+                         <span class="path4"></span>
+                         <span class="path5"></span>
+                        </i>
+                    </span>
+                    <span class="menu-title">Importazioni</span>
                 </a>
             </div>
 

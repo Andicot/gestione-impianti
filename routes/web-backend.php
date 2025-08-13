@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [\App\Http\Controllers\Backend\DashboardController::class, 'show']);
 
 
-
-
 //Modal
 //Route::get('modal/{cosa}/{id?}', [\App\Http\Controllers\Backend\ModalController::class, 'show']);
 
@@ -39,13 +37,13 @@ Route::post('/operatore/{id}/azione/{azione}', [\App\Http\Controllers\Backend\Op
 |--------------------------------------------------------------------------
 */
 Route::group(['middleware' => 'role:admin'], function () {
-    Route::resource('azienda_servizio',\App\Http\Controllers\Admin\AziendaServizioController::class);
+    Route::resource('azienda_servizio', \App\Http\Controllers\Admin\AziendaServizioController::class);
     Route::get('azienda_servizio/{id}/tab/{tab}', [\App\Http\Controllers\Admin\AziendaServizioController::class, 'tab']);
 });
 
 /*
 |--------------------------------------------------------------------------
-| AZIOENDA SERVIZIO
+| AZIENDA SERVIZIO
 |--------------------------------------------------------------------------
 */
 
@@ -55,22 +53,28 @@ Route::group(['middleware' => 'role:admin|azienda_di_servizio'], function () {
     Route::resource('amministratore', \App\Http\Controllers\Aziendadiservizio\AmministratoreController::class);
     Route::get('amministratore/{id}/tab/{tab}', [\App\Http\Controllers\Aziendadiservizio\AmministratoreController::class, 'tab']);
 
-//Impianto
+    //Impianto
     Route::resource('impianto', \App\Http\Controllers\Aziendadiservizio\ImpiantoController::class);
     Route::get('impianto/{id}/tab/{tab}', [\App\Http\Controllers\Aziendadiservizio\ImpiantoController::class, 'tab']);
 
-//Concentratore
+    //Concentratore
     Route::resource('concentratore', \App\Http\Controllers\Aziendadiservizio\ConcentratoreController::class);
 
-//Responsabile Impianto
+    //Responsabile Impianto
     Route::resource('responsabile-impianto', \App\Http\Controllers\Aziendadiservizio\ResponsabileImpiantoController::class)->except(['show']);
 
 
-//Unità immobiliari
+    //Unità immobiliari
     Route::resource('unita_immobiliari', \App\Http\Controllers\Aziendadiservizio\UnitaImmobiliareController::class);
 
-//Dispositivi misura
+    //Dispositivi misura
     Route::resource('dispositivo-misura', \App\Http\Controllers\Aziendadiservizio\DispositivoMisuraController::class);
+
+    //Importazioni - da aggiungere nel gruppo middleware 'role:admin|azienda_di_servizio'
+    Route::get('importazione', [\App\Http\Controllers\Aziendadiservizio\ImportazioneController::class, 'index'])->name('importazione.index');
+    Route::post('importazione/carica-file', [\App\Http\Controllers\Aziendadiservizio\ImportazioneController::class, 'caricaFile'])->name('importazione.carica');
+    Route::get('importazione/storico', [\App\Http\Controllers\Aziendadiservizio\ImportazioneController::class, 'storico'])->name('importazione.storico');
+    Route::get('importazione/{id}/dettaglio', [\App\Http\Controllers\Aziendadiservizio\ImportazioneController::class, 'dettaglioImportazione'])->name('importazione.dettaglio');
 });
 
 Route::group(['middleware' => 'role:admin|azienda_di_servizio|'], function () {

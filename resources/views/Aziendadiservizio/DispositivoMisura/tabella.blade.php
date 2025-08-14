@@ -91,8 +91,8 @@
                 {{-- Azioni --}}
                 <td class="text-end text-nowrap">
                     <a data-targetZ="kt_modal" data-toggleZ="modal-ajax"
-                       class="btn btn-sm btn-light btn-active-light-primary"
-                       href="{{action([$controller,'edit'],$record->id)}}">Modifica</a>
+                       class="btn btn-sm btn-light btn-active-light-success"
+                       href="{{action([$controller,'show'],$record->id)}}">Vedi</a>
                 </td>
             </tr>
         @endforeach

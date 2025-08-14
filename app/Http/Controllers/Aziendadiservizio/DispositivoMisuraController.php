@@ -27,6 +27,9 @@ class DispositivoMisuraController extends Controller
 
         //Ordinamento
         $ordinamenti = [
+            'matricola' => ['testo' => 'Matricola', 'filtro' => function ($q) {
+                return $q->orderBy('matricola');
+            }],
             'recente' => ['testo' => 'Più recente', 'filtro' => function ($q) {
                 return $q->orderBy('id', 'desc');
             }]

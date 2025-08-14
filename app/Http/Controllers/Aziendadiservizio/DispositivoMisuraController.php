@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Aziendadiservizio;
 
 use App\Http\Controllers\Controller;
+use App\Models\LetturaConsumo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DispositivoMisura;
@@ -145,6 +146,7 @@ class DispositivoMisuraController extends Controller
         abort_if(!$record, 404, 'Questo dispositivomisura non esiste');
         return view('Aziendadiservizio.DispositivoMisura.show', [
             'record' => $record,
+            'records'=>LetturaConsumo::where('dispositivo_id',$id)->paginate(25),
             'controller' => DispositivoMisuraController::class,
             'titoloPagina' => ucfirst(DispositivoMisura::NOME_SINGOLARE),
             'breadcrumbs' => [action([DispositivoMisuraController::class, 'index']) => 'Torna a elenco ' . DispositivoMisura::NOME_PLURALE],
@@ -264,7 +266,7 @@ class DispositivoMisuraController extends Controller
             'tipo' => ['required', 'max:30'],
             'offset' => ['required'],
             'data_installazione' => ['nullable', new \App\Rules\DataItalianaRule()],
-            'stato' => ['required', 'max:20'],
+            'stato_dispositivo' => ['required', 'max:20'],
             'ubicazione' => ['nullable', 'max:255'],
             'unita_immobiliare_id' => ['nullable'],
             'impianto_id' => ['nullable'],

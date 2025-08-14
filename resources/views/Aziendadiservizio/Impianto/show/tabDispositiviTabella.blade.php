@@ -1,56 +1,29 @@
 <div class="table-responsive">
-    <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
+    <table class="table table-row-bordered align-middle" >
         <thead>
-        <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-            <th class="">Dispositivo</th>
+        <tr class="fw-bolder fs-6 text-gray-800">
+            <th class="">Matricola</th>
             <th class="">Tipo</th>
-            <th class="">Ubicazione</th>
+            <th class="">Unità Immobiliare</th>
             <th class="">Ultima Lettura</th>
-            <th class="">Concentratore</th>
             <th class="">Stato</th>
             <th class="text-end min-w-70px">Azioni</th>
         </tr>
         </thead>
-        <tbody class="fw-semibold text-gray-600">
+        <tbody class="">
         @forelse($records as $dispositivo)
             <tr>
-                <td>
-                    <div class="d-flex flex-column">
-                        <a href="{{action([\App\Http\Controllers\Aziendadiservizio\DispositivoMisuraController::class,'show'],$dispositivo->id)}}"
-                           class="text-gray-800 fw-bold text-hover-primary mb-1">
-                            {{$dispositivo->nome_dispositivo ?: 'Dispositivo '.$dispositivo->id}}
-                        </a>
-                        <span class="text-muted fs-7">{{$dispositivo->matricola}}</span>
-                        @if($dispositivo->marca || $dispositivo->modello)
-                            <span class="text-muted fs-8">{{$dispositivo->marca}} {{$dispositivo->modello}}</span>
-                        @endif
-                    </div>
+                <td class="fw-bold">
+                   {{$dispositivo->matricola}}
                 </td>
                 <td>
-                    @php
-                        $tipoBadges = [
-                            'udr' => ['bg' => 'success', 'icon' => 'thermometer-half'],
-                            'contatore_acs' => ['bg' => 'info', 'icon' => 'tint'],
-                            'contatore_gas' => ['bg' => 'warning', 'icon' => 'fire'],
-                            'contatore_kwh' => ['bg' => 'primary', 'icon' => 'bolt'],
-                            'diretto' => ['bg' => 'secondary', 'icon' => 'plug']
-                        ];
-                        $badge = $tipoBadges[$dispositivo->tipo] ?? ['bg' => 'light', 'icon' => 'microchip'];
-                    @endphp
-                    <span class="badge badge-light-{{$badge['bg']}}">
-                            <i class="fas fa-{{$badge['icon']}} me-1"></i>
                             {{strtoupper($dispositivo->tipo)}}
-                        </span>
                 </td>
                 <td>
                     <div class="d-flex flex-column">
                         @if($dispositivo->unitaImmobiliare)
-                            <span class="text-gray-800">
-                                    @if($dispositivo->unitaImmobiliare->scala)
-                                    Scala {{$dispositivo->unitaImmobiliare->scala}},
-                                @endif
-                                    Piano {{$dispositivo->unitaImmobiliare->piano}},
-                                    Interno {{$dispositivo->unitaImmobiliare->interno}}
+                            <span class="">
+                                  {{$dispositivo->unitaImmobiliare->getDescrizioneCompleta()}}
                                 </span>
                             @if($dispositivo->unitaImmobiliare->nominativo_unita)
                                 <span class="text-muted fs-7">{{$dispositivo->unitaImmobiliare->nominativo_unita}}</span>
@@ -66,31 +39,18 @@
                 <td>
                     <div class="d-flex flex-column">
                         @if($dispositivo->ultimo_valore_rilevato)
-                            <span class="text-gray-800 fw-bold">{{$dispositivo->ultimo_valore_rilevato}}</span>
+                            <span class=" ">{{$dispositivo->ultimo_valore_rilevato}}</span>
                         @else
-                            <span class="text-muted">Nessuna lettura</span>
+                            <span class="">Nessuna lettura</span>
                         @endif
                         @if($dispositivo->data_ultima_lettura)
                             <span class="text-muted fs-7">{{$dispositivo->data_ultima_lettura->format('d/m/Y H:i')}}</span>
                         @endif
                     </div>
                 </td>
+
                 <td>
-                    @if($dispositivo->concentratore)
-                        <div class="d-flex flex-column">
-                            <span class="text-gray-800 fs-7">{{$dispositivo->concentratore->marca}} {{$dispositivo->concentratore->modello}}</span>
-                            <span class="text-muted fs-8">{{$dispositivo->concentratore->matricola}}</span>
-                            @php
-                                $statoConc = \App\Enums\StatoGenericoEnum::from($dispositivo->concentratore->stato);
-                            @endphp
-                            <span class="badge badge-light-{{$statoConc->colore()}} fs-8 mt-1">{{$statoConc->testo()}}</span>
-                        </div>
-                    @else
-                        <span class="text-muted">Non collegato</span>
-                    @endif
-                </td>
-                <td>
-                    {!! $dispositivo->badgeStat() !!}
+                    {!! $dispositivo->badgeStato() !!}
                     @if($dispositivo->data_installazione)
                         <div class="text-muted fs-8 mt-1">
                             Inst: {{$dispositivo->data_installazione->format('d/m/Y')}}
@@ -108,13 +68,13 @@
                         <div class="menu-item px-3">
                             <a href="{{action([\App\Http\Controllers\Aziendadiservizio\DispositivoMisuraController::class,'show'],$dispositivo->id)}}"
                                class="menu-link px-3">
-                                <i class="fas fa-eye me-2"></i>Visualizza
+                                Visualizza
                             </a>
                         </div>
                         <div class="menu-item px-3">
                             <a href="{{action([\App\Http\Controllers\Aziendadiservizio\DispositivoMisuraController::class,'edit'],$dispositivo->id)}}"
                                class="menu-link px-3">
-                                <i class="fas fa-edit me-2"></i>Modifica
+                               Modifica
                             </a>
                         </div>
                         <div class="separator my-2"></div>

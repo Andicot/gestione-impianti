@@ -46,29 +46,38 @@ class ImportazioneService
     }
 
     /**
-     * Elabora file Excel inventario
+     * Elabora file Excel letture - NUOVO METODO
      */
-    public function elaboraExcelInventario($file, array $parametri): array
+    public function elaboraExcelLetture($file, array $parametri): array
     {
         $nomeFile = $file->getClientOriginalName();
         $pathFile = $file->store('importazioni/excel', 'public');
 
+        // Crea record importazione
+        $importazione = $this->creaRecordImportazione($nomeFile, $pathFile, $parametri);
+
         try {
             // Delega l'elaborazione al service specifico
-            $excelService = new ExcelInventarioService();
+            $excelService = new LettureExcelService();
             $filePath = Storage::disk('public')->path($pathFile);
-            $risultato = $excelService->elaboraFile($filePath);
+            $risultato = $excelService->elaboraFile($filePath, $importazione);
+
+            // Aggiorna statistiche importazione
+            $this->aggiornaStatisticheImportazione($importazione, $risultato);
 
             return [
                 'success' => true,
-                'risultato' => $risultato,
-                'messaggio' => $this->generaMessaggioSuccessoExcel($risultato)
+                'importazione' => $importazione,
+                'messaggio' => $this->generaMessaggioSuccesso($risultato)
             ];
 
         } catch (\Exception $e) {
+            $this->gestisciErroreImportazione($importazione, $e);
+
             return [
                 'success' => false,
-                'errore' => "Errore nell'elaborazione Excel: " . $e->getMessage()
+                'importazione' => $importazione,
+                'errore' => $e->getMessage()
             ];
         }
     }
@@ -155,11 +164,5 @@ class ImportazioneService
         return "CSV elaborato. " . implode(', ', $messaggi);
     }
 
-    /**
-     * Genera messaggio di successo per Excel
-     */
-    private function generaMessaggioSuccessoExcel(array $risultato): string
-    {
-        return "Excel elaborato. Righe elaborate: {$risultato['righe_elaborate']}";
-    }
+
 }

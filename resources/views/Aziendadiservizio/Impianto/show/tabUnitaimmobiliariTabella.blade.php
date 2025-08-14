@@ -1,7 +1,7 @@
 <div class="table-responsive">
-    <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
+    <table class="table table-row-bordered align-middle" >
         <thead>
-        <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+        <tr class="fw-bolder fs-6 text-gray-800">
             <th class="">Unità</th>
             <th class="">Nominativo</th>
             <th class="">Tipologia</th>
@@ -9,11 +9,11 @@
             <th class="text-end min-w-70px">Azioni</th>
         </tr>
         </thead>
-        <tbody class="fw-semibold">
+        <tbody class="">
         @forelse($records as $unita)
             <tr>
                 <td>
-                    <div class="d-flex flex-column">
+                    <div class="d-flex flex-column ">
                         {{$unita->getDescrizioneCompleta()}}
                         <span class="text-muted fs-7">#: {{$unita->id}}</span>
                     </div>
@@ -26,7 +26,6 @@
                 <td>
                     {{\App\Enums\TipoUnitaImmobiliareEnum::from($unita->tipologia)?->testo()}}
                 </td>
-
                 <td>
                     @if($unita->user_id && $unita->user)
                         <div class="d-flex flex-column">

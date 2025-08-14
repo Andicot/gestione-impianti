@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Scopes\FiltroOperatoreScope;
+use App\Enums\CategoriaConsumoEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,10 +42,7 @@ class LetturaConsumo extends Model
     | BOOT
     |--------------------------------------------------------------------------
     */
-    protected static function booted()
-    {
-        static::addGlobalScope(new FiltroOperatoreScope());
-    }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -85,44 +82,18 @@ class LetturaConsumo extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function data_lettura_formattata(): string
-    {
-        return $this->data_lettura->format('d/m/Y');
-    }
-
-    public function ora_lettura_formattata(): ?string
-    {
-        return $this->ora_lettura?->format('H:i');
-    }
 
     public function consumo_calcolato(): float
     {
         return $this->udr_attuale - $this->udr_precedente;
     }
 
-    public function costo_calcolato(): float
+    public function badgeCategoria()
     {
-        return $this->consumo_calcolato() * $this->costo_unitario;
+        $stato = CategoriaConsumoEnum::tryFrom($this->stato);
+        return '<span class="badge badge-light-' . $stato->colore() . ' fw-bolder">' . $stato->testo() . '</span>';
     }
 
-    public function ha_unita_immobiliare(): bool
-    {
-        return $this->unita_immobiliare_id !== null;
-    }
-
-    public function descrizione_posizione(): string
-    {
-        if ($this->ha_unita_immobiliare() && $this->unitaImmobiliare) {
-            $unita = $this->unitaImmobiliare;
-            return ($unita->scala ? "Scala {$unita->scala}, " : "") .
-                "Piano {$unita->piano}, Int. {$unita->interno}" .
-                ($unita->nominativo_unita ? " - {$unita->nominativo_unita}" : "");
-        }
-
-        return "Dispositivo {$this->dispositivo->matricola}" .
-            ($this->ambiente ? " ({$this->ambiente})" : "") .
-            " - Unità da associare";
-    }
 
     /*
     |--------------------------------------------------------------------------

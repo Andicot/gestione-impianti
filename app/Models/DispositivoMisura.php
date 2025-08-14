@@ -108,6 +108,15 @@ class DispositivoMisura extends Model
         return '<span class="badge badge-light-' . $stato->colore() . ' fw-bolder">' . $stato->testo() . '</span>';
     }
 
+    public function badgeOrigine()
+    {
+        if($this->creato_automaticamente){
+            return ' <span class="badge badge-light-info">Da importazione</span>';
+        }else{
+            return ' <span class="badge badge-light-primary">Inserito manualmente</span>';
+        }
+    }
+
 
     /*
     |--------------------------------------------------------------------------

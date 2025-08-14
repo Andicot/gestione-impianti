@@ -16,14 +16,13 @@
         <tbody>
         @foreach($records as $record)
             <tr>
-                {{-- Dispositivo (Matricola + Nome + Marca/Modello) --}}
                 <td class="">
                     <div>{{$record->matricola}}</div>
                     @if($record->nome_dispositivo)
-                        <div class="text-muted fs-7">{{$record->nome_dispositivo}}</div>
+                        <div class="text-muted fs-6">{{$record->nome_dispositivo}}</div>
                     @endif
                     @if($record->marca || $record->modello)
-                        <div class="text-muted fs-8">{{ trim($record->marca . ' ' . $record->modello) }}</div>
+                        <div class="text-muted fs-7">{{ trim($record->marca . ' ' . $record->modello) }}</div>
                     @endif
                 </td>
 
@@ -33,7 +32,7 @@
                         <div>{{$record->descrizione_1}}</div>
                     @endif
                     @if($record->descrizione_2)
-                        <div class="text-muted fs-7">{{$record->descrizione_2}}</div>
+                        <div class="text-muted fs-6">{{$record->descrizione_2}}</div>
                     @endif
                 </td>
 
@@ -41,7 +40,7 @@
                 <td class="">
                     <div>{{$record->tipo}}</div>
                     @if($record->offset != 0)
-                        <div class="text-muted fs-7">Offset: {{\App\importo($record->offset)}}</div>
+                        <div class="text-muted fs-6">Offset: {{\App\importo($record->offset)}}</div>
                     @endif
                 </td>
 
@@ -51,13 +50,13 @@
                         <div>{{$record->ubicazione}}</div>
                     @endif
                     @if($record->unita_immobiliare_id)
-                        <div class="text-muted fs-7">UI: {{$record->unita_immobiliare_id}}</div>
+                        <div class="text-muted fs-6">UI: {{$record->unita_immobiliare_id}}</div>
                     @endif
                     @if($record->impianto_id)
-                        <div class="text-muted fs-7">Impianto: {{$record->impianto_id}}</div>
+                        <div class="text-muted fs-6">Impianto: {{$record->impianto_id}}</div>
                     @endif
                     @if($record->concentratore_id)
-                        <div class="text-muted fs-7">Concentratore: {{$record->concentratore_id}}</div>
+                        <div class="text-muted fs-6">Concentratore: {{$record->concentratore_id}}</div>
                     @endif
                 </td>
 
@@ -66,7 +65,7 @@
                     @if($record->ultimo_valore_rilevato !== null)
                         <div>{{\App\importo($record->ultimo_valore_rilevato)}}</div>
                         @if($record->data_ultima_lettura)
-                            <div class="text-muted fs-7">
+                            <div class="text-muted fs-6">
                                 {{\Carbon\Carbon::parse($record->data_ultima_lettura)->format('d/m/Y H:i')}}
                             </div>
                         @endif

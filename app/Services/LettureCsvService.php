@@ -119,7 +119,7 @@ class LettureCsvService
         $dispositivo->impianto_id = $importazione->impianto_id;
         $dispositivo->concentratore_id = $importazione->concentratore_id;
         $dispositivo->tipo = 'udr';
-        $dispositivo->stato = 'attivo';
+        $dispositivo->stato_dispositivo = 'attivo';
         $dispositivo->creato_automaticamente = true;
         $dispositivo->nome_dispositivo = trim($campi[1]) ?: null;
         $dispositivo->descrizione_1 = trim($campi[2]) ?: null;
@@ -159,7 +159,6 @@ class LettureCsvService
             $lettura->dispositivo_id = $dispositivo->id;
             $lettura->tipo_consumo = 'volontario';
             $lettura->categoria = 'riscaldamento';
-            $lettura->ambiente = $dispositivo->nome_dispositivo;
             $lettura->udr_attuale = $udrAttuale;
             $lettura->udr_precedente = $udrPrecedente;
             $lettura->unita_misura = 'UDR';

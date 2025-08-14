@@ -205,6 +205,7 @@ return new class extends Migration {
             $table->integer('righe_errore')->default(0);
             $table->integer('righe_warning')->default(0);
             $table->integer('righe_info')->default(0);
+            $table->integer('letture_create')->default(0);
             $table->integer('dispositivi_nuovi')->default(0)->comment('Dispositivi creati automaticamente');
             $table->string('stato', 20)->default('in_elaborazione')->index(); // in_elaborazione, completato, errore
             $table->json('log_errori')->nullable();
@@ -252,11 +253,10 @@ return new class extends Migration {
             $table->id();
             $table->timestamps();
             $table->foreignId('unita_immobiliare_id')->nullable()->constrained('unita_immobiliari')->cascadeOnDelete();
-            $table->foreignId('periodo_id')->constrained('periodi_contabilizzazione')->cascadeOnDelete();
+            $table->foreignId('periodo_id')->nullable()->constrained('periodi_contabilizzazione')->cascadeOnDelete();
             $table->foreignId('dispositivo_id')->nullable()->constrained('dispositivi_misura')->nullOnDelete();
             $table->string('tipo_consumo', 20)->index(); // volontario, involontario
             $table->string('categoria', 30)->index(); // riscaldamento, acs, gas, luce, climatizzazione_estiva, climatizzazione_invernale
-            $table->string('ambiente')->nullable()->comment('es. bagno, camera 1, cucina');
             $table->decimal('udr_attuale', 10, 3);
             $table->decimal('udr_precedente', 10, 3)->default(0);
             $table->decimal('differenza_consumi', 10, 3)->storedAs('udr_attuale - udr_precedente');

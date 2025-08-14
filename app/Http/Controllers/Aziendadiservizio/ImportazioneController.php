@@ -30,14 +30,13 @@ class ImportazioneController extends Controller
     }
 
     /**
-     * Gestisce l'upload dei file
+     * Gestisce l'upload dei file - VERSIONE UNIFICATA
      */
     public function caricaFile(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'file' => 'required|file|max:10240', // Max 10MB
-            'tipo_file' => 'required|in:csv_letture,excel_inventario',
-            'impianto_id' => 'required_if:tipo_file,csv_letture|exists:impianti,id',
+            'file' => 'required|file|max:10240|mimes:csv,txt,xlsx,xls', // Max 10MB, formati specifici
+            'impianto_id' => 'required|exists:impianti,id',
             'concentratore_id' => 'nullable|exists:concentratori,id',
             'periodo_id' => 'nullable|exists:periodi_contabilizzazione,id'
         ]);
@@ -47,13 +46,17 @@ class ImportazioneController extends Controller
         }
 
         $file = $request->file('file');
-        $tipoFile = $request->input('tipo_file');
+
+        // Rileva automaticamente il tipo di file
+        $tipoFile = $this->rilevaTipoFile($file);
 
         try {
-            if ($tipoFile === 'csv_letture') {
+            if ($tipoFile === 'csv') {
                 return $this->gestisciCsvLetture($file, $request);
+            } elseif ($tipoFile === 'excel') {
+                return $this->gestisciExcelLetture($file, $request);
             } else {
-                return $this->gestisciExcelInventario($file, $request);
+                throw new \Exception("Formato file non supportato: {$file->getClientOriginalExtension()}");
             }
         } catch (\Exception $e) {
             $alert = new AlertMessage();
@@ -67,7 +70,89 @@ class ImportazioneController extends Controller
     }
 
     /**
-     * Gestisce elaborazione CSV letture - VERSIONE MIGLIORATA
+     * Rileva il tipo di file automaticamente
+     */
+    private function rilevaTipoFile($file): string
+    {
+        $estensione = strtolower($file->getClientOriginalExtension());
+
+        if (in_array($estensione, ['csv', 'txt'])) {
+            return 'csv';
+        } elseif (in_array($estensione, ['xlsx', 'xls'])) {
+            return 'excel';
+        }
+
+        throw new \Exception("Estensione file non supportata: {$estensione}");
+    }
+
+    /**
+     * Gestisce elaborazione Excel letture
+     */
+    private function gestisciExcelLetture($file, Request $request)
+    {
+        $parametri = [
+            'impianto_id' => $request->input('impianto_id'),
+            'concentratore_id' => $request->input('concentratore_id'),
+            'periodo_id' => $request->input('periodo_id')
+        ];
+
+        // Elaborazione tramite service
+        $risultato = $this->importazioneService->elaboraExcelLetture($file, $parametri);
+
+        $alert = new AlertMessage();
+
+        if ($risultato['success']) {
+            $importazione = $risultato['importazione'];
+
+            $messaggi = [
+                "File Excel: {$importazione->nome_file}",
+                "Righe elaborate: " . number_format($importazione->righe_elaborate)
+            ];
+
+            // Gestione degli stati
+            if ($importazione->righe_errore > 0) {
+                $messaggi[] = "Errori bloccanti: " . number_format($importazione->righe_errore);
+                $tipoAlert = 'danger';
+                $titoloAlert = 'Importazione Excel con errori';
+                $iconaAlert = 'fas fa-exclamation-triangle';
+            } elseif (($importazione->righe_warning ?? 0) > 0) {
+                $messaggi[] = "Avvisi gestiti: " . number_format($importazione->righe_warning);
+                $tipoAlert = 'warning';
+                $titoloAlert = 'Importazione Excel con avvisi';
+                $iconaAlert = 'fas fa-exclamation-circle';
+            } else {
+                $tipoAlert = 'success';
+                $titoloAlert = 'Importazione Excel completata';
+                $iconaAlert = 'fas fa-check-circle';
+            }
+
+            // Info aggiuntive
+            if ($importazione->dispositivi_nuovi > 0) {
+                $messaggi[] = "Dispositivi creati: " . number_format($importazione->dispositivi_nuovi);
+            }
+
+            if (($importazione->letture_create ?? 0) > 0) {
+                $messaggi[] = "Letture create: " . number_format($importazione->letture_create);
+            }
+
+            $alert->messaggio($messaggi, $tipoAlert)
+                ->titolo($titoloAlert, $tipoAlert, $iconaAlert);
+
+            // Link al dettaglio
+            $alert->messaggio("<a href='" . route('importazione.dettaglio', $importazione->id) . "' class='text-decoration-underline'>Visualizza dettaglio completo</a>", $tipoAlert);
+
+        } else {
+            $alert->messaggio('Importazione Excel fallita', 'danger')
+                ->messaggio($risultato['errore'], 'danger')
+                ->titolo('Errore nell\'importazione Excel', 'danger', 'fas fa-file-excel');
+        }
+
+        $alert->flash();
+        return redirect()->route('importazione.index');
+    }
+
+    /**
+     * Gestisce elaborazione CSV letture
      */
     private function gestisciCsvLetture($file, Request $request)
     {
@@ -85,57 +170,45 @@ class ImportazioneController extends Controller
         if ($risultato['success']) {
             $importazione = $risultato['importazione'];
 
-            // Gestione messaggi basata sul nuovo sistema di classificazione
             $messaggi = [
-                "File: {$importazione->nome_file}",
+                "File CSV: {$importazione->nome_file}",
                 "Righe elaborate: " . number_format($importazione->righe_elaborate)
             ];
 
-            // Solo errori REALI
+            // Gestione degli stati
             if ($importazione->righe_errore > 0) {
-                $messaggi[] = "⚠️ Errori bloccanti: " . number_format($importazione->righe_errore);
-
-                if (($importazione->righe_warning ?? 0) > 0) {
-                    $messaggi[] = "⚡ Avvisi gestiti: " . number_format($importazione->righe_warning);
-                }
-
-                $alert->messaggio($messaggi, 'danger')
-                    ->titolo('Importazione completata con errori', 'danger', 'fas fa-exclamation-triangle');
-
+                $messaggi[] = "Errori bloccanti: " . number_format($importazione->righe_errore);
+                $tipoAlert = 'danger';
+                $titoloAlert = 'Importazione CSV con errori';
+                $iconaAlert = 'fas fa-exclamation-triangle';
             } elseif (($importazione->righe_warning ?? 0) > 0) {
-                // Solo warning (situazioni gestite automaticamente)
-                $messaggi[] = "⚡ Avvisi gestiti: " . number_format($importazione->righe_warning);
-
-                if (($importazione->righe_info ?? 0) > 0) {
-                    $messaggi[] = "ℹ️ Messaggi informativi: " . number_format($importazione->righe_info);
-                }
-
-                $alert->messaggio($messaggi, 'warning')
-                    ->titolo('Importazione completata con avvisi', 'warning', 'fas fa-exclamation-circle');
-
+                $messaggi[] = "Avvisi gestiti: " . number_format($importazione->righe_warning);
+                $tipoAlert = 'warning';
+                $titoloAlert = 'Importazione CSV con avvisi';
+                $iconaAlert = 'fas fa-exclamation-circle';
             } else {
-                // Successo completo
-                if (($importazione->righe_info ?? 0) > 0) {
-                    $messaggi[] = "ℹ️ Messaggi informativi: " . number_format($importazione->righe_info);
-                }
-
-                $alert->messaggio($messaggi, 'success')
-                    ->titolo('Importazione completata con successo', 'success', 'fas fa-check-circle');
+                $tipoAlert = 'success';
+                $titoloAlert = 'Importazione CSV completata';
+                $iconaAlert = 'fas fa-check-circle';
             }
 
-            // Aggiungi info sui dispositivi nuovi se presenti
+            // Info aggiuntive
             if ($importazione->dispositivi_nuovi > 0) {
-                $alert->messaggio("🆕 Dispositivi creati automaticamente: " . number_format($importazione->dispositivi_nuovi),
-                    $importazione->righe_errore > 0 ? 'danger' : (($importazione->righe_warning ?? 0) > 0 ? 'warning' : 'success'));
+                $messaggi[] = "Dispositivi creati: " . number_format($importazione->dispositivi_nuovi);
             }
+
+            if (($importazione->letture_create ?? 0) > 0) {
+                $messaggi[] = "Letture create: " . number_format($importazione->letture_create);
+            }
+
+            $alert->messaggio($messaggi, $tipoAlert)
+                ->titolo($titoloAlert, $tipoAlert, $iconaAlert);
 
             // Link al dettaglio
-            $alert->messaggio("👁️ <a href='" . route('importazione.dettaglio', $importazione->id) . "' class='text-decoration-underline'>Visualizza dettaglio completo</a>",
-                $importazione->righe_errore > 0 ? 'danger' : (($importazione->righe_warning ?? 0) > 0 ? 'warning' : 'success'));
+            $alert->messaggio("<a href='" . route('importazione.dettaglio', $importazione->id) . "' class='text-decoration-underline'>Visualizza dettaglio completo</a>", $tipoAlert);
 
         } else {
-            // Errore durante l'importazione
-            $alert->messaggio('Importazione fallita', 'danger')
+            $alert->messaggio('Importazione CSV fallita', 'danger')
                 ->messaggio($risultato['errore'], 'danger')
                 ->titolo('Errore nell\'importazione CSV', 'danger', 'fas fa-file-csv');
         }
@@ -147,57 +220,6 @@ class ImportazioneController extends Controller
 
 
 
-
-
-    /**
-     * Gestisce elaborazione Excel inventario
-     */
-    private function gestisciExcelInventario($file, Request $request)
-    {
-        $parametri = [
-            'note' => $request->input('note')
-        ];
-
-        // Elaborazione tramite service
-        $risultato = $this->importazioneService->elaboraExcelInventario($file, $parametri);
-
-        $alert = new AlertMessage();
-
-        if ($risultato['success']) {
-            $dati = $risultato['risultato'];
-
-            if ($dati['righe_errore'] > 0) {
-                // Excel elaborato con errori
-                $messaggi = [
-                    "File Excel elaborato",
-                    "Righe elaborate: " . number_format($dati['righe_elaborate']),
-                    "Errori rilevati: " . number_format($dati['righe_errore'])
-                ];
-
-                $alert->messaggio($messaggi, 'warning')
-                    ->titolo('Excel elaborato con errori', 'warning', 'fas fa-exclamation-triangle');
-        } else {
-                // Excel elaborato con successo
-                $messaggi = [
-                    "File Excel elaborato con successo",
-                    "Righe elaborate: " . number_format($dati['righe_elaborate']),
-                    "Colonne rilevate: " . count($dati['headers'])
-                ];
-
-                $alert->messaggio($messaggi, 'success')
-                    ->titolo('Excel elaborato con successo', 'success', 'fas fa-file-excel');
-            }
-
-        } else {
-            // Errore durante l'elaborazione Excel
-            $alert->messaggio('Elaborazione Excel fallita', 'danger')
-                ->messaggio($risultato['errore'], 'danger')
-                ->titolo('Errore nell\'elaborazione Excel', 'danger', 'fas fa-file-excel');
-        }
-
-        $alert->flash();
-        return redirect()->route('importazione.index');
-    }
 
     /**
      * Mostra storico importazioni

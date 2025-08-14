@@ -2,9 +2,9 @@
     <table class="table table-row-bordered" id="tabella-elenco">
         <thead>
         <tr class="fw-bolder fs-6 text-gray-800">
+            <th class="">Matricola</th>
             <th class="">Marca</th>
             <th class="">Modello</th>
-            <th class="">Matricola</th>
             <th class="">Frequenza Scansione</th>
             <th class="">Stato</th>
 
@@ -14,11 +14,12 @@
         <tbody>
         @foreach($records as $record)
             <tr>
+                <td class="">{{$record->matricola}}</td>
                 <td class="">{{$record->marca}}</td>
                 <td class="">{{$record->modello}}</td>
-                <td class="">{{$record->matricola}}</td>
-                <td class="">{{$record->frequenza_scansione}}</td>
-                <td class="">{{$record->stato}}</td>
+
+                <td class="">{{ucfirst($record->frequenza_scansione)}}</td>
+                <td class="">{!! $record->badgeStato() !!}</td>
                 <td class="text-end text-nowrap">
                     <a data-targetZ="kt_modal" data-toggleZ="modal-ajax"
                        class="btn btn-sm btn-light btn-active-light-primary"

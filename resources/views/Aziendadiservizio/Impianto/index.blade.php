@@ -30,7 +30,7 @@
         <!-- Statistiche -->
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="card">
                         <div class="card-body text-center">
                             <h3 class="fs-3 fw-bolder text-primary">{{ $statistiche['totale'] ?? 0 }}</h3>
@@ -39,7 +39,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="card">
                         <div class="card-body text-center">
                             <h3 class="fs-3 fw-bolder text-success">{{ $statistiche['attivi'] ?? 0 }}</h3>
@@ -48,16 +48,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h3 class="fs-3 fw-bolder text-warning">{{ $statistiche['con_concentratore'] ?? 0 }}</h3>
-                            <p class="mb-0 fs-2 fw-bolder">Con Concentratore</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="card">
                         <div class="card-body text-center">
                             <h3 class="fs-3 fw-bolder text-danger">{{ $statistiche['dismessi'] ?? 0 }}</h3>

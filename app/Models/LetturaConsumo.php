@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CategoriaConsumoEnum;
+use App\Enums\TipoConsumoEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -90,8 +91,20 @@ class LetturaConsumo extends Model
 
     public function badgeCategoria()
     {
-        $stato = CategoriaConsumoEnum::tryFrom($this->stato);
-        return '<span class="badge badge-light-' . $stato->colore() . ' fw-bolder">' . $stato->testo() . '</span>';
+        if($this->categoria){
+            $stato = CategoriaConsumoEnum::tryFrom($this->categoria);
+            return '<span class="badge badge-light-' . $stato->colore() . ' fw-bolder">' . $stato->testo() . '</span>';
+        }
+
+    }
+
+    public function badgeTipoConsumo()
+    {
+        if($this->tipo_consumo){
+            $stato = TipoConsumoEnum::tryFrom($this->tipo_consumo);
+            return '<span class="badge badge-light-' . $stato->colore() . ' fw-bolder">' . $stato->testo() . '</span>';
+        }
+
     }
 
 

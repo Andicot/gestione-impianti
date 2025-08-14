@@ -24,11 +24,7 @@
                     {!! $lettura->badgeCategoria() !!}
                 </td>
                 <td class="">
-                    @if($lettura->tipo_consumo == 'volontario')
-                        <span class="badge badge-light-success">Volontario</span>
-                    @else
-                        <span class="badge badge-light-warning">Involontario</span>
-                    @endif
+                    {!! $lettura->badgeTipoConsumo() !!}
                 </td>
                 <td class="">
                     <span class="fw-bold text-primary">{{ \App\importo($lettura->udr_attuale) }}</span>
@@ -67,7 +63,7 @@
                     @endif
                     @if($lettura->importazione_csv_id)
                         <span class="badge badge-light-info" title="Importato da CSV">
-                                       <i class="fas fa-file-csv"></i> CSV
+                                       CSV
                                    </span>
                     @endif
                 </td>

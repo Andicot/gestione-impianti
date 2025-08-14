@@ -206,6 +206,13 @@ return new class extends Migration {
             $table->json('log_errori')->nullable();
             $table->json('metadata_csv')->nullable()->comment('Dati header CSV come Serial, Nome Impianto, etc.');
             $table->timestamp('data_elaborazione')->nullable()->index();
+
+            $table->integer('righe_warning')->default(0)->after('righe_errore')->comment('Avvisi non bloccanti');
+            $table->integer('righe_info')->default(0)->after('righe_warning')->comment('Messaggi informativi');
+
+            // Campo per versione del sistema di log (per future migrazioni)
+            $table->string('versione_log', 10)->default('1.0')->after('log_errori')->comment('Versione sistema di logging');
+
         });
 
         // Tabella Anomalie Rilevate (Dati dal campo)

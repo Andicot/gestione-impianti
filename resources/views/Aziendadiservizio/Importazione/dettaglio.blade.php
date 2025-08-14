@@ -23,7 +23,6 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-info-circle me-2"></i>
                         Dettagli Importazione #{{ $importazione->id }}
                     </h3>
                 </div>
@@ -141,7 +140,6 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-chart-bar me-2"></i>
                         Statistiche Elaborazione
                     </h3>
                 </div>
@@ -204,7 +202,6 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-tags me-2"></i>
                             Metadata File CSV
                         </h3>
                     </div>
@@ -230,7 +227,6 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-exclamation-triangle text-warning me-2"></i>
                             Log Errori ({{ count($importazione->log_errori) }})
                         </h3>
                     </div>

@@ -39,7 +39,7 @@
                             <label class="form-label required">Impianto</label>
                             <select name="impianto_id" class="form-select" required>
                                 <option value="">Seleziona impianto...</option>
-                                @foreach(\App\Models\Impianto::where('stato', 'attivo')->orderBy('nome_impianto')->get() as $impianto)
+                                @foreach(\App\Models\Impianto::where('stato_impianto', 'attivo')->orderBy('nome_impianto')->get() as $impianto)
                                     <option value="{{ $impianto->id }}">{{ $impianto->nome_impianto }}</option>
                                 @endforeach
                             </select>

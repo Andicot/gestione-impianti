@@ -101,7 +101,7 @@
                     <div class="col-6">
                         <div class="fw-bolder mt-5">Dispositivi</div>
                         <div class="text-gray-600 fs-2 fw-bold text-success">
-                            da implementare
+                            {{$record->dispositivi_count}}
                         </div>
                     </div>
                 </div>

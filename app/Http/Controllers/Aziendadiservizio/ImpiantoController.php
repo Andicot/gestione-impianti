@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Aziendadiservizio;
 
+use App\Enums\RuoliOperatoreEnum;
 use App\Enums\StatoImpiantoEnum;
 use App\Http\Controllers\Controller;
 use App\Models\DispositivoMisura;
@@ -53,11 +54,13 @@ class ImpiantoController extends Controller
 
         $records = $recordsQB->paginate(25)->withQueryString();
 
+        $mostraAmministratore=$this->mostraAmministratore();
         if ($request->ajax()) {
             return [
                 'html' => base64_encode(view('Aziendadiservizio.Impianto.tabella', [
                     'records' => $records,
                     'controller' => $nomeClasse,
+                    'mostraAmministratore'=>$mostraAmministratore,
                 ]))
             ];
         }
@@ -73,6 +76,7 @@ class ImpiantoController extends Controller
             'testoNuovo' => 'Nuovo ' . \App\Models\Impianto::NOME_SINGOLARE,
             'testoCerca' => 'Cerca in nome impianto',
             'statistiche' => $this->statisticheImpianti(),
+            'mostraAmministratore'=>$mostraAmministratore,
         ]);
     }
 
@@ -272,7 +276,7 @@ class ImpiantoController extends Controller
     public function tab(Request $request, string $id, string $tab)
     {
         $record = Impianto::query()
-            ->withCount(['unitaImmobiliari'])
+            ->withCount(['unitaImmobiliari','dispositivi'])
             //->withCount(['unitaImmobiliari', 'dispositiviMisura', 'periodiContabilizzazione'])
             ->find($id);
 
@@ -599,7 +603,7 @@ class ImpiantoController extends Controller
             'totale_dispositivi' => $query->count(),
             'totale_udr' => $query->where('tipo', 'udr')->count(),
             'totale_contatori_acs' => $query->where('tipo', 'contatore_acs')->count(),
-            'totale_attivi' => $query->where('stato_impianto', 'attivo')->count(),
+            'totale_attivi' => $query->where('stato_dispositivo', 'attivo')->count(),
             // Statistiche aggiuntive utili
             'totale_con_concentratore' => $query->whereNotNull('concentratore_id')->count(),
             'totale_con_unita' => $query->whereNotNull('unita_immobiliare_id')->count(),
@@ -631,6 +635,11 @@ class ImpiantoController extends Controller
             'con_concentratore' => $conConcentratore,
             'dismessi' => $dismessi,
         ];
+    }
+
+    private function mostraAmministratore()
+    {
+        return Auth::user()->ruolo!==RuoliOperatoreEnum::amministratore_condominio->value;
     }
 
 }

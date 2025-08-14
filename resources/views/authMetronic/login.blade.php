@@ -72,34 +72,45 @@
             @if((env('APP_ENV')=='local' || config('configurazione.mostra_accessi_test')) && config('configurazione.accessi_test') && \App\Models\User::find(2)?->email=='admin@admin.com' )
                 <h5>Dati accesso per test</h5>
                 <table class="table table-row-dashed table-row-gray-300">
-                    <thead>
-                    <tr class="fw-bolder fs-6 text-gray-800">
-                        <th>utente</th>
-                        <th>email</th>
-                        <th></th>
-                    </tr>
-                    </thead>
+
                     <tbody>
-                    @foreach(config('configurazione.accessi_test') as $accesso)
-                        <tr class="fs-7">
-                            <td>{{$accesso['descrizione']}}</td>
-                            <td>{{$accesso['email']}}</td>
-                            <td>
-                                <button type="button"
-                                        onClick="impostaLogin('{{$accesso['email']}}','{{$accesso['password']}}');">Usa
-                                </button>
-                            </td>
+
+                    {{-- Versione migliorata con 2 utenti per ogni ruolo --}}
+                    @php
+                        $utentiPerRuolo = \App\Models\User::where('id', '>', 1)
+                            ->select('id', 'nome', 'cognome', 'email', 'ruolo')
+                            ->orderBy('ruolo')
+                            ->orderBy('id')
+                            ->get()
+                            ->groupBy('ruolo')
+                            ->map(function($utenti) {
+                                return $utenti->take(2); // Primi 2 utenti per ogni ruolo
+                            });
+                    @endphp
+
+                    @foreach($utentiPerRuolo as $ruolo => $utenti)
+                        {{-- Intestazione del ruolo --}}
+                        <tr class="fs-6 fw-bold bg-light">
+                            <td colspan="3" class="text-primary">{{ ucfirst(str_replace('_', ' ', $ruolo)) }} ({{ $utenti->count() }})</td>
                         </tr>
-                    @endforeach
-                    @foreach(\App\Models\User::where('id','>',2)->limit(2)->get() as $accesso)
-                        <tr class="fs-7">
-                            <td>{{ucfirst($accesso->ruolo)}}</td>
-                            <td>{{$accesso->email}}</td>
-                            <td>
-                                <button type="button" onClick="impostaLogin('{{$accesso->email}}','password');">Usa
-                                </button>
-                            </td>
-                        </tr>
+
+                        {{-- Utenti del ruolo --}}
+                        @foreach($utenti as $accesso)
+                            <tr class="fs-7">
+                                <td class="ps-4">
+                                    {{ $accesso->nome }} {{ $accesso->cognome }}
+                                    <div class="text-muted fs-8">ID: {{ $accesso->id }}</div>
+                                </td>
+                                <td>{{ $accesso->email }}</td>
+                                <td>
+                                    <button type="button"
+                                            class="btn btn-sm btn-light-primary"
+                                            onClick="impostaLogin('{{ $accesso->email }}','password');">
+                                        Usa
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
                     @endforeach
                     </tbody>
                 </table>

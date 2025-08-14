@@ -64,6 +64,23 @@ class User extends Authenticatable
         return $this->hasOne(AziendaServizio::class, 'user_id');
     }
 
+    public function amministratore(): HasOne
+    {
+        return $this->hasOne(Amministratore::class, 'user_id')->senzaFiltroOperatore()->select(['id']);
+    }
+
+    public function responsabileImpianto(): HasOne
+    {
+        return $this->hasOne(ResponsabileImpianto::class, 'user_id');
+    }
+
+    public function condomino(): HasOne
+    {
+        return $this->hasOne(Condomino::class, 'user_id');
+    }
+
+
+
     /*
     |--------------------------------------------------------------------------
     | SCOPE

@@ -12,15 +12,11 @@
 
             <div class="menu-item pt-5">
                 <div class="menu-content">
-                    <span class="menu-heading fw-bold text-uppercase fs-7">AZIENDA SERVIZIO
-                    @if(env('APP_ENV')=='local')
-                        {{\App\Models\AziendaServizio::first()->id}}
-                        @endif
-                    </span>
+                    <span class="menu-heading fw-bold text-uppercase fs-7">AAMMINISTRATORE</span>
                 </div>
             </div>
             <div class="menu-item">
-                <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\DashboardController::class,'show'])}}">
+                <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\DashboardController::class,'show'])}}">
                   <span class="menu-icon">
 												<i class="ki-duotone ki-element-11 fs-2">
 													<span class="path1"></span>
@@ -36,28 +32,16 @@
                 <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\ImpiantoController::class,'index'])}}">
                     <span class="menu-icon">
                               <i class="ki-duotone ki-menu fs-2">
- <span class="path1"></span>
- <span class="path2"></span>
- <span class="path3"></span>
- <span class="path4"></span>
-</i>
+                             <span class="path1"></span>
+                             <span class="path2"></span>
+                             <span class="path3"></span>
+                             <span class="path4"></span>
+                            </i>
                             </span>
                     <span class="menu-title">Impianti</span>
                 </a>
             </div>
-            <div class="menu-item">
-                <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\AmministratoreController::class,'index'])}}">
-                    <span class="menu-icon">
-                                <i class="ki-duotone ki-profile-user fs-2">
-                                 <span class="path1"></span>
-                                 <span class="path2"></span>
-                                 <span class="path3"></span>
-                                 <span class="path4"></span>
-                                </i>
-                            </span>
-                    <span class="menu-title">Amministratori</span>
-                </a>
-            </div>
+
             <div class="menu-item">
                 <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\ConcentratoreController::class,'index'])}}">
                     <span class="menu-icon">
@@ -80,9 +64,9 @@
                 <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\DispositivoMisuraController::class,'index'])}}">
                     <span class="menu-icon">
                              <i class="ki-duotone ki-celsius fs-2">
- <span class="path1"></span>
- <span class="path2"></span>
-</i>
+                                 <span class="path1"></span>
+                                 <span class="path2"></span>
+                                </i>
                             </span>
                     <span class="menu-title">Dispositivi Misura</span>
                 </a>
@@ -90,15 +74,30 @@
             <div class="menu-item">
                 <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\ResponsabileImpiantoController::class,'index'])}}">
                     <span class="menu-icon">
-<i class="ki-duotone ki-badge fs-2">
- <span class="path1"></span>
- <span class="path2"></span>
- <span class="path3"></span>
- <span class="path4"></span>
- <span class="path5"></span>
-</i>
+                            <i class="ki-duotone ki-badge fs-2">
+                             <span class="path1"></span>
+                             <span class="path2"></span>
+                             <span class="path3"></span>
+                             <span class="path4"></span>
+                             <span class="path5"></span>
+                            </i>
                             </span>
                     <span class="menu-title">Responsabili Impianto</span>
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\DocumentoController::class,'index'])}}">
+                    <span class="menu-icon">
+                          <i class="ki-duotone ki-notepad fs-2">
+                             <span class="path1"></span>
+                             <span class="path2"></span>
+                             <span class="path3"></span>
+                             <span class="path4"></span>
+                             <span class="path5"></span>
+                            </i>
+                            </span>
+                    <span class="menu-title">Documenti</span>
                 </a>
             </div>
 

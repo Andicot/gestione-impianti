@@ -349,7 +349,7 @@ function humanFileSize($size)
         $size = $size / $step;
         $i++;
     }
-    return number_format(round($size, $precision), 2, ',', '.') . $units[$i];
+    return number_format(round($size, $precision), 1, ',', '.') .' '. $units[$i];
 }
 
 function concatenaPercorsoFile(...$paths): string

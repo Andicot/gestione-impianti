@@ -218,6 +218,11 @@ return new class extends Migration {
 
         });
 
+
+
+
+
+
         // Tabella Anomalie Rilevate (Dati dal campo)
         Schema::create('anomalie_rilevate', function (Blueprint $table) {
             $table->id();
@@ -246,7 +251,7 @@ return new class extends Migration {
         Schema::create('letture_consumi', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('unita_immobiliare_id')->constrained('unita_immobiliari')->cascadeOnDelete();
+            $table->foreignId('unita_immobiliare_id')->nullable()->constrained('unita_immobiliari')->cascadeOnDelete();
             $table->foreignId('periodo_id')->constrained('periodi_contabilizzazione')->cascadeOnDelete();
             $table->foreignId('dispositivo_id')->nullable()->constrained('dispositivi_misura')->nullOnDelete();
             $table->string('tipo_consumo', 20)->index(); // volontario, involontario
@@ -289,6 +294,11 @@ return new class extends Migration {
             $table->decimal('importo_gas', 10, 2)->default(0);
             $table->decimal('importo_luce', 10, 2)->default(0);
             $table->string('pdf_allegato')->nullable();
+            $table->string('nome_file_originale')->nullable();
+            $table->string('mime_type')->nullable();
+            $table->unsignedBigInteger('dimensione_file')->nullable();
+            $table->integer('numero_download')->default(0);
+            $table->timestamp('ultimo_download')->nullable();
             $table->foreignId('caricato_da_id')->constrained('users')->cascadeOnDelete();
             $table->timestamp('data_caricamento');
             $table->boolean('visualizzato')->default(false)->index();
@@ -300,6 +310,63 @@ return new class extends Migration {
             $table->string('stato_pagamento', 20)->default('non_pagato')->index(); // non_pagato, pagato, parziale
             $table->decimal('importo_pagato', 10, 2)->default(0);
             $table->date('data_scadenza')->nullable()->index();
+
+        });
+
+
+        // Tabella Documenti - per gestire documenti generici oltre alle bollette
+        Schema::create('documenti', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->string('nome_file');
+            $table->string('nome_originale');
+            $table->string('path_file');
+            $table->string('tipo_documento', 30)->index(); // bolletta, contratto, verbale, comunicazione, altro
+            $table->string('mime_type', 50);
+            $table->unsignedBigInteger('dimensione_file'); // in bytes
+            $table->text('descrizione')->nullable();
+
+            // Relazioni
+            $table->foreignId('caricato_da_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('impianto_id')->nullable()->constrained('impianti')->nullOnDelete();
+            $table->foreignId('unita_immobiliare_id')->nullable()->constrained('unita_immobiliari')->nullOnDelete();
+            $table->foreignId('bollettino_id')->nullable()->constrained('bollettini')->nullOnDelete();
+
+            // Gestione visibilità e accesso
+            $table->boolean('pubblico')->default(false)->index(); // visibile a tutti i condomini dell'impianto
+            $table->boolean('riservato_amministratori')->default(false)->index();
+            $table->json('utenti_autorizzati')->nullable()->comment('Array di user_id autorizzati alla visualizzazione');
+
+            // Tracking visualizzazioni
+            $table->integer('numero_visualizzazioni')->default(0);
+            $table->timestamp('ultima_visualizzazione')->nullable();
+
+            // Metadati
+            $table->string('stato', 20)->default('attivo')->index(); // attivo, archiviato, eliminato
+            $table->date('data_scadenza')->nullable()->index();
+            $table->boolean('notifica_scadenza')->default(false);
+            $table->text('note')->nullable();
+
+            // Indici per performance
+            $table->index(['tipo_documento', 'stato']);
+            $table->index(['impianto_id', 'pubblico']);
+            $table->index(['caricato_da_id', 'created_at']);
+        });
+
+        // Tabella Visualizzazioni Documenti - per tracciare chi ha visto cosa
+        Schema::create('visualizzazioni_documenti', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->foreignId('documento_id')->constrained('documenti','id','documenti_visualizzazioni__documento_id')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users','id','visualizzazioni_documenti__user_id')->cascadeOnDelete();
+            $table->timestamp('data_visualizzazione')->index();
+            $table->ipAddress('ip_address')->nullable();
+            $table->boolean('scaricato')->default(false);
+            $table->timestamp('data_download')->nullable();
+
+            // Evita duplicazioni per stesso utente/documento nello stesso giorno
+            $table->unique(['documento_id', 'user_id', 'data_visualizzazione'],'unique');
+            $table->index(['user_id', 'data_visualizzazione']);
         });
 
         // Tabella Pagamenti

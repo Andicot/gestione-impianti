@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\RuoliOperatoreEnum;
 use App\Enums\StatoDispositivoEnum;
 use App\Models\Scopes\FiltroOperatoreScope;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -25,10 +28,41 @@ class DispositivoMisura extends Model
     | BOOT
     |--------------------------------------------------------------------------
     */
+
     protected static function booted()
     {
-        static::addGlobalScope(new FiltroOperatoreScope());
+        static::addGlobalScope('filtroOperatore', function (Builder $builder) {
+            $user = \Auth::user();
+
+            if (!$user) {
+                return $builder->whereRaw('1 = 0');
+            }
+
+            switch ($user->ruolo) {
+                case RuoliOperatoreEnum::admin->value:
+                    return $builder;
+
+                case RuoliOperatoreEnum::azienda_di_servizio->value:
+                    if (!$user->aziendaServizio) {
+                        return $builder->whereRaw('1 = 0');
+                    }
+                    return $builder->where('azienda_servizio_id', $user->aziendaServizio->id);
+
+                case RuoliOperatoreEnum::amministratore_condominio->value:
+                    if (!$user->amministratore) {
+                        return $builder->whereRaw('1 = 0');
+                    }
+                    return $builder->whereHas('impianto', function(Builder $builder) use ($user) {
+                        $builder->senzaFiltroOperatore()->where('amministratore_id',$user->amministratore->id);
+                    });
+
+
+                default:
+                    return $builder->whereRaw('1 = 0');
+            }
+        });
     }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -56,6 +90,12 @@ class DispositivoMisura extends Model
     | SCOPE
     |--------------------------------------------------------------------------
     */
+
+    #[Scope]
+    protected function senzaFiltroOperatore(Builder $query): Builder
+    {
+        return $query->withoutGlobalScope('filtroOperatore');
+    }
 
     /*
     |--------------------------------------------------------------------------

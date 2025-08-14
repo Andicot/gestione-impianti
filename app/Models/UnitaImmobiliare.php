@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Scopes\FiltroOperatoreScope;
+use App\Enums\RuoliOperatoreEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class UnitaImmobiliare extends Model
 {
-    //
+
     protected $table = "unita_immobiliari";
 
     public const NOME_SINGOLARE = "unita immobiliare";
@@ -22,8 +23,40 @@ class UnitaImmobiliare extends Model
     */
     protected static function booted()
     {
-        static::addGlobalScope(new FiltroOperatoreScope());
+        static::addGlobalScope('filtroOperatore', function (Builder $builder) {
+            $user = \Auth::user();
+
+            if (!$user) {
+                return $builder->whereRaw('1 = 0');
+            }
+
+            switch ($user->ruolo) {
+                case RuoliOperatoreEnum::admin->value:
+                    return $builder;
+
+                case RuoliOperatoreEnum::azienda_di_servizio->value:
+                    if (!$user->aziendaServizio) {
+                        return $builder->whereRaw('1 = 0');
+                    }
+                    return $builder->whereHas('impianto', function(Builder $builder) use ($user) {
+                        $builder->senzaFiltroOperatore()->where('azienda_servizio_id',$user->aziendaServizio->id);
+                    });
+
+                case RuoliOperatoreEnum::amministratore_condominio->value:
+                    if (!$user->amministratore) {
+                        return $builder->whereRaw('1 = 0');
+                    }
+                    return $builder->whereHas('impianto', function(Builder $builder) use ($user) {
+                        $builder->senzaFiltroOperatore()->where('amministratore_id',$user->amministratore->id);
+                    });
+
+
+                default:
+                    return $builder->whereRaw('1 = 0');
+            }
+        });
     }
+
 
     /*
     |--------------------------------------------------------------------------

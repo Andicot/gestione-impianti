@@ -38,10 +38,11 @@ class FiltroOperatoreScope implements Scope
             }
             return;
         }
-
         // Se è un amministratore di condominio
         if ($user->ruolo === RuoliOperatoreEnum::amministratore_condominio->value) {
+
             $amministratore = $user->amministratore;
+
             if ($amministratore && $this->hasColumn($builder, 'amministratore_id')) {
                 $builder->where("{$table}.amministratore_id", $amministratore->id);
             } else {
@@ -83,37 +84,6 @@ class FiltroOperatoreScope implements Scope
             return $builder->withoutGlobalScope($this);
         });
 
-        $builder->macro('soloAziendaServizio', function (Builder $builder, int $aziendaId) {
-            $table = $builder->getModel()->getTable();
-            return $builder->withoutGlobalScope($this)
-                ->where("{$table}.azienda_servizio_id", $aziendaId);
-        });
 
-        $builder->macro('soloAmministratore', function (Builder $builder, int $amministratoreId) {
-            $table = $builder->getModel()->getTable();
-            return $builder->withoutGlobalScope($this)
-                ->where("{$table}.amministratore_id", $amministratoreId);
-        });
-
-        $builder->macro('soloCondomino', function (Builder $builder, int $condominoId) {
-            $table = $builder->getModel()->getTable();
-            return $builder->withoutGlobalScope($this)
-                ->where("{$table}.condomino_id", $condominoId);
-        });
-
-        $builder->macro('perAzienda', function (Builder $builder, int $aziendaId) {
-            $table = $builder->getModel()->getTable();
-            return $builder->where("{$table}.azienda_servizio_id", $aziendaId);
-        });
-
-        $builder->macro('perAmministratore', function (Builder $builder, int $amministratoreId) {
-            $table = $builder->getModel()->getTable();
-            return $builder->where("{$table}.amministratore_id", $amministratoreId);
-        });
-
-        $builder->macro('perCondomino', function (Builder $builder, int $condominoId) {
-            $table = $builder->getModel()->getTable();
-            return $builder->where("{$table}.condomino_id", $condominoId);
-        });
     }
 }

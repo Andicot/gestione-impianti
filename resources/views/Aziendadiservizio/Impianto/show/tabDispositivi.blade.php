@@ -72,7 +72,7 @@
 
         <div class="d-flex justify-content-end gap-3" >
             {{-- Pulsante Nuovo Dispositivo --}}
-            @if($record->stato === 'attivo')
+            @if($record->stato_impianto === 'attivo')
                 <a href="{{action([\App\Http\Controllers\Aziendadiservizio\DispositivoMisuraController::class,'create'],'impianto_id='.$record->id)}}"
                    class="btn btn-primary btn-sm">
                     <i class="fas fa-plus fs-4"></i>

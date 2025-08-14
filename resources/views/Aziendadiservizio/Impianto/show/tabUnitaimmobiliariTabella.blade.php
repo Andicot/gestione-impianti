@@ -85,15 +85,9 @@
             <tr>
                 <td colspan="7" class="text-center py-10">
                     <div class="d-flex flex-column align-items-center">
-                        <i class="fas fa-home fs-2x text-muted mb-3"></i>
                         <h3 class="text-muted">Nessuna unità immobiliare trovata</h3>
-                        <p class="text-muted mb-5">Questo impianto non ha ancora unità immobiliari registrate</p>
-                        @if($record->stato === 'attivo')
-                            <a href="{{action([\App\Http\Controllers\Aziendadiservizio\UnitaImmobiliareController::class,'create'],'impianto_id='.$record->id)}}"
-                               class="btn btn-primary">
-                                <i class="fas fa-plus me-2"></i>Crea la prima unità
-                            </a>
-                        @endif
+
+
                     </div>
                 </td>
             </tr>

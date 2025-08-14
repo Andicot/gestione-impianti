@@ -4,7 +4,9 @@
         <tr class="fw-bolder fs-6 text-gray-800">
 
             <th class="">Nome Impianto</th>
-            <th class="">Amministratore</th>
+            @if($mostraAmministratore)
+                <th class="">Amministratore</th>
+            @endif
             <th class="">Indirizzo</th>
             <th class="">Stato</th>
             <th class="">Tipologia</th>
@@ -17,20 +19,20 @@
             <tr>
                 <td class="">
                     <div>{{$record->matricola_impianto}}</div>
-
-                        <div class="text-muted">{{$record->nome_impianto}}</div>
-
+                    <div class="text-muted">{{$record->nome_impianto}}</div>
                 </td>
-                <td class="">{{$record->amministratore?->ragione_sociale}}</td>
+                @if($mostraAmministratore)
+                    <td class="">{{$record->amministratore?->ragione_sociale}}</td>
+                @endif
                 <td class="">
                     @if($record->citta)
                         {{$record->comune?->comuneContarga()}}
                     @endif
                     @if($record->citta && $record->indirizzo)
                         <br>
-                        @endif
+                    @endif
                     @if($record->indirizzo)
-                       <span class="small"> {{$record->indirizzo}}</span>
+                        <span class="small"> {{$record->indirizzo}}</span>
                     @endif
                 </td>
                 <td class="">{!! $record->badgeStato() !!}</td>

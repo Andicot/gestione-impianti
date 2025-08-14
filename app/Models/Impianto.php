@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Enums\RuoliOperatoreEnum;
 use App\Enums\StatoImpiantoEnum;
-use App\Models\Scopes\FiltroOperatoreScope;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,7 +25,34 @@ class Impianto extends Model
     */
     protected static function booted()
     {
-        static::addGlobalScope(new FiltroOperatoreScope());
+        static::addGlobalScope('filtroOperatore', function (Builder $builder) {
+            $user = \Auth::user();
+
+            if (!$user) {
+                return $builder->whereRaw('1 = 0');
+            }
+
+            switch ($user->ruolo) {
+                case RuoliOperatoreEnum::admin->value:
+                    return $builder;
+
+                case RuoliOperatoreEnum::azienda_di_servizio->value:
+                    if (!$user->aziendaServizio) {
+                        return $builder->whereRaw('1 = 0');
+                    }
+                    return $builder->where('azienda_servizio_id', $user->aziendaServizio->id);
+
+                case RuoliOperatoreEnum::amministratore_condominio->value:
+                    if (!$user->amministratore) {
+                        return $builder->whereRaw('1 = 0');
+                    }
+                    return $builder->where('amministratore_id', $user->amministratore->id);
+
+
+                default:
+                    return $builder->whereRaw('1 = 0');
+            }
+        });
     }
 
 
@@ -36,7 +63,7 @@ class Impianto extends Model
     */
     public function amministratore(): HasOne
     {
-        return $this->hasOne(Amministratore::class, 'id', 'amministratore_id');
+        return $this->hasOne(Amministratore::class, 'id', 'amministratore_id')->senzaFiltroOperatore();
     }
 
     public function aziendaServizio(): HasOne
@@ -58,11 +85,22 @@ class Impianto extends Model
     {
         return $this->hasMany(UnitaImmobiliare::class, 'impianto_id', 'id');
     }
+
+    public function dispositivi(): HasMany
+    {
+        return $this->hasMany(DispositivoMisura::class, 'impianto_id', 'id');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPE
     |--------------------------------------------------------------------------
     */
+
+    #[Scope]
+    protected function senzaFiltroOperatore(Builder $query): Builder
+    {
+        return $query->withoutGlobalScope('filtroOperatore');
+    }
 
     /*
     |--------------------------------------------------------------------------

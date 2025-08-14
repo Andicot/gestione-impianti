@@ -67,7 +67,7 @@ class ImportazioneController extends Controller
     }
 
     /**
-     * Gestisce elaborazione CSV letture
+     * Gestisce elaborazione CSV letture - VERSIONE MIGLIORATA
      */
     private function gestisciCsvLetture($file, Request $request)
     {
@@ -85,37 +85,53 @@ class ImportazioneController extends Controller
         if ($risultato['success']) {
             $importazione = $risultato['importazione'];
 
-            // Determina il tipo di messaggio in base al risultato
-            if ($importazione->righe_errore > 0) {
-                // Importazione completata con errori
-                $messaggi = [
-                    "File: {$importazione->nome_file}",
-                    "Righe elaborate: " . number_format($importazione->righe_elaborate),
-                    "Errori rilevati: " . number_format($importazione->righe_errore)
-                ];
+            // Gestione messaggi basata sul nuovo sistema di classificazione
+            $messaggi = [
+                "File: {$importazione->nome_file}",
+                "Righe elaborate: " . number_format($importazione->righe_elaborate)
+            ];
 
-                if ($importazione->dispositivi_nuovi > 0) {
-                    $messaggi[] = "Dispositivi creati: " . number_format($importazione->dispositivi_nuovi);
+            // Solo errori REALI
+            if ($importazione->righe_errore > 0) {
+                $messaggi[] = "⚠️ Errori bloccanti: " . number_format($importazione->righe_errore);
+
+                if (($importazione->righe_warning ?? 0) > 0) {
+                    $messaggi[] = "⚡ Avvisi gestiti: " . number_format($importazione->righe_warning);
                 }
 
-                $messaggi[] = "Controllare il dettaglio per visualizzare gli errori";
+                $alert->messaggio($messaggi, 'danger')
+                    ->titolo('Importazione completata con errori', 'danger', 'fas fa-exclamation-triangle');
+
+            } elseif (($importazione->righe_warning ?? 0) > 0) {
+                // Solo warning (situazioni gestite automaticamente)
+                $messaggi[] = "⚡ Avvisi gestiti: " . number_format($importazione->righe_warning);
+
+                if (($importazione->righe_info ?? 0) > 0) {
+                    $messaggi[] = "ℹ️ Messaggi informativi: " . number_format($importazione->righe_info);
+                }
 
                 $alert->messaggio($messaggi, 'warning')
-                    ->titolo('Importazione completata con errori', 'warning', 'fas fa-exclamation-triangle');
-            } else {
-                // Importazione completata con successo
-                $messaggi = [
-                    "File: {$importazione->nome_file}",
-                    "Righe elaborate: " . number_format($importazione->righe_elaborate)
-                ];
+                    ->titolo('Importazione completata con avvisi', 'warning', 'fas fa-exclamation-circle');
 
-                if ($importazione->dispositivi_nuovi > 0) {
-                    $messaggi[] = "Dispositivi creati automaticamente: " . number_format($importazione->dispositivi_nuovi);
+            } else {
+                // Successo completo
+                if (($importazione->righe_info ?? 0) > 0) {
+                    $messaggi[] = "ℹ️ Messaggi informativi: " . number_format($importazione->righe_info);
                 }
 
                 $alert->messaggio($messaggi, 'success')
                     ->titolo('Importazione completata con successo', 'success', 'fas fa-check-circle');
             }
+
+            // Aggiungi info sui dispositivi nuovi se presenti
+            if ($importazione->dispositivi_nuovi > 0) {
+                $alert->messaggio("🆕 Dispositivi creati automaticamente: " . number_format($importazione->dispositivi_nuovi),
+                    $importazione->righe_errore > 0 ? 'danger' : (($importazione->righe_warning ?? 0) > 0 ? 'warning' : 'success'));
+            }
+
+            // Link al dettaglio
+            $alert->messaggio("👁️ <a href='" . route('importazione.dettaglio', $importazione->id) . "' class='text-decoration-underline'>Visualizza dettaglio completo</a>",
+                $importazione->righe_errore > 0 ? 'danger' : (($importazione->righe_warning ?? 0) > 0 ? 'warning' : 'success'));
 
         } else {
             // Errore durante l'importazione
@@ -127,6 +143,11 @@ class ImportazioneController extends Controller
         $alert->flash();
         return redirect()->route('importazione.index');
     }
+
+
+
+
+
 
     /**
      * Gestisce elaborazione Excel inventario

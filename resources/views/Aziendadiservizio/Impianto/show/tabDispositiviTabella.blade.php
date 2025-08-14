@@ -90,10 +90,7 @@
                     @endif
                 </td>
                 <td>
-                    @php
-                        $statoEnum = \App\Enums\StatoGenericoEnum::from($dispositivo->stato);
-                    @endphp
-                    <span class="badge badge-light-{{$statoEnum->colore()}}">{{$statoEnum->testo()}}</span>
+                    {!! $dispositivo->badgeStat() !!}
                     @if($dispositivo->data_installazione)
                         <div class="text-muted fs-8 mt-1">
                             Inst: {{$dispositivo->data_installazione->format('d/m/Y')}}

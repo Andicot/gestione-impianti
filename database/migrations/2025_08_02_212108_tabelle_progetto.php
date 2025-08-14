@@ -172,7 +172,7 @@ return new class extends Migration {
             $table->string('tipo', 30)->default('udr')->index(); // udr, contatore_acs, contatore_gas, contatore_kwh, diretto
             $table->decimal('offset', 10, 3)->default(0);
             $table->date('data_installazione')->nullable();
-            $table->string('stato', 20)->default('attivo')->index(); // attivo, sostituito, guasto
+            $table->string('stato_dispositivo', 20)->default('attivo')->index(); // attivo, sostituito, guasto
             $table->string('ubicazione')->nullable();
             $table->foreignId('unita_immobiliare_id')->nullable()->constrained('unita_immobiliari')->nullOnDelete();
             $table->foreignId('impianto_id')->nullable()->constrained('impianti')->nullOnDelete();
@@ -201,17 +201,18 @@ return new class extends Migration {
             $table->integer('righe_totali')->default(0);
             $table->integer('righe_elaborate')->default(0);
             $table->integer('righe_errore')->default(0);
+            $table->integer('righe_warning')->default(0);
+            $table->integer('righe_info')->default(0);
             $table->integer('dispositivi_nuovi')->default(0)->comment('Dispositivi creati automaticamente');
             $table->string('stato', 20)->default('in_elaborazione')->index(); // in_elaborazione, completato, errore
             $table->json('log_errori')->nullable();
             $table->json('metadata_csv')->nullable()->comment('Dati header CSV come Serial, Nome Impianto, etc.');
             $table->timestamp('data_elaborazione')->nullable()->index();
 
-            $table->integer('righe_warning')->default(0)->after('righe_errore')->comment('Avvisi non bloccanti');
-            $table->integer('righe_info')->default(0)->after('righe_warning')->comment('Messaggi informativi');
+
 
             // Campo per versione del sistema di log (per future migrazioni)
-            $table->string('versione_log', 10)->default('1.0')->after('log_errori')->comment('Versione sistema di logging');
+            $table->string('versione_log', 10)->default('1.0')->comment('Versione sistema di logging');
 
         });
 

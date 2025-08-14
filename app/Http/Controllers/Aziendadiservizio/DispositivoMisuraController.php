@@ -66,7 +66,7 @@ class DispositivoMisuraController extends Controller
             'filtro' => $filtro ?? 'tutti',
             'conFiltro' => $this->conFiltro,
             'testoNuovo' => 'Nuovo ' . \App\Models\DispositivoMisura::NOME_SINGOLARE,
-            'testoCerca' => null,
+            'testoCerca' => 'Cerca in matricola',
         ]);
     }
 
@@ -80,7 +80,7 @@ class DispositivoMisuraController extends Controller
         $term = $request->input('cerca');
         if ($term) {
             // Array delle colonne su cui effettuare la ricerca
-            $searchColumns = ['cognome', 'nome']; // Aggiungi le colonne che ti servono
+            $searchColumns = ['matricola']; // Aggiungi le colonne che ti servono
 
             $searchTerms = collect(explode(' ', trim($term)))
                 ->map(fn($term) => trim($term))
@@ -221,7 +221,7 @@ class DispositivoMisuraController extends Controller
             'tipo' => '',
             'offset' => 'app\getInputNumero',
             'data_installazione' => 'app\getInputData',
-            'stato' => '',
+            'stato_dispositivo' => '',
             'ubicazione' => '',
             'unita_immobiliare_id' => '',
             'impianto_id' => '',

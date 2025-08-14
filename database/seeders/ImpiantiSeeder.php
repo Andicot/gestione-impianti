@@ -466,7 +466,7 @@ class ImpiantiSeeder extends Seeder
                         'tipo' => 'udr',
                         'offset' => rand(0, 10) / 10,
                         'data_installazione' => Carbon::now()->subMonths(rand(6, 36))->format('Y-m-d'),
-                        'stato' => 'attivo',
+                        'stato_dispositivo' => 'attivo',
                         'ubicazione' => $this->getUbicazione('udr', $unita->tipologia),
                         'unita_immobiliare_id' => $unita->id,
                         'impianto_id' => $impianto['id'],

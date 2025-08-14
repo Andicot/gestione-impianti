@@ -39,7 +39,7 @@
                         @include('Metronic._inputs_v.inputTextData',['campo'=>'data_installazione'])
                     </div>
                     <div class="col-md-6">
-                        @include('Metronic._inputs_v.inputSelect2Enum',['campo'=>'stato', 'required'=>true,'classeEnum' => \App\Enums\StatoDispositivoEnum::class])
+                        @include('Metronic._inputs_v.inputSelect2Enum',['campo'=>'stato_dispositivo', 'required'=>true,'classeEnum' => \App\Enums\StatoDispositivoEnum::class])
                     </div>
                     <div class="col-md-6">
                         @include('Metronic._inputs_v.inputText',['campo'=>'ubicazione'])

@@ -37,6 +37,7 @@ return new class extends Migration {
             $table->id();
             $table->timestamps();
             $table->foreignId('azienda_servizio_id')->nullable()->constrained('aziende_servizio')->nullOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('cognome');
             $table->string('nome');
             $table->string('codice_fiscale', 16)->nullable();
@@ -53,7 +54,7 @@ return new class extends Migration {
             $table->id();
             $table->timestamps();
             $table->foreignId('azienda_servizio_id')->nullable()->constrained('aziende_servizio')->nullOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('ragione_sociale')->index();
             $table->string('codice_fiscale', 16)->nullable();
             $table->string('partita_iva', 11)->nullable();
@@ -76,11 +77,12 @@ return new class extends Migration {
             $table->timestamps();
             $table->foreignId('azienda_servizio_id')->nullable()->constrained('aziende_servizio')->nullOnDelete();
             $table->foreignId('amministratore_id')->nullable()->constrained('amministratori')->nullOnDelete();
+            $table->string('matricola_impianto')->index();
             $table->string('nome_impianto');
             $table->string('indirizzo');
             $table->string('cap', 5);
             $table->string('citta');
-            $table->string('stato', 20)->default('attivo')->index(); // attivo, dismesso
+            $table->string('stato_impianto', 20)->default('attivo')->index(); // attivo, dismesso
             $table->string('tipologia', 20)->default('condominio')->index(); // condominio, struttura industriale, Struttura civile
             $table->decimal('criterio_ripartizione_numerica', 5, 2)->default(100.00)->comment('Base 1-100');
             $table->decimal('percentuale_quota_fissa', 5, 2)->default(0.00);

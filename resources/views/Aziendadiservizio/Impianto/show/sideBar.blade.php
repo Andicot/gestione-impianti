@@ -2,13 +2,14 @@
     <div class="card-body pt-15">
         <div class="d-flex flex-center flex-column mb-5">
             <div class="fs-3 text-gray-800 fw-bolder mb-1">
+                {{$record->matricola_impianto}}
+            </div>
+            <div class="fs-4 text-gray-800 fw-bolder mb-1">
                 {{$record->nome_impianto}}
             </div>
             <div class="fs-5 fw-bold text-muted mb-6">
-                @php
-                    $statoEnum = \App\Enums\StatoImpiantoEnum::from($record->stato);
-                @endphp
-                <span class="badge badge-light-{{$statoEnum->colore()}}">{{$statoEnum->testo()}}</span>
+                {!! $record->badgeStato() !!}
+
             </div>
         </div>
 
@@ -33,7 +34,7 @@
                     <div class="fw-bolder mt-5">Azienda di Servizio</div>
                     <div class="text-gray-600">
                         <span
-                           class="text-gray-600 text-hover-primary">
+                            class="text-gray-600 text-hover-primary">
                             {{$record->aziendaServizio->ragione_sociale}}
                         </span>
                     </div>

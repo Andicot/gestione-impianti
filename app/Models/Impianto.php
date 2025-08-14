@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\RuoliOperatoreEnum;
+use App\Enums\StatoImpiantoEnum;
 use App\Models\Scopes\FiltroOperatoreScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -74,6 +75,12 @@ class Impianto extends Model
         if ($nazione) {
             return "<option value='$id' selected>{$nazione->nome_impianto}</option>";
         }
+    }
+
+    public function badgeStato()
+    {
+        $stato = StatoImpiantoEnum::tryFrom($this->stato_impianto);
+        return '<span class="badge badge-light-' . $stato->colore() . ' fw-bolder">' . $stato->testo() . '</span>';
     }
 
     /*

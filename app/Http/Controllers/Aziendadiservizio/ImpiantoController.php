@@ -114,9 +114,9 @@ class ImpiantoController extends Controller
             }
         }
 
-        // Filtro stato
-        if ($request->filled('stato')) {
-            $queryBuilder->where('stato', $request->get('stato'));
+        // Filtro stato_impianto
+        if ($request->filled('stato_impianto')) {
+            $queryBuilder->where('stato_impianto', $request->get('stato_impianto'));
             $this->conFiltro = true;
         }
 
@@ -191,7 +191,7 @@ class ImpiantoController extends Controller
     public function create()
     {
         $record = new Impianto();
-        $record->stato = StatoImpiantoEnum::attivo->value;
+        $record->stato_impianto = StatoImpiantoEnum::attivo->value;
         return view('Aziendadiservizio.Impianto.edit', [
             'record' => $record,
             'titoloPagina' => 'Nuovo ' . Impianto::NOME_SINGOLARE,
@@ -436,9 +436,9 @@ class ImpiantoController extends Controller
             $this->conFiltro = true;
         }
 
-        // Filtro per stato
-        if ($request->filled('stato')) {
-            $query->where('stato', $request->get('stato'));
+        // Filtro per stato_impianto
+        if ($request->filled('stato_impianto')) {
+            $query->where('stato_impianto', $request->get('stato_impianto'));
             $this->conFiltro = true;
         }
 
@@ -537,11 +537,12 @@ class ImpiantoController extends Controller
         //Ciclo su campi
         $campi = [
             'amministratore_id' => '',
+            'matricola_impianto' => 'strtoupper',
             'nome_impianto' => 'app\getInputUcwords',
             'indirizzo' => 'app\getInputUcfirst',
             'cap' => '',
             'citta' => '',
-            'stato' => '',
+            'stato_impianto' => '',
             'tipologia' => '',
             'criterio_ripartizione_numerica' => 'app\getInputNumero',
             'percentuale_quota_fissa' => 'app\getInputNumero',
@@ -570,11 +571,16 @@ class ImpiantoController extends Controller
     {
         $rules = [
             'amministratore_id' => ['nullable'],
+            'matricola_impianto' => [
+                'required',
+                'max:255',
+                "unique:impianti,matricola_impianto,$id",
+            ],
             'nome_impianto' => ['required', 'max:255'],
             'indirizzo' => ['required', 'max:255'],
             'cap' => ['required', 'max:5'],
             'citta' => ['required', 'max:255'],
-            'stato' => ['required', 'max:20'],
+            'stato_impianto' => ['required', 'max:20'],
             'tipologia' => ['required', 'max:20'],
             'criterio_ripartizione_numerica' => ['required'],
             'percentuale_quota_fissa' => ['required'],
@@ -593,7 +599,7 @@ class ImpiantoController extends Controller
             'totale_dispositivi' => $query->count(),
             'totale_udr' => $query->where('tipo', 'udr')->count(),
             'totale_contatori_acs' => $query->where('tipo', 'contatore_acs')->count(),
-            'totale_attivi' => $query->where('stato', 'attivo')->count(),
+            'totale_attivi' => $query->where('stato_impianto', 'attivo')->count(),
             // Statistiche aggiuntive utili
             'totale_con_concentratore' => $query->whereNotNull('concentratore_id')->count(),
             'totale_con_unita' => $query->whereNotNull('unita_immobiliare_id')->count(),
@@ -611,12 +617,12 @@ class ImpiantoController extends Controller
 
 
         $totale = $query->count();
-        $attivi = (clone $query)->where('stato', 'attivo')->count();
-        $dismessi = (clone $query)->where('stato', 'dismesso')->count();
+        $attivi = (clone $query)->where('stato_impianto', 'attivo')->count();
+        $dismessi = (clone $query)->where('stato_impianto', 'dismesso')->count();
 
         // Conta impianti che hanno concentratori attivi associati
         $conConcentratore = (clone $query)->whereHas('concentratori', function ($q) {
-            $q->where('stato', 'attivo');
+            $q->where('stato_impianto', 'attivo');
         })->count();
 
         return [

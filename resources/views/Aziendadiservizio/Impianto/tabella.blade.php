@@ -15,7 +15,12 @@
         <tbody>
         @foreach($records as $record)
             <tr>
-                <td class="">{{$record->nome_impianto}}</td>
+                <td class="">
+                    <div>{{$record->matricola_impianto}}</div>
+
+                        <div class="text-muted">{{$record->nome_impianto}}</div>
+
+                </td>
                 <td class="">{{$record->amministratore?->ragione_sociale}}</td>
                 <td class="">
                     @if($record->citta)
@@ -28,8 +33,8 @@
                        <span class="small"> {{$record->indirizzo}}</span>
                     @endif
                 </td>
-                <td class="">{{$record->stato}}</td>
-                <td class="">{{$record->tipologia}}</td>
+                <td class="">{!! $record->badgeStato() !!}</td>
+                <td class="">{{\App\Enums\TipologiaImpiantoEnum::tryFrom($record->tipologia)->testo()}}</td>
                 <td class="">{{$record->servizio}}</td>
                 <td class="text-end text-nowrap">
                     <a data-targetZ="kt_modal" data-toggleZ="modal-ajax"

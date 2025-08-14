@@ -15,6 +15,9 @@
                         @include('Metronic._inputs_v.inputSelect2',['campo'=>'amministratore_id', 'label' => 'Amministratore','selected' => \App\Models\Amministratore::selected(old('amministratore_id',$record->amministratore_id))])
                     </div>
                     <div class="col-md-6">
+                        @include('Metronic._inputs_v.inputText',['campo'=>'matricola_impianto', 'required'=>true,'classe' => 'uppercase'])
+                    </div>
+                    <div class="col-md-6">
                         @include('Metronic._inputs_v.inputText',['campo'=>'nome_impianto', 'required'=>true])
                     </div>
                     <div class="col-md-6">
@@ -27,7 +30,7 @@
                         @include('Metronic._inputs_v.inputText',['campo'=>'cap', 'required'=>true, 'altro' => 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"'])
                     </div>
                     <div class="col-md-6">
-                        @include('Metronic._inputs_v.inputSelect2Enum',['campo'=>'stato', 'required'=>true,'classeEnum' => \App\Enums\StatoImpiantoEnum::class])
+                        @include('Metronic._inputs_v.inputSelect2Enum',['campo'=>'stato_impianto', 'required'=>true,'classeEnum' => \App\Enums\StatoImpiantoEnum::class])
                     </div>
                     <div class="col-md-6">
                         @include('Metronic._inputs_v.inputSelect2Enum',['campo'=>'tipologia', 'required'=>true,'classeEnum' => \App\Enums\TipologiaImpiantoEnum::class])

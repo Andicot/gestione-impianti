@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Aziendadiservizio;
 
+use App\Enums\RuoliOperatoreEnum;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Traits\FunzioniUtente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ResponsabileImpianto;
@@ -10,6 +13,8 @@ use DB;
 
 class ResponsabileImpiantoController extends Controller
 {
+    use FunzioniUtente;
+
     /**
      * Display a listing of the resource.
      */
@@ -133,8 +138,9 @@ class ResponsabileImpiantoController extends Controller
     public function store(Request $request)
     {
         $request->validate($this->rules(null));
+        $user = $this->salvaDatiUtente(new User(), $request, '', RuoliOperatoreEnum::responsabile_impianto->value);
         $record = new ResponsabileImpianto();
-        $this->salvaDati($record, $request);
+        $this->salvaDati($record, $request, $user->id);
         return $this->backToIndex();
     }
 
@@ -207,12 +213,12 @@ class ResponsabileImpiantoController extends Controller
      * @param Request $request
      * @return mixed
      */
-    protected function salvaDati($record, $request)
+    protected function salvaDati($record, $request, $userId = null)
     {
         $nuovo = !$record->id;
 
-        if ($nuovo) {
-
+        if ($userId) {
+            $record->user_id = $userId;
         }
 
         //Ciclo su campi

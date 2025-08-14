@@ -133,11 +133,12 @@ class ImpiantiSeeder extends Seeder
 
         $impiantiData = [
             [
+                'matricola_impianto' => Str::random(10),
                 'nome_impianto' => 'Condominio Via degli Artisti',
                 'indirizzo' => 'Via degli Artisti, 25-27',
                 'cap' => '50100',
                 'citta' => Comune::inRandomOrder()->first()->id,
-                'stato' => 'attivo',
+                'stato_impianto' => 'attivo',
                 'tipologia' => 'condominio',
                 'criterio_ripartizione_numerica' => 100.00,
                 'percentuale_quota_fissa' => 30.00,
@@ -145,12 +146,12 @@ class ImpiantiSeeder extends Seeder
                 'note' => 'Condominio di 18 unità immobiliari con impianto centralizzato gas metano',
                 'unita_count' => 18
             ],
-            [
+            [ 'matricola_impianto' => Str::random(10),
                 'nome_impianto' => 'Palazzina Corso Francia',
                 'indirizzo' => 'Corso Francia, 156',
                 'cap' => '10138',
                 'citta' => Comune::inRandomOrder()->first()->id,
-                'stato' => 'attivo',
+                'stato_impianto' => 'attivo',
                 'tipologia' => 'condominio',
                 'criterio_ripartizione_numerica' => 100.00,
                 'percentuale_quota_fissa' => 25.00,
@@ -158,12 +159,12 @@ class ImpiantiSeeder extends Seeder
                 'note' => 'Palazzina residenziale di 8 unità con riscaldamento centralizzato',
                 'unita_count' => 8
             ],
-            [
+            [ 'matricola_impianto' => Str::random(10),
                 'nome_impianto' => 'Condominio Via Roma',
                 'indirizzo' => 'Via Roma, 89',
                 'cap' => '10123',
                 'citta' => Comune::inRandomOrder()->first()->id,
-                'stato' => 'attivo',
+                'stato_impianto' => 'attivo',
                 'tipologia' => 'condominio',
                 'criterio_ripartizione_numerica' => 100.00,
                 'percentuale_quota_fissa' => 35.00,
@@ -171,12 +172,12 @@ class ImpiantiSeeder extends Seeder
                 'note' => 'Condominio con servizi integrati: riscaldamento, ACS e illuminazione',
                 'unita_count' => 12
             ],
-            [
+            [ 'matricola_impianto' => Str::random(10),
                 'nome_impianto' => 'Residenza Green Park',
                 'indirizzo' => 'Via Nizza, 234',
                 'cap' => '10126',
                 'citta' => Comune::inRandomOrder()->first()->id,
-                'stato' => 'attivo',
+                'stato_impianto' => 'attivo',
                 'tipologia' => 'condominio',
                 'criterio_ripartizione_numerica' => 100.00,
                 'percentuale_quota_fissa' => 20.00,
@@ -184,12 +185,12 @@ class ImpiantiSeeder extends Seeder
                 'note' => 'Condominio eco-sostenibile con pannelli solari e caldaia a condensazione',
                 'unita_count' => 15
             ],
-            [
+            [ 'matricola_impianto' => Str::random(10),
                 'nome_impianto' => 'Palazzo Storico Centro',
                 'indirizzo' => 'Via Garibaldi, 45',
                 'cap' => '10122',
                 'citta' => Comune::inRandomOrder()->first()->id,
-                'stato' => 'attivo',
+                'stato_impianto' => 'attivo',
                 'tipologia' => 'struttura_civile',
                 'criterio_ripartizione_numerica' => 100.00,
                 'percentuale_quota_fissa' => 40.00,
@@ -197,12 +198,12 @@ class ImpiantiSeeder extends Seeder
                 'note' => 'Palazzo storico ristrutturato con impianto tradizionale',
                 'unita_count' => 6
             ],
-            [
+            [ 'matricola_impianto' => Str::random(10),
                 'nome_impianto' => 'Villette a Schiera Collina',
                 'indirizzo' => 'Via Po, 156',
                 'cap' => '10124',
                 'citta' => Comune::inRandomOrder()->first()->id,
-                'stato' => 'attivo',
+                'stato_impianto' => 'attivo',
                 'tipologia' => 'struttura_civile',
                 'criterio_ripartizione_numerica' => 100.00,
                 'percentuale_quota_fissa' => 15.00,

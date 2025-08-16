@@ -90,17 +90,6 @@ enum RuoliOperatoreEnum: string
         };
     }
 
-    public function icona()
-    {
-        return match ($this) {
-            self::admin => 'crown',
-            self::azienda_di_servizio => 'briefcase',
-            self::amministratore_condominio => 'building',
-            self::condomino => 'home',
-            self::responsabile_impianto => 'wrench',
-        };
-    }
-
     public function badge()
     {
         return match ($this) {
@@ -201,54 +190,52 @@ enum RuoliOperatoreEnum: string
     {
         return match ($this) {
             self::admin => [
-                'Dashboard' => 'dashboard.admin',
-                'Aziende di Servizio' => 'aziende-servizio.index',
-                'Responsabili Impianto' => 'responsabili.index',
-                'Tutti gli Impianti' => 'impianti.index',
-                'Statistiche Globali' => 'statistiche.globali',
-                'Configurazioni' => 'configurazioni.index',
-                'Backup' => 'backup.index',
-                'Log Sistema' => 'log.sistema'
+                'azienda_servizio',
+                'amministratore',
+                'impianto',
+                'concentratore',
+                'dispositivo_misura',
+                'responsabile_impianto',
+                'documento',
+                'importazione',
+                'storico_letture'
             ],
             self::azienda_di_servizio => [
-                'Dashboard' => 'dashboard.azienda',
-                'Amministratori' => 'amministratori.index',
-                'Condomini' => 'condomini.index',
-                'Impianti' => 'impianti.index',
-                'Concentratori' => 'concentratori.index',
-                'Importazioni CSV' => 'importazioni.index',
-                'Report Azienda' => 'report.azienda',
-                'Tickets' => 'tickets.index'
+                'amministratore',
+                'impianto',
+                'concentratore',
+                'dispositivo_misura',
+                'responsabile_impianto',
+                'documento',
+                'importazione',
+                'storico_letture'
             ],
             self::amministratore_condominio => [
-                'Dashboard' => 'dashboard.amministratore',
-                'Il Mio Condominio' => 'condominio.dettaglio',
-                'Bollettini' => 'bollettini.index',
-                'Pagamenti' => 'pagamenti.index',
-                'Letture' => 'letture.index',
-                'Report' => 'report.condominio',
-                'Comunicazioni' => 'tickets.condominio',
-                'Documenti' => 'documenti.index'
+                'impianto',
+                'bollettino',
+                'pagamento',
+                'lettura',
+                'documento',
+                'ticket',
+                'storico_letture'
             ],
             self::responsabile_impianto => [
-                'Dashboard' => 'dashboard.responsabile',
-                'I Miei Impianti' => 'impianti.assegnati',
-                'Dispositivi' => 'dispositivi.index',
-                'Concentratori' => 'concentratori.gestiti',
-                'Anomalie' => 'anomalie.index',
-                'Manutenzioni' => 'manutenzioni.index',
-                'Report Tecnici' => 'report.tecnici',
-                'Tickets Tecnici' => 'tickets.tecnici'
+                'miei_impianti',
+                'dispositivo_misura',
+                'concentratore_gestiti',
+                'anomalia',
+                'manutenzione',
+                'ticket_tecnico',
+                'storico_letture'
             ],
             self::condomino => [
-                'Dashboard' => 'dashboard.condomino',
-                'Le Mie Bollette' => 'bollette.personali',
-                'I Miei Consumi' => 'consumi.personali',
-                'Storico Letture' => 'letture.storico',
-                'Grafici' => 'grafici.consumi',
-                'Comunicazioni' => 'tickets.personali'
-            ]
-        };
+                'mie_bollette',
+                'miei_consumi',
+                'storico_letture',
+                'grafici',
+                'comunicazione'
+            ]};
+
     }
 
     /**

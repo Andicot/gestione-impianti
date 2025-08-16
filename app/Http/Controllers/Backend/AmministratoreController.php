@@ -1,18 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Aziendadiservizio;
+namespace App\Http\Controllers\Backend;
 
 use App\Enums\RuoliOperatoreEnum;
-use App\Http\Controllers\Admin\AziendaServizioController;
 use App\Http\Controllers\Controller;
+use App\Models\Amministratore;
 use App\Models\AziendaServizio;
 use App\Models\Impianto;
 use App\Models\User;
 use App\Traits\FunzioniUtente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Amministratore;
-use DB;
 use Illuminate\Support\Str;
 
 class AmministratoreController extends Controller

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Aziendadiservizio;
+namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\MieClassi\AlertMessage;

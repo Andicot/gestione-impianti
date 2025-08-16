@@ -4,15 +4,13 @@ namespace App\Models;
 
 use App\Enums\CategoriaConsumoEnum;
 use App\Enums\TipoConsumoEnum;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LetturaConsumo extends Model
 {
-    use HasFactory;
-
-    protected $table = "letture_consumi";
+    //
+    protected $table="letture_consumi";
 
     public const NOME_SINGOLARE = "lettura consumo";
     public const NOME_PLURALE = "letture consumi";

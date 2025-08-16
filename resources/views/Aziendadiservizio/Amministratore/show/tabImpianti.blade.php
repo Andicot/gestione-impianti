@@ -62,10 +62,10 @@
                    class="form-control form-control-solid form-control-sm w-250px ps-13"
                    placeholder="Cerca impianti..."/>
         </div>
-        <div class="d-flex justify-content-end" >
+        <div class="d-flex justify-content-end">
             {{-- Pulsante Nuovo Impianto a destra --}}
             @if($record->attivo)
-                <a href="{{action([\App\Http\Controllers\Aziendadiservizio\ImpiantoController::class,'create'],'azienda_id='.$record->id)}}"
+                <a href="{{action([\App\Http\Controllers\Backend\ImpiantoController::class,'create'],'azienda_id='.$record->id)}}"
                    class="btn btn-primary btn-sm">
                     <i class="fas fa-plus fs-4"></i>
                     Nuovo Impianto
@@ -139,13 +139,13 @@
                             class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
                             data-kt-menu="true">
                             <div class="menu-item px-3">
-                                <a href="{{action([\App\Http\Controllers\Aziendadiservizio\ImpiantoController::class,'show'],$impianto->id)}}"
+                                <a href="{{action([\App\Http\Controllers\Backend\ImpiantoController::class,'show'],$impianto->id)}}"
                                    class="menu-link px-3">
                                     Visualizza
                                 </a>
                             </div>
                             <div class="menu-item px-3">
-                                <a href="{{action([\App\Http\Controllers\Aziendadiservizio\ImpiantoController::class,'edit'],$impianto->id)}}"
+                                <a href="{{action([\App\Http\Controllers\Backend\ImpiantoController::class,'edit'],$impianto->id)}}"
                                    class="menu-link px-3">
                                     Modifica
                                 </a>

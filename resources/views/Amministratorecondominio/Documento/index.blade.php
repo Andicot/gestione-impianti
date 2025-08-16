@@ -79,19 +79,14 @@
                         <form method="GET" class="row g-3">
                             <div class="col-md-3">
                                 <label class="form-label">Impianto</label>
-                                <select name="impianto_id" class="form-select form-select-sm form-select-solid">
-                                    <option value="">Tutti gli impianti</option>
-                                    @foreach(Auth::user()->amministratore->impianti as $impianto)
-                                        <option value="{{$impianto->id}}" {{ request('impianto_id') == $impianto->id ? 'selected' : '' }}>
-                                            {{$impianto->nome_impianto}}
-                                        </option>
-                                    @endforeach
+                                <select name="impianto_id" class="form-select form-select-sm form-select-solid" id="impianto_id">
+                                    {!! \App\Models\Impianto::selected(request()->input('impianto_id')) !!}
                                 </select>
                             </div>
 
                             <div class="col-md-3">
                                 <label class="form-label">Visibilità</label>
-                                <select name="visibilita" class="form-select form-select-sm form-select-solid">
+                                <select name="visibilita" class="form-select form-select-sm form-select-solid " data-control="select2" data-hide-search="true">
                                     <option value="">Tutte</option>
                                     <option value="pubblico" {{ request('visibilita') == 'pubblico' ? 'selected' : '' }}>Pubblici</option>
                                     <option value="riservato" {{ request('visibilita') == 'riservato' ? 'selected' : '' }}>Riservati Amministratori</option>
@@ -101,7 +96,7 @@
 
                             <div class="col-md-3">
                                 <label class="form-label">Scadenza</label>
-                                <select name="scadenza" class="form-select form-select-sm form-select-solid">
+                                <select name="scadenza" class="form-select form-select-sm form-select-solid " data-control="select2" data-hide-search="true">
                                     <option value="">Tutte</option>
                                     <option value="in_scadenza" {{ request('scadenza') == 'in_scadenza' ? 'selected' : '' }}>In Scadenza (30gg)</option>
                                     <option value="scaduti" {{ request('scadenza') == 'scaduti' ? 'selected' : '' }}>Scaduti</option>
@@ -134,3 +129,10 @@
     </div>
 
 @endsection
+@push('customScript')
+    <script src="/assets_backend/js-miei/select2_it.js"></script>
+
+    <script>
+        select2Universale('impianto_id','un impianto',-1);
+    </script>
+@endpush

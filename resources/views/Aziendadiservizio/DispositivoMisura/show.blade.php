@@ -2,11 +2,11 @@
 
 @section('toolbar')
     <div class="d-flex flex-wrap align-items-center gap-3 mb-6">
-        <a href="{{ action([App\Http\Controllers\Aziendadiservizio\DispositivoMisuraController::class, 'index']) }}"
+        <a href="{{ action([\App\Http\Controllers\Backend\DispositivoMisuraController::class, 'index']) }}"
            class="btn btn-sm btn-secondary fw-bold">
             <i class="fas fa-arrow-left"></i> Torna all'Elenco
         </a>
-        <a href="{{ action([App\Http\Controllers\Aziendadiservizio\DispositivoMisuraController::class, 'edit'], $record->id) }}"
+        <a href="{{ action([\App\Http\Controllers\Backend\DispositivoMisuraController::class, 'edit'], $record->id) }}"
            class="btn btn-sm btn-primary fw-bold">
             <i class="fas fa-edit"></i> Modifica
         </a>
@@ -205,7 +205,7 @@
                     <h3 class="card-title">Letture Dispositivo</h3>
                 </div>
                 <div class="card-body">
-                  @include('Aziendadiservizio.DispositivoMisura.show.tabLetture')
+                    @include('Aziendadiservizio.DispositivoMisura.show.tabLetture')
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table table-row-bordered align-middle" >
+    <table class="table table-row-bordered align-middle">
         <thead>
         <tr class="fw-bolder fs-6 text-gray-800">
             <th class="">Matricola</th>
@@ -14,10 +14,10 @@
         @forelse($records as $dispositivo)
             <tr>
                 <td class="fw-bold">
-                   {{$dispositivo->matricola}}
+                    {{$dispositivo->matricola}}
                 </td>
                 <td>
-                            {{strtoupper($dispositivo->tipo)}}
+                    {{strtoupper($dispositivo->tipo)}}
                 </td>
                 <td>
                     <div class="d-flex flex-column">
@@ -66,15 +66,15 @@
                         class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
                         data-kt-menu="true">
                         <div class="menu-item px-3">
-                            <a href="{{action([\App\Http\Controllers\Aziendadiservizio\DispositivoMisuraController::class,'show'],$dispositivo->id)}}"
+                            <a href="{{action([\App\Http\Controllers\Backend\DispositivoMisuraController::class,'show'],$dispositivo->id)}}"
                                class="menu-link px-3">
                                 Visualizza
                             </a>
                         </div>
                         <div class="menu-item px-3">
-                            <a href="{{action([\App\Http\Controllers\Aziendadiservizio\DispositivoMisuraController::class,'edit'],$dispositivo->id)}}"
+                            <a href="{{action([\App\Http\Controllers\Backend\DispositivoMisuraController::class,'edit'],$dispositivo->id)}}"
                                class="menu-link px-3">
-                               Modifica
+                                Modifica
                             </a>
                         </div>
                         <div class="separator my-2"></div>

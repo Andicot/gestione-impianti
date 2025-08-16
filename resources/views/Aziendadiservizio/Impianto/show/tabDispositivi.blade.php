@@ -70,10 +70,10 @@
             </button>
         </div>
 
-        <div class="d-flex justify-content-end gap-3" >
+        <div class="d-flex justify-content-end gap-3">
             {{-- Pulsante Nuovo Dispositivo --}}
             @if($record->stato_impianto === 'attivo')
-                <a href="{{action([\App\Http\Controllers\Aziendadiservizio\DispositivoMisuraController::class,'create'],'impianto_id='.$record->id)}}"
+                <a href="{{action([\App\Http\Controllers\Backend\DispositivoMisuraController::class,'create'],'impianto_id='.$record->id)}}"
                    class="btn btn-primary btn-sm">
                     <i class="fas fa-plus fs-4"></i>
                     Nuovo Dispositivo
@@ -159,7 +159,7 @@
 </div>
 
 {{-- Tabella Dispositivi --}}
-<div class="pt-0"  id="tabella">
+<div class="pt-0" id="tabella">
     @include('Aziendadiservizio.Impianto.show.tabDispositiviTabella')
 </div>
 

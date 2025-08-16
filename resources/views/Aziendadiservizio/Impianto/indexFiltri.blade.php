@@ -22,7 +22,7 @@
                 <!-- Filtro Stato -->
                 <div class="col-md-2">
                     <label class="form-label">Stato</label>
-                    <select name="stato" class="form-select form-select-sm form-select-solid">
+                    <select name="stato" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true">
                         <option value="">Tutti gli stati</option>
                         @foreach(\App\Enums\StatoImpiantoEnum::cases() as $stato)
                             <option value="{{ $stato->value }}"
@@ -36,7 +36,7 @@
                 <!-- Filtro Tipologia -->
                 <div class="col-md-2">
                     <label class="form-label">Tipologia</label>
-                    <select name="tipologia" class="form-select form-select-sm form-select-solid">
+                    <select name="tipologia" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true">
                         <option value="">Tutte le tipologie</option>
                         @foreach(\App\Enums\TipologiaImpiantoEnum::cases() as $tipologia)
                             <option value="{{ $tipologia->value }}"
@@ -83,7 +83,7 @@
                 <!-- Filtro Concentratore -->
                 <div class="col-md-2">
                     <label class="form-label">Concentratore</label>
-                    <select name="concentratore_id" class="form-select form-select-sm form-select-solid">
+                    <select name="concentratore_id" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true">
                         <option value="">Tutti</option>
                         <option value="con_concentratore" {{ request('concentratore_id') == 'con_concentratore' ? 'selected' : '' }}>
                             Con Concentratore

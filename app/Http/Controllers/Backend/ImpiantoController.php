@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Aziendadiservizio;
+namespace App\Http\Controllers\Backend;
 
 use App\Enums\RuoliOperatoreEnum;
 use App\Enums\StatoImpiantoEnum;
+use App\Http\Controllers\Aziendadiservizio\Bollettino;
+use App\Http\Controllers\Aziendadiservizio\PeriodoContabilizzazione;
 use App\Http\Controllers\Controller;
 use App\Models\DispositivoMisura;
 use App\Models\Impianto;

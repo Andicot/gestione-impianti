@@ -1,20 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Aziendadiservizio;
+namespace App\Http\Controllers\Backend;
 
-use App\Enums\RuoliOperatoreEnum;
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Traits\FunzioniUtente;
+use App\Models\UnitaImmobiliare;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\ResponsabileImpianto;
-use DB;
 
-class ResponsabileImpiantoController extends Controller
+class UnitaImmobiliareController extends Controller
 {
-    use FunzioniUtente;
-
     /**
      * Display a listing of the resource.
      */
@@ -34,9 +28,6 @@ class ResponsabileImpiantoController extends Controller
         $ordinamenti = [
             'recente' => ['testo' => 'Più recente', 'filtro' => function ($q) {
                 return $q->orderBy('id', 'desc');
-            }],
-            'nominativo' => ['testo' => 'Nominativo', 'filtro' => function ($q) {
-                return $q->orderBy('cognome')->orderBy('nome');
             }]
         ];
 
@@ -58,23 +49,23 @@ class ResponsabileImpiantoController extends Controller
 
         if ($request->ajax()) {
             return [
-                'html' => base64_encode(view('Aziendadiservizio.ResponsabileImpianto.tabella', [
+                'html' => base64_encode(view('Aziendadiservizio.UnitaImmobiliare.tabella', [
                     'records' => $records,
                     'controller' => $nomeClasse,
                 ]))
             ];
         }
 
-        return view('Aziendadiservizio.ResponsabileImpianto.index', [
+        return view('Aziendadiservizio.UnitaImmobiliare.index', [
             'records' => $records,
             'controller' => $nomeClasse,
-            'titoloPagina' => 'Elenco ' . \App\Models\ResponsabileImpianto::NOME_PLURALE,
+            'titoloPagina' => 'Elenco ' . \App\Models\UnitaImmobiliare::NOME_PLURALE,
             'orderBy' => $orderBy,
             'ordinamenti' => $ordinamenti,
             'filtro' => $filtro ?? 'tutti',
             'conFiltro' => $this->conFiltro,
-            'testoNuovo' => 'Nuovo ' . \App\Models\ResponsabileImpianto::NOME_SINGOLARE,
-            'testoCerca' => 'Cerca in nominativo',
+            'testoNuovo' => 'Nuova ' . \App\Models\UnitaImmobiliare::NOME_SINGOLARE,
+            'testoCerca' => null,
         ]);
     }
 
@@ -84,10 +75,8 @@ class ResponsabileImpiantoController extends Controller
      */
     protected function applicaFiltri($request)
     {
-        $queryBuilder = \App\Models\ResponsabileImpianto::query();
+        $queryBuilder = \App\Models\UnitaImmobiliare::query();
         $term = $request->input('cerca');
-
-
         if ($term) {
             // Array delle colonne su cui effettuare la ricerca
             $searchColumns = ['cognome', 'nome']; // Aggiungi le colonne che ti servono
@@ -123,12 +112,13 @@ class ResponsabileImpiantoController extends Controller
      */
     public function create()
     {
-        $record = new ResponsabileImpianto();
-        return view('Aziendadiservizio.ResponsabileImpianto.edit', [
+        $record = new UnitaImmobiliare();
+        $record->impianto_id = 1;
+        return view('Aziendadiservizio.UnitaImmobiliare.edit', [
             'record' => $record,
-            'titoloPagina' => 'Nuovo ' . ResponsabileImpianto::NOME_SINGOLARE,
+            'titoloPagina' => 'Nuova ' . UnitaImmobiliare::NOME_SINGOLARE,
             'controller' => get_class($this),
-            'breadcrumbs' => [action([ResponsabileImpiantoController::class, 'index']) => 'Torna a elenco ' . ResponsabileImpianto::NOME_PLURALE],
+            'breadcrumbs' => [action([UnitaImmobiliareController::class, 'index']) => 'Torna a elenco ' . UnitaImmobiliare::NOME_PLURALE],
         ]);
     }
 
@@ -138,9 +128,9 @@ class ResponsabileImpiantoController extends Controller
     public function store(Request $request)
     {
         $request->validate($this->rules(null));
-        $user = $this->salvaDatiUtente(new User(), $request, '', RuoliOperatoreEnum::responsabile_impianto->value);
-        $record = new ResponsabileImpianto();
-        $this->salvaDati($record, $request, $user->id);
+        $record = new UnitaImmobiliare();
+        $record->azienda_servizio_id = Auth::user()->aziendaServizio?->id;
+        $this->salvaDati($record, $request);
         return $this->backToIndex();
     }
 
@@ -149,13 +139,13 @@ class ResponsabileImpiantoController extends Controller
      */
     public function show(string $id)
     {
-        $record = ResponsabileImpianto::find($id);
-        abort_if(!$record, 404, 'Questo responsabileimpianto non esiste');
-        return view('Aziendadiservizio.ResponsabileImpianto.show', [
+        $record = UnitaImmobiliare::find($id);
+        abort_if(!$record, 404, 'Questa unitaimmobiliare non esiste');
+        return view('Aziendadiservizio.UnitaImmobiliare.show', [
             'record' => $record,
-            'controller' => ResponsabileImpiantoController::class,
-            'titoloPagina' => ucfirst(ResponsabileImpianto::NOME_SINGOLARE),
-            'breadcrumbs' => [action([ResponsabileImpiantoController::class, 'index']) => 'Torna a elenco ' . ResponsabileImpianto::NOME_PLURALE],
+            'controller' => UnitaImmobiliareController::class,
+            'titoloPagina' => ucfirst(UnitaImmobiliare::NOME_SINGOLARE),
+            'breadcrumbs' => [action([UnitaImmobiliareController::class, 'index']) => 'Torna a elenco ' . UnitaImmobiliare::NOME_PLURALE],
         ]);
     }
 
@@ -164,19 +154,19 @@ class ResponsabileImpiantoController extends Controller
      */
     public function edit(string $id)
     {
-        $record = ResponsabileImpianto::find($id);
-        abort_if(!$record, 404, 'Questo responsabileimpianto non esiste');
+        $record = UnitaImmobiliare::find($id);
+        abort_if(!$record, 404, 'Questa unitaimmobiliare non esiste');
         if (false) {
             $eliminabile = 'Non eliminabile perchè presente in ...';
         } else {
             $eliminabile = true;
         }
-        return view('Aziendadiservizio.ResponsabileImpianto.edit', [
+        return view('Aziendadiservizio.UnitaImmobiliare.edit', [
             'record' => $record,
-            'controller' => ResponsabileImpiantoController::class,
-            'titoloPagina' => 'Modifica ' . ResponsabileImpianto::NOME_SINGOLARE,
+            'controller' => UnitaImmobiliareController::class,
+            'titoloPagina' => 'Modifica ' . UnitaImmobiliare::NOME_SINGOLARE,
             'eliminabile' => $eliminabile,
-            'breadcrumbs' => [action([ResponsabileImpiantoController::class, 'index']) => 'Torna a elenco ' . ResponsabileImpianto::NOME_PLURALE],
+            'breadcrumbs' => [action([UnitaImmobiliareController::class, 'index']) => 'Torna a elenco ' . UnitaImmobiliare::NOME_PLURALE],
         ]);
     }
 
@@ -185,8 +175,8 @@ class ResponsabileImpiantoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $record = ResponsabileImpianto::find($id);
-        abort_if(!$record, 404, 'Questo ' . ResponsabileImpianto::NOME_SINGOLARE . ' non esiste');
+        $record = UnitaImmobiliare::find($id);
+        abort_if(!$record, 404, 'Questa ' . UnitaImmobiliare::NOME_SINGOLARE . ' non esiste');
         $request->validate($this->rules($id));
         $this->salvaDati($record, $request);
 
@@ -198,39 +188,43 @@ class ResponsabileImpiantoController extends Controller
      */
     public function destroy(string $id)
     {
-        $record = ResponsabileImpianto::find($id);
-        abort_if(!$record, 404, 'Questo ' . ResponsabileImpianto::NOME_SINGOLARE . ' non esiste');
+        $record = UnitaImmobiliare::find($id);
+        abort_if(!$record, 404, 'Questa ' . UnitaImmobiliare::NOME_SINGOLARE . ' non esiste');
         $record->delete();
 
         return [
             'success' => true,
-            'redirect' => action([ResponsabileImpiantoController::class, 'index']),
+            'redirect' => action([UnitaImmobiliareController::class, 'index']),
         ];
     }
 
     /**
-     * @param ResponsabileImpianto $record
+     * @param UnitaImmobiliare $record
      * @param Request $request
      * @return mixed
      */
-    protected function salvaDati($record, $request, $userId = null)
+    protected function salvaDati($record, $request)
     {
         $nuovo = !$record->id;
 
-        if ($userId) {
-            $record->user_id = $userId;
+        if ($nuovo) {
+
         }
 
         //Ciclo su campi
         $campi = [
             'azienda_servizio_id' => '',
-            'cognome' => 'app\getInputUcwords',
-            'nome' => 'app\getInputUcwords',
-            'codice_fiscale' => 'app\getInputToUpper',
-            'telefono' => 'app\getInputTelefono',
-            'cellulare' => 'app\getInputTelefono',
-            'email' => 'app\getInputToLower',
-            'attivo' => 'app\getInputCheckbox',
+            'impianto_id' => '',
+            'scala' => '',
+            'piano' => '',
+            'interno' => '',
+            'nominativo_unita' => 'app\getInputUcwords',
+            'tipologia' => '',
+            'millesimi_riscaldamento' => 'app\getInputNumero',
+            'millesimi_acs' => 'app\getInputNumero',
+            'metri_quadri' => 'app\getInputNumero',
+            'corpo_scaldante' => '',
+            'contatore_acs_numero' => '',
             'note' => '',
         ];
         foreach ($campi as $campo => $funzione) {
@@ -254,14 +248,16 @@ class ResponsabileImpiantoController extends Controller
     protected function rules($id = null)
     {
         $rules = [
-            'azienda_servizio_id' => ['nullable'],
-            'cognome' => ['required', 'max:255'],
-            'nome' => ['required', 'max:255'],
-            'codice_fiscale' => ['nullable', 'max:16', new \App\Rules\CodiceFiscaleRule()],
-            'telefono' => ['nullable', 'max:255', new \App\Rules\TelefonoRule()],
-            'cellulare' => ['nullable', 'max:255', new \App\Rules\TelefonoRule()],
-            'email' => ['required', 'max:255', 'email:strict,dns'],
-            'attivo' => ['nullable'],
+            'scala' => ['nullable', 'max:255'],
+            'piano' => ['required', 'max:255'],
+            'interno' => ['required', 'max:255'],
+            'nominativo_unita' => ['nullable', 'max:255'],
+            'tipologia' => ['required', 'max:20'],
+            'millesimi_riscaldamento' => ['required'],
+            'millesimi_acs' => ['required'],
+            'metri_quadri' => ['nullable'],
+            'corpo_scaldante' => ['nullable', 'max:255'],
+            'contatore_acs_numero' => ['nullable', 'max:255'],
             'note' => ['nullable'],
         ];
 

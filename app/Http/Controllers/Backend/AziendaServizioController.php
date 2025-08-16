@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Backend;
 
 use App\Enums\RuoliOperatoreEnum;
-use App\Http\Controllers\Aziendadiservizio\ImpiantoController;
 use App\Http\Controllers\Controller;
 use App\Models\Amministratore;
+use App\Models\AziendaServizio;
 use App\Models\Impianto;
 use App\Models\UnitaImmobiliare;
 use App\Models\User;
 use App\Traits\FunzioniUtente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\AziendaServizio;
-use DB;
-use Illuminate\Support\Str;
 
 class AziendaServizioController extends Controller
 {

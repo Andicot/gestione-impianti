@@ -2,7 +2,7 @@
 
 @section('toolbar')
     <div class="d-flex flex-wrap align-items-center gap-3 mb-6">
-        <a href="{{ action([App\Http\Controllers\Aziendadiservizio\ImportazioneController::class, 'storico']) }}"
+        <a href="{{ action([\App\Http\Controllers\Backend\ImportazioneController::class, 'storico']) }}"
            class="btn btn-sm btn-secondary fw-bold">
             <i class="fas fa-history"></i> Storico Importazioni
         </a>
@@ -28,7 +28,7 @@
                         Il sistema rileva automaticamente il formato (CSV o Excel) e processa i dati.
                     </p>
 
-                    <form action="{{ action([App\Http\Controllers\Aziendadiservizio\ImportazioneController::class, 'caricaFile']) }}"
+                    <form action="{{ action([\App\Http\Controllers\Backend\ImportazioneController::class, 'caricaFile']) }}"
                           method="POST"
                           enctype="multipart/form-data"
                           class="form-importazione">
@@ -182,9 +182,9 @@
 
 @push('customScript')
     <script>
-        $(function() {
+        $(function () {
             // Gestione preview file
-            $('#file-input').on('change', function() {
+            $('#file-input').on('change', function () {
                 const file = this.files[0];
                 const preview = $('#file-preview');
 
@@ -217,7 +217,7 @@
             });
 
             // Validazione client-side
-            $('.form-importazione').on('submit', function(e) {
+            $('.form-importazione').on('submit', function (e) {
                 const file = $('#file-input')[0].files[0];
                 const impiantoId = $('select[name="impianto_id"]').val();
 

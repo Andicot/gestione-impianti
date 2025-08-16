@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table table-row-bordered align-middle" >
+    <table class="table table-row-bordered align-middle">
         <thead>
         <tr class="fw-bolder fs-6 text-gray-800">
             <th class="">Unità</th>
@@ -45,15 +45,15 @@
                         class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
                         data-kt-menu="true">
                         <div class="menu-item px-3">
-                            <a href="{{action([\App\Http\Controllers\Aziendadiservizio\UnitaImmobiliareController::class,'show'],$unita->id)}}"
+                            <a href="{{action([\App\Http\Controllers\Backend\UnitaImmobiliareController::class,'show'],$unita->id)}}"
                                class="menu-link px-3">
                                 Visualizza
                             </a>
                         </div>
                         <div class="menu-item px-3">
-                            <a href="{{action([\App\Http\Controllers\Aziendadiservizio\UnitaImmobiliareController::class,'edit'],$unita->id)}}"
+                            <a href="{{action([\App\Http\Controllers\Backend\UnitaImmobiliareController::class,'edit'],$unita->id)}}"
                                class="menu-link px-3">
-                               Modifica
+                                Modifica
                             </a>
                         </div>
                         @if(false)
@@ -71,7 +71,7 @@
                                 </a>
                             </div>
                             <div class="menu-item px-3">
-                                <a href="{{action([\App\Http\Controllers\Aziendadiservizio\DispositivoMisuraController::class,'index'],'unita_id='.$unita->id)}}"
+                                <a href="{{action([\App\Http\Controllers\Backend\DispositivoMisuraController::class,'index'],'unita_id='.$unita->id)}}"
                                    class="menu-link px-3">
                                     <i class="fas fa-microchip me-2"></i>Dispositivi
                                 </a>

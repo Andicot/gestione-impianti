@@ -415,6 +415,7 @@ return new class extends Migration {
             $table->json('allegati')->nullable();
         });
 
+
         // Tabella Log Attività
         Schema::create('log_attivita', function (Blueprint $table) {
             $table->id();

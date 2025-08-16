@@ -70,10 +70,10 @@
             </button>
         </div>
 
-        <div class="d-flex justify-content-end gap-3" >
+        <div class="d-flex justify-content-end gap-3">
             {{-- Pulsante Nuova Unità --}}
             @if($record->stato_impianto === \App\Enums\StatoImpiantoEnum::attivo->value)
-                <a href="{{action([\App\Http\Controllers\Aziendadiservizio\UnitaImmobiliareController::class,'create'],'impianto_id='.$record->id)}}"
+                <a href="{{action([\App\Http\Controllers\Backend\UnitaImmobiliareController::class,'create'],'impianto_id='.$record->id)}}"
                    class="btn btn-primary btn-sm">
                     <i class="fas fa-plus fs-4"></i>
                     Nuova Unità
@@ -146,7 +146,6 @@
                     </div>
 
 
-
                     <!-- Filtro Millesimi -->
                     <div class="col-md-3">
                         <label class="form-label">Millesimi</label>
@@ -157,7 +156,6 @@
                             <option value="senza_millesimi" {{ request('millesimi') == 'senza_millesimi' ? 'selected' : '' }}>Senza Millesimi</option>
                         </select>
                     </div>
-
 
 
                     <!-- Pulsanti -->

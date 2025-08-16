@@ -14,7 +14,7 @@
                 <div class="menu-content">
                     <span class="menu-heading fw-bold text-uppercase fs-7">AZIENDA SERVIZIO
                     @if(env('APP_ENV')=='local')
-                        {{\App\Models\AziendaServizio::first()->id}}
+                            {{\App\Models\AziendaServizio::first()->id}}
                         @endif
                     </span>
                 </div>
@@ -33,7 +33,7 @@
                 </a>
             </div>
             <div class="menu-item">
-                <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\ImpiantoController::class,'index'])}}">
+                <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\ImpiantoController::class,'index'])}}">
                     <span class="menu-icon">
                               <i class="ki-duotone ki-menu fs-2">
  <span class="path1"></span>
@@ -46,7 +46,7 @@
                 </a>
             </div>
             <div class="menu-item">
-                <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\AmministratoreController::class,'index'])}}">
+                <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\AmministratoreController::class,'index'])}}">
                     <span class="menu-icon">
                                 <i class="ki-duotone ki-profile-user fs-2">
                                  <span class="path1"></span>
@@ -59,7 +59,7 @@
                 </a>
             </div>
             <div class="menu-item">
-                <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\ConcentratoreController::class,'index'])}}">
+                <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\ConcentratoreController::class,'index'])}}">
                     <span class="menu-icon">
                                <i class="ki-duotone ki-technology fs-2">
                                  <span class="path1"></span>
@@ -77,7 +77,7 @@
                 </a>
             </div>
             <div class="menu-item">
-                <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\DispositivoMisuraController::class,'index'])}}">
+                <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\DispositivoMisuraController::class,'index'])}}">
                     <span class="menu-icon">
                              <i class="ki-duotone ki-celsius fs-2">
                              <span class="path1"></span>
@@ -88,7 +88,7 @@
                 </a>
             </div>
             <div class="menu-item">
-                <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\ResponsabileImpiantoController::class,'index'])}}">
+                <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\ResponsabileImpiantoController::class,'index'])}}">
                     <span class="menu-icon">
                         <i class="ki-duotone ki-badge fs-2">
                          <span class="path1"></span>
@@ -102,7 +102,7 @@
                 </a>
             </div>
             <div class="menu-item">
-                <a class="menu-link" href="{{action([\App\Http\Controllers\Aziendadiservizio\ImportazioneController::class,'index'])}}">
+                <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\ImportazioneController::class,'index'])}}">
                     <span class="menu-icon">
                      <i class="ki-duotone ki-file-up fs-2">
                          <span class="path1"></span>
@@ -120,18 +120,18 @@
 </div>
 <!--end::sidebar menu-->
 @if(false)
-<!--begin::Footer-->
-<div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
-    <a href="https://preview.keenthemes.com/html/metronic/docs"
-       class="btn btn-flex flex-center btn-custom btn-primary overflow-hidden text-nowrap px-0 h-40px w-100"
-       data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click"
-       title="200+ in-house components and 3rd-party plugins">
-        <span class="btn-label">Docs & Components</span>
-        <i class="ki-duotone ki-document btn-icon fs-2 m-0">
-            <span class="path1"></span>
-            <span class="path2"></span>
-        </i>
-    </a>
-</div>
-<!--end::Footer-->
-    @endif
+    <!--begin::Footer-->
+    <div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
+        <a href="https://preview.keenthemes.com/html/metronic/docs"
+           class="btn btn-flex flex-center btn-custom btn-primary overflow-hidden text-nowrap px-0 h-40px w-100"
+           data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click"
+           title="200+ in-house components and 3rd-party plugins">
+            <span class="btn-label">Docs & Components</span>
+            <i class="ki-duotone ki-document btn-icon fs-2 m-0">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+        </a>
+    </div>
+    <!--end::Footer-->
+@endif

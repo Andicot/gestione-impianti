@@ -44,9 +44,9 @@
         <div class="d-flex align-items-center gap-3">
             @includeWhen(isset($testoCerca),'Metronic._components.ricerca')
         </div>
-        <div class="d-flex justify-content-end" >
+        <div class="d-flex justify-content-end">
             @if($record->attivo)
-                <a href="{{action([\App\Http\Controllers\Aziendadiservizio\AmministratoreController::class,'create'],'azienda_id='.$record->id)}}"
+                <a href="{{action([\App\Http\Controllers\Backend\AmministratoreController::class,'create'],'azienda_id='.$record->id)}}"
                    class="btn btn-primary btn-sm">
                     <i class="fas fa-plus fs-4"></i>
                     Nuovo Amministratore

@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Aziendadiservizio;
+namespace App\Http\Controllers\Backend;
 
 use App\Enums\FrequenzaScansionEnum;
 use App\Enums\StatoImpiantoEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Concentratore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Concentratore;
-use DB;
 
 class ConcentratoreController extends Controller
 {

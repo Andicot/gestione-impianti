@@ -2,7 +2,7 @@
 
 @section('toolbar')
     <div class="d-flex flex-wrap align-items-center gap-3 mb-6">
-        <a href="{{ action([App\Http\Controllers\Aziendadiservizio\ImportazioneController::class, 'storico']) }}"
+        <a href="{{ action([\App\Http\Controllers\Backend\ImportazioneController::class, 'storico']) }}"
            class="btn btn-sm btn-secondary fw-bold">
             <i class="fas fa-arrow-left"></i> Torna allo Storico
         </a>
@@ -366,7 +366,8 @@
                                                     </td>
                                                     <td>
                                                         @if(isset($errore['dati']) && is_array($errore['dati']) && count($errore['dati']) > 0)
-                                                            <code class="text-muted">{{ implode(' | ', array_slice($errore['dati'], 0, 3)) }}{{ count($errore['dati']) > 3 ? '...' : '' }}</code>
+                                                            <code
+                                                                class="text-muted">{{ implode(' | ', array_slice($errore['dati'], 0, 3)) }}{{ count($errore['dati']) > 3 ? '...' : '' }}</code>
                                                         @else
                                                             <span class="text-muted">-</span>
                                                         @endif
@@ -381,7 +382,8 @@
 
                             {{-- Contenuto Tab Warning --}}
                             @if(isset($logData['warning']) && count($logData['warning']) > 0)
-                                <div class="tab-pane fade {{ !isset($logData['errori']) || count($logData['errori']) == 0 ? 'show active' : '' }}" id="tab_warning" role="tabpanel">
+                                <div class="tab-pane fade {{ !isset($logData['errori']) || count($logData['errori']) == 0 ? 'show active' : '' }}"
+                                     id="tab_warning" role="tabpanel">
                                     <div class="table-responsive">
                                         <table class="table table-row-bordered table-row-gray-100">
                                             <thead>
@@ -402,7 +404,8 @@
                                                     </td>
                                                     <td>
                                                         @if(isset($warning['dati']) && is_array($warning['dati']) && count($warning['dati']) > 0)
-                                                            <code class="text-muted">{{ implode(' | ', array_slice($warning['dati'], 0, 3)) }}{{ count($warning['dati']) > 3 ? '...' : '' }}</code>
+                                                            <code
+                                                                class="text-muted">{{ implode(' | ', array_slice($warning['dati'], 0, 3)) }}{{ count($warning['dati']) > 3 ? '...' : '' }}</code>
                                                         @else
                                                             <span class="text-muted">-</span>
                                                         @endif
@@ -417,7 +420,9 @@
 
                             {{-- Contenuto Tab Info --}}
                             @if(isset($logData['info']) && count($logData['info']) > 0)
-                                <div class="tab-pane fade {{ (!isset($logData['errori']) || count($logData['errori']) == 0) && (!isset($logData['warning']) || count($logData['warning']) == 0) ? 'show active' : '' }}" id="tab_info" role="tabpanel">
+                                <div
+                                    class="tab-pane fade {{ (!isset($logData['errori']) || count($logData['errori']) == 0) && (!isset($logData['warning']) || count($logData['warning']) == 0) ? 'show active' : '' }}"
+                                    id="tab_info" role="tabpanel">
                                     <div class="table-responsive">
                                         <table class="table table-row-bordered table-row-gray-100">
                                             <thead>
@@ -438,7 +443,8 @@
                                                     </td>
                                                     <td>
                                                         @if(isset($info['dati']) && is_array($info['dati']) && count($info['dati']) > 0)
-                                                            <code class="text-muted">{{ implode(' | ', array_slice($info['dati'], 0, 3)) }}{{ count($info['dati']) > 3 ? '...' : '' }}</code>
+                                                            <code
+                                                                class="text-muted">{{ implode(' | ', array_slice($info['dati'], 0, 3)) }}{{ count($info['dati']) > 3 ? '...' : '' }}</code>
                                                         @else
                                                             <span class="text-muted">-</span>
                                                         @endif
@@ -484,7 +490,8 @@
                                                         </td>
                                                         <td>
                                                             @if(isset($log['dati']) && is_array($log['dati']) && count($log['dati']) > 0)
-                                                                <code class="text-muted">{{ implode(' | ', array_slice($log['dati'], 0, 3)) }}{{ count($log['dati']) > 3 ? '...' : '' }}</code>
+                                                                <code
+                                                                    class="text-muted">{{ implode(' | ', array_slice($log['dati'], 0, 3)) }}{{ count($log['dati']) > 3 ? '...' : '' }}</code>
                                                             @else
                                                                 <span class="text-muted">-</span>
                                                             @endif

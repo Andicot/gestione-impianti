@@ -1,4 +1,4 @@
-{{-- Sidebar con informazioni del ticket --}}
+{{-- Sidebar unificata con informazioni del ticket --}}
 <div class="card">
     <div class="card-body">
         {{-- Header con numero ticket --}}
@@ -146,6 +146,101 @@
                     <div class="fs-7 text-gray-600">{{ $record->anomalia->tipo_anomalia }}</div>
                 </div>
             @endif
+        </div>
+
+        {{-- Separatore --}}
+        <div class="separator mb-6"></div>
+
+        {{-- Timeline del ticket --}}
+        <div class="mb-6">
+            <h4 class="fs-5 fw-bold text-gray-800 mb-4">Timeline</h4>
+
+            <div class="timeline">
+                {{-- Creazione ticket --}}
+                <div class="timeline-item">
+                    <div class="timeline-line w-30px"></div>
+                    <div class="timeline-icon symbol symbol-circle symbol-30px">
+                        <div class="symbol-label bg-light-primary">
+                            <i class="fas fa-plus text-primary fs-7"></i>
+                        </div>
+                    </div>
+                    <div class="timeline-content mb-6 mt-n1">
+                        <div class="pe-3">
+                            <div class="fs-6 fw-semibold text-gray-800 mb-1">Ticket creato</div>
+                            <div class="fs-7 text-muted">{{ $record->created_at->format('d/m/Y H:i') }}</div>
+                            <div class="fs-7 text-gray-700">{{ $record->creadoDa->nome }} {{ $record->creadoDa->cognome }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Assegnazione (se presente) --}}
+                @if($record->assegnatoA)
+                    <div class="timeline-item">
+                        <div class="timeline-line w-30px"></div>
+                        <div class="timeline-icon symbol symbol-circle symbol-30px">
+                            <div class="symbol-label bg-light-success">
+                                <i class="fas fa-user-check text-success fs-7"></i>
+                            </div>
+                        </div>
+                        <div class="timeline-content mb-6 mt-n1">
+                            <div class="pe-3">
+                                <div class="fs-6 fw-semibold text-gray-800 mb-1">Assegnato</div>
+                                <div class="fs-7 text-muted">{{ $record->updated_at->format('d/m/Y H:i') }}</div>
+                                <div class="fs-7 text-gray-700">{{ $record->assegnatoA->nome }} {{ $record->assegnatoA->cognome }}</div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Cambio stato in lavorazione --}}
+                @if($record->stato !== \App\Enums\StatoTicketEnum::aperto->value)
+                    <div class="timeline-item">
+                        <div class="timeline-line w-30px"></div>
+                        <div class="timeline-icon symbol symbol-circle symbol-30px">
+                            <div class="symbol-label bg-light-info">
+                                <i class="fas fa-cog text-info fs-7"></i>
+                            </div>
+                        </div>
+                        <div class="timeline-content mb-6 mt-n1">
+                            <div class="pe-3">
+                                <div class="fs-6 fw-semibold text-gray-800 mb-1">Stato cambiato</div>
+                                <div class="fs-7 text-muted">{{ $record->updated_at->format('d/m/Y H:i') }}</div>
+                                @php
+                                    $statoEnum = \App\Enums\StatoTicketEnum::from($record->stato);
+                                @endphp
+                                <span class="badge badge-light-{{ $statoEnum->colore() }} badge-sm">{{ $statoEnum->testo() }}</span>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Chiusura (se presente) --}}
+                @if($record->data_chiusura)
+                    <div class="timeline-item">
+                        <div class="timeline-line w-30px"></div>
+                        <div class="timeline-icon symbol symbol-circle symbol-30px">
+                            <div class="symbol-label bg-light-success">
+                                <i class="fas fa-check-circle text-success fs-7"></i>
+                            </div>
+                        </div>
+                        <div class="timeline-content mb-6 mt-n1">
+                            <div class="pe-3">
+                                <div class="fs-6 fw-semibold text-gray-800 mb-1">Ticket chiuso</div>
+                                <div class="fs-7 text-muted">{{ $record->data_chiusura->format('d/m/Y H:i') }}</div>
+                                @if($record->chiusoDa)
+                                    <div class="fs-7 text-gray-700">{{ $record->chiusoDa->nome }} {{ $record->chiusoDa->cognome }}</div>
+                                @endif
+                                @if($record->note_chiusura)
+                                    <div class="mt-2 p-2 bg-light-success rounded">
+                                        <div class="fs-8 fw-bold text-success mb-1">Note:</div>
+                                        <div class="fs-8 text-gray-700">{{ Str::limit($record->note_chiusura, 80) }}</div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 </div>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\RuoliOperatoreEnum;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -80,6 +81,12 @@ class UnitaImmobiliare extends Model
     | SCOPE
     |--------------------------------------------------------------------------
     */
+
+    #[Scope]
+    protected function senzaFiltroOperatore(Builder $query): Builder
+    {
+        return $query->withoutGlobalScope('filtroOperatore');
+    }
 
     /*
     |--------------------------------------------------------------------------

@@ -45,8 +45,7 @@
                     <div class="col-md-6">
                         @include('Metronic._inputs_v.inputSelect2', [
                             'campo' => 'impianto_id',
-                            'elementi' => $impianti->pluck('nome_impianto', 'id')->toArray(),
-                            'selected' => old('impianto_id', $record->impianto_id ?? ''),
+                            'selected' => \App\Models\Impianto::selected(old('impianto_id', $record->impianto_id )),
                             'label' => 'Impianto (opzionale)'
                         ])
                     </div>
@@ -55,10 +54,7 @@
                     <div class="col-md-6">
                         @include('Metronic._inputs_v.inputSelect2', [
                             'campo' => 'unita_immobiliare_id',
-                            'elementi' => $unitaImmobiliari->mapWithKeys(function($unita) {
-                                return [$unita->id => $unita->nominativo_unita . ' - Scala ' . $unita->scala . ' Int. ' . $unita->interno];
-                            })->toArray(),
-                            'selected' => old('unita_immobiliare_id', $record->unita_immobiliare_id ?? ''),
+                            'selected' => \App\Models\UnitaImmobiliare::selected(old('unita_immobiliare_id', $record->unita_immobiliare_id)),
                             'label' => 'Unità Immobiliare (opzionale)',
                             'disabled' => true
                         ])
@@ -68,10 +64,7 @@
                     <div class="col-md-6" id="sezione-dispositivo" style="display: none;">
                         @include('Metronic._inputs_v.inputSelect2', [
                             'campo' => 'dispositivo_id',
-                            'elementi' => $dispositivi->mapWithKeys(function($dispositivo) {
-                                return [$dispositivo->id => $dispositivo->matricola . ' - ' . ucfirst($dispositivo->tipo)];
-                            })->toArray(),
-                            'selected' => old('dispositivo_id', $record->dispositivo_id ?? ''),
+                            'selected' => \App\Models\DispositivoMisura::selected(old('dispositivo_id', $record->dispositivo_id)),
                             'label' => 'Dispositivo (opzionale)',
                             'disabled' => true
                         ])

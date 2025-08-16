@@ -1,7 +1,7 @@
 @extends('Metronic._layout._main')
 
 @section('toolbar')
-    <div class="d-flex flex-wrap align-items-center gap-3 mb-6">
+    <div class="d-flex flex-wrap align-items-center gap-2">
         @isset($eliminabile)
             @if($eliminabile === true)
                 <a href="{{action([$controller,'destroy'],$record->id)}}" class="btn btn-danger mt-3 btn-elimina" data-method="DELETE"><i class="fas fa-trash"></i> Elimina</a>

@@ -117,6 +117,14 @@ class DispositivoMisura extends Model
         }
     }
 
+    public static function selected($id)
+    {
+        $nazione = self::find($id);
+        if ($nazione) {
+            return "<option value='$id' selected>{$nazione->matricola}</option>";
+        }
+    }
+
 
     /*
     |--------------------------------------------------------------------------

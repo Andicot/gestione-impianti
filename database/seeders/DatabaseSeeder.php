@@ -45,5 +45,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call(ImpiantiSeeder::class);
+
+        $this->call(TicketSeeder::class);
     }
 }

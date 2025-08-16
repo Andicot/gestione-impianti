@@ -71,8 +71,7 @@ Route::group(['middleware' => 'role:admin|azienda_di_servizio|amministratore_con
     // Unità immobiliari (legate agli impianti)
     Route::resource('unita_immobiliari', \App\Http\Controllers\Backend\UnitaImmobiliareController::class);
 
-    // Dispositivi misura (legati agli impianti)
-    Route::resource('dispositivo-misura', \App\Http\Controllers\Backend\DispositivoMisuraController::class);
+
 
     //Documenti
     Route::resource('documento',\App\Http\Controllers\Backend\DocumentoController::class);
@@ -92,6 +91,9 @@ Route::group(['middleware' => 'role:admin|azienda_di_servizio|amministratore_con
     // Impianti
     Route::resource('impianto', \App\Http\Controllers\Backend\ImpiantoController::class);
     Route::get('impianto/{id}/tab/{tab}', [\App\Http\Controllers\Backend\ImpiantoController::class, 'tab']);
+
+    // Dispositivi misura (legati agli impianti)
+    Route::resource('dispositivo-misura', \App\Http\Controllers\Backend\DispositivoMisuraController::class);
 
 
     // Letture
@@ -122,6 +124,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     // ✅ ROTTE CRUD BASE (usate nel controller e viste esistenti)
     Route::resource('tickets', \App\Http\Controllers\TicketController::class);
+    Route::post('tickets/{id}/azione/{azione}', [\App\Http\Controllers\TicketController::class, 'azioni']);
+
 
     // ✅ AZIONI SPECIFICHE (usate nella vista index)
     Route::post('tickets/{id}/prendi-in-carico', [\App\Http\Controllers\TicketController::class, 'prendiInCarico'])

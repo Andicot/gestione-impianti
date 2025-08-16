@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\RuoliOperatoreEnum;
+use App\Http\MieClassi\DatiRitorno;
 use App\Models\Impianto;
 use App\Models\Ticket;
 use App\Models\TicketRisposta;
@@ -92,43 +93,12 @@ class TicketController extends Controller
      */
     public function create(Request $request)
     {
-        $unitaImmobiliari = collect();
-        $impianti = collect();
-        $dispositivi = collect();
-
         $user = Auth::user();
-        $ruolo = RuoliOperatoreEnum::from($user->ruolo);
-
-        // Carica dati in base al ruolo
-        switch ($ruolo) {
-            case RuoliOperatoreEnum::admin:
-                $impianti = Impianto::where('stato_impianto', 'attivo')->orderBy('nome_impianto')->get();
-                break;
-            case RuoliOperatoreEnum::azienda_di_servizio:
-                $impianti = Impianto::whereHas('aziendaServizio', function ($q) use ($user) {
-                    $q->where('user_id', $user->id);
-                })->where('stato_impianto', 'attivo')->orderBy('nome_impianto')->get();
-                break;
-            case RuoliOperatoreEnum::amministratore_condominio:
-                $impianti = Impianto::whereHas('amministratore', function ($q) use ($user) {
-                    $q->where('user_id', $user->id);
-                })->where('stato_impianto', 'attivo')->orderBy('nome_impianto')->get();
-                break;
-            case RuoliOperatoreEnum::condomino:
-                $unitaImmobiliari = UnitaImmobiliare::whereHas('condomini', function ($q) use ($user) {
-                    $q->where('user_id', $user->id);
-                })->with('impianto')->get();
-                break;
-        }
-
         return view('Ticket.edit', [
             'record' => new Ticket(),
             'controller' => TicketController::class,
             'titoloPagina' => 'Nuovo ' . Ticket::NOME_SINGOLARE,
             'breadcrumbs' => [action([TicketController::class, 'index']) => 'Torna a elenco ' . Ticket::NOME_PLURALE],
-            'unitaImmobiliari' => $unitaImmobiliari,
-            'impianti' => $impianti,
-            'dispositivi' => $dispositivi
         ]);
     }
 
@@ -154,9 +124,17 @@ class TicketController extends Controller
     public function show(string $id)
     {
         $record = Ticket::with([
-            'creadoDa', 'assegnatoA', 'chiusoDa', 'unitaImmobiliare',
-            'impianto', 'dispositivo', 'anomalia', 'risposte.autore'
+            'creadoDa',
+            'assegnatoA',
+            'chiusoDa',
+            'unitaImmobiliare' => function($q) { $q->senzaFiltroOperatore(); },
+            'impianto' => function($q) { $q->senzaFiltroOperatore(); },
+            'dispositivo' => function($q) { $q->senzaFiltroOperatore(); },
+            'anomalia' => function($q) {  },
+            'risposte' => function($q) { },
+            'risposte.autore'
         ])->find($id);
+
 
         abort_if(!$record, 404, 'Questo ticket non esiste');
 
@@ -233,60 +211,22 @@ class TicketController extends Controller
         ];
     }
 
-    /**
-     * Prendi in carico il ticket
-     */
-    public function prendiInCarico(string $id)
+
+    public function azioni($id, $azione)
     {
-        $record = Ticket::find($id);
-        abort_if(!$record, 404, 'Questo ticket non esiste');
+        switch ($azione) {
+            case 'prendi-in-carico':
+                return $this->prendiInCarico($id);
 
-        $user = Auth::user();
-        $ruolo = RuoliOperatoreEnum::from($user->ruolo);
+            case 'risolvi':
+                return $this->risolvi($id);
 
-        // Solo certi ruoli possono prendere in carico
-        if (!in_array($ruolo, [
-            RuoliOperatoreEnum::amministratore_condominio,
-            RuoliOperatoreEnum::responsabile_impianto,
-            RuoliOperatoreEnum::azienda_di_servizio
-        ])) {
-            abort(403, 'Non autorizzato');
+            case 'chiudi':
+                return $this->chiudi($id);
+
+            default:
+                abort(404, 'Azione non trovata');
         }
-
-        $record->assegnato_a_id = $user->id;
-        $record->stato = 'in_lavorazione';
-        $record->save();
-
-        return [
-            'success' => true,
-            'message' => 'Ticket preso in carico'
-        ];
-    }
-
-    /**
-     * Chiudi il ticket
-     */
-    public function chiudi(Request $request, string $id)
-    {
-        $request->validate([
-            'note_chiusura' => 'required|string|max:1000'
-        ]);
-
-        $record = Ticket::find($id);
-        abort_if(!$record, 404, 'Questo ticket non esiste');
-
-        $user = Auth::user();
-
-        $record->stato = 'chiuso';
-        $record->chiuso_da_id = $user->id;
-        $record->data_chiusura = now();
-        $record->note_chiusura = $request->note_chiusura;
-        $record->save();
-
-        return [
-            'success' => true,
-            'message' => 'Ticket chiuso'
-        ];
     }
 
     /**
@@ -317,10 +257,7 @@ class TicketController extends Controller
             $ticket->save();
         }
 
-        return [
-            'success' => true,
-            'message' => 'Risposta aggiunta'
-        ];
+      return redirect()->route('tickets.show', [$ticket->id]);
     }
 
     /**
@@ -520,5 +457,93 @@ class TicketController extends Controller
             RuoliOperatoreEnum::condomino => true,
             RuoliOperatoreEnum::responsabile_impianto => true,
         };
+    }
+
+    /**
+     * Risolvi il ticket
+     */
+    private function risolvi(string $id)
+    {
+        $record = Ticket::find($id);
+        abort_if(!$record, 404, 'Questo ticket non esiste');
+
+        $user = Auth::user();
+
+        // Verifica che sia assegnato all'utente corrente
+        if ($record->assegnato_a_id !== $user->id) {
+            abort(403, 'Puoi risolvere solo i ticket assegnati a te');
+        }
+
+        $record->stato = 'risolto';
+        $record->chiuso_da_id = $user->id;
+        $record->data_chiusura = now();
+        $record->save();
+
+        return (new DatiRitorno())
+            ->success(true)
+            ->message('Ticket preso in carico con successo')
+            ->redirect(route('tickets.show',  $id))
+            ->toArray();
+    }
+
+    /**
+     * Prendi in carico il ticket
+     */
+    private function prendiInCarico(string $id)
+    {
+        $record = Ticket::find($id);
+        abort_if(!$record, 404, 'Questo ticket non esiste');
+
+        $user = Auth::user();
+        $ruolo = RuoliOperatoreEnum::from($user->ruolo);
+
+        // Solo certi ruoli possono prendere in carico
+        if (!in_array($ruolo, [
+            RuoliOperatoreEnum::amministratore_condominio,
+            RuoliOperatoreEnum::responsabile_impianto,
+            RuoliOperatoreEnum::azienda_di_servizio
+        ])) {
+            abort(403, 'Non autorizzato');
+        }
+
+        $record->assegnato_a_id = $user->id;
+        $record->stato = 'in_lavorazione';
+        $record->save();
+
+
+
+        return (new DatiRitorno())
+            ->success(true)
+            ->message('Ticket preso in carico con successo')
+            ->redirect(route('tickets.show',  $id))
+            ->toArray();
+    }
+
+    /**
+     * Chiudi il ticket definitivamente
+     */
+    private function chiudi(string $id)
+    {
+        $record = Ticket::find($id);
+        abort_if(!$record, 404, 'Questo ticket non esiste');
+
+        $user = Auth::user();
+
+        $record->stato = 'chiuso';
+        $record->chiuso_da_id = $user->id;
+        $record->data_chiusura = now();
+
+        // Se sono state passate note di chiusura
+        if (request()->filled('note_chiusura')) {
+            $record->note_chiusura = request()->note_chiusura;
+        }
+
+        $record->save();
+
+        return (new DatiRitorno())
+            ->success(true)
+            ->message('Ticket preso in carico con successo')
+            ->redirect(route('tickets.show',  $id))
+            ->toArray();
     }
 }

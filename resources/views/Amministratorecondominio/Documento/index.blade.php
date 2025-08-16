@@ -1,7 +1,7 @@
 @extends('Metronic._layout._main')
 
 @section('toolbar')
-    <div class="d-flex flex-wrap align-items-center gap-3 mb-6">
+    <div class="d-flex flex-wrap align-items-center gap-2">
         @includeWhen(isset($testoCerca),'Metronic._components.ricerca')
 
         <button class="btn btn-sm btn-flex @if($conFiltro) btn-success @else btn-secondary @endif"

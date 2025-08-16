@@ -1,7 +1,7 @@
 @extends('Metronic._layout._main')
 
 @section('toolbar')
-    <div class="d-flex flex-wrap align-items-center gap-3 mb-6">
+    <div class="d-flex flex-wrap align-items-center gap-2">
         <a href="{{ action([\App\Http\Controllers\Backend\ImportazioneController::class, 'storico']) }}"
            class="btn btn-sm btn-secondary fw-bold">
             <i class="fas fa-history"></i> Storico Importazioni

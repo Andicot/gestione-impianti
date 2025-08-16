@@ -1,7 +1,7 @@
 @extends('Metronic._layout._main')
 
 @section('toolbar')
-    <div class="d-flex flex-wrap align-items-center gap-3 mb-6">
+    <div class="d-flex flex-wrap align-items-center gap-2">
         <a href="{{ route('importazione.index') }}"
            class="btn btn-sm btn-primary fw-bold">
             Nuova Importazione

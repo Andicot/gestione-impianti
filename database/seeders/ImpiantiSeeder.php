@@ -21,8 +21,8 @@ class ImpiantiSeeder extends Seeder
     public function run(): void
     {
         // Recupera le aziende di servizio e gli amministratori esistenti
-        $aziendeServizio = AziendaServizio::where('attivo', true)->get();
-        $amministratori = Amministratore::where('attivo', true)->get();
+        $aziendeServizio = AziendaServizio::senzaFiltroOperatore()->where('attivo', true)->get();
+        $amministratori = Amministratore::senzaFiltroOperatore()->where('attivo', true)->get();
 
         if ($aziendeServizio->isEmpty() || $amministratori->isEmpty()) {
             $this->command->error('Eseguire prima AziendaServizioSeeder per creare aziende e amministratori.');

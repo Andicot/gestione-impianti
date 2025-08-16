@@ -22,10 +22,7 @@
              @endif
              data-kt-toggle-target="body"
              data-kt-toggle-name="app-sidebar-minimize">
-            <i class="ki-duotone ki-double-left fs-2 rotate-180">
-                <span class="path1"></span>
-                <span class="path2"></span>
-            </i>
+            <i class="fas fa-angle-left fs-2"></i>
         </div>
         <!--end::Sidebar toggle-->
     </div>
@@ -55,12 +52,7 @@
                 <div class="menu-item">
                     <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\DashboardController::class,'show'])}}">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-element-11 fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                            </i>
+                            <i class="fas fa-tachometer-alt fs-2"></i>
                         </span>
                         <span class="menu-title">Dashboard</span>
                     </a>
@@ -70,11 +62,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\AziendaServizioController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-user-square fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                            </i>
+                            <i class="fas fa-briefcase fs-2"></i>
                         </span>
                             <span class="menu-title">{{ucwords(\App\Models\AziendaServizio::NOME_PLURALE)}}</span>
                         </a>
@@ -85,12 +73,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\AmministratoreController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-profile-user fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                            </i>
+                            <i class="fas fa-user-tie fs-2"></i>
                         </span>
                             <span class="menu-title">Amministratori</span>
                         </a>
@@ -101,12 +84,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\ImpiantoController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-menu fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                            </i>
+                            <i class="fas fa-building fs-2"></i>
                         </span>
                             <span class="menu-title">Impianti</span>
                         </a>
@@ -117,17 +95,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\ConcentratoreController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-technology fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
-                                <span class="path7"></span>
-                                <span class="path8"></span>
-                                <span class="path9"></span>
-                            </i>
+                            <i class="fas fa-wifi fs-2"></i>
                         </span>
                             <span class="menu-title">Concentratori</span>
                         </a>
@@ -138,10 +106,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\DispositivoMisuraController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-celsius fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                            </i>
+                            <i class="fas fa-microchip fs-2"></i>
                         </span>
                             <span class="menu-title">Dispositivi Misura</span>
                         </a>
@@ -152,13 +117,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\ResponsabileImpiantoController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-badge fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                            </i>
+                            <i class="fas fa-hard-hat fs-2"></i>
                         </span>
                             <span class="menu-title">Responsabili Impianto</span>
                         </a>
@@ -169,10 +128,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-home fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                            </i>
+                            <i class="fas fa-home fs-2"></i>
                         </span>
                             <span class="menu-title">Il Mio Condominio</span>
                         </a>
@@ -183,14 +139,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-bill fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
-                            </i>
+                            <i class="fas fa-file-invoice fs-2"></i>
                         </span>
                             <span class="menu-title">Bollettini</span>
                         </a>
@@ -201,43 +150,9 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-euro fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                            </i>
+                            <i class="fas fa-credit-card fs-2"></i>
                         </span>
                             <span class="menu-title">Pagamenti</span>
-                        </a>
-                    </div>
-                @endif
-
-                @if(in_array('lettura',$ruoloOperatore->menu_navigazione()))
-                    <div class="menu-item">
-                        <a class="menu-link" href="#">
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-chart-line fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                            </i>
-                        </span>
-                            <span class="menu-title">Letture</span>
-                        </a>
-                    </div>
-                @endif
-
-                @if(in_array('miei_impianti',$ruoloOperatore->menu_navigazione()))
-                    <div class="menu-item">
-                        <a class="menu-link" href="#">
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-menu fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                            </i>
-                        </span>
-                            <span class="menu-title">I Miei Impianti</span>
                         </a>
                     </div>
                 @endif
@@ -246,17 +161,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-technology fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
-                                <span class="path7"></span>
-                                <span class="path8"></span>
-                                <span class="path9"></span>
-                            </i>
+                            <i class="fas fa-router fs-2"></i>
                         </span>
                             <span class="menu-title">Concentratori Gestiti</span>
                         </a>
@@ -267,11 +172,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-warning-2 fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                            </i>
+                            <i class="fas fa-exclamation-triangle fs-2"></i>
                         </span>
                             <span class="menu-title">Anomalie</span>
                         </a>
@@ -282,10 +183,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-wrench fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                            </i>
+                            <i class="fas fa-tools fs-2"></i>
                         </span>
                             <span class="menu-title">Manutenzioni</span>
                         </a>
@@ -296,14 +194,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-bill fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
-                            </i>
+                            <i class="fas fa-receipt fs-2"></i>
                         </span>
                             <span class="menu-title">Le Mie Bollette</span>
                         </a>
@@ -314,10 +205,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-chart-line fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                            </i>
+                            <i class="fas fa-chart-line fs-2"></i>
                         </span>
                             <span class="menu-title">I Miei Consumi</span>
                         </a>
@@ -328,14 +216,9 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{route('lettura-consumo.index')}}">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-text-align-left fs-2">
-                             <span class="path1"></span>
-                             <span class="path2"></span>
-                             <span class="path3"></span>
-                             <span class="path4"></span>
-                            </i>
+                            <i class="fas fa-list-ul fs-2"></i>
                         </span>
-                            <span class="menu-title">Storico Letture</span>
+                            <span class="menu-title">Letture Consumi</span>
                         </a>
                     </div>
                 @endif
@@ -344,10 +227,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-graph-2 fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                            </i>
+                            <i class="fas fa-chart-bar fs-2"></i>
                         </span>
                             <span class="menu-title">Grafici</span>
                         </a>
@@ -358,10 +238,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\DocumentoController::class,'index'])}}">
                         <span class="menu-icon">
-                           <i class="ki-duotone ki-file fs-2">
-                             <span class="path1"></span>
-                             <span class="path2"></span>
-                            </i>
+                            <i class="fas fa-file-alt fs-2"></i>
                         </span>
                             <span class="menu-title">Documenti</span>
                         </a>
@@ -372,10 +249,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\ImportazioneController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-file-up fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                            </i>
+                            <i class="fas fa-upload fs-2"></i>
                         </span>
                             <span class="menu-title">Importazioni</span>
                         </a>
@@ -386,11 +260,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{route('tickets.index')}}">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-message-text fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                            </i>
+                            <i class="fas fa-ticket-alt fs-2"></i>
                         </span>
                             <span class="menu-title">
                             @if(in_array('ticket_tecnico',$ruoloOperatore->menu_navigazione()))
@@ -402,6 +272,65 @@
                                 @endif
                         </span>
                         </a>
+                    </div>
+                @endif
+
+                @if(Auth::user()->ruolo===\App\Enums\RuoliOperatoreEnum::admin->value || env('APP_ENV')==='local')
+                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                        <!--begin:Menu link-->
+                        <span class="menu-link {{ request()->routeIs('registro') ? 'active' : '' }}">
+                        <span class="menu-icon">
+                            <i class="fas fa-clipboard-list fs-2"></i>
+                        </span>
+                        <span class="menu-title">Registri</span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                        <!--end:Menu link-->
+
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion" style="">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\RegistriController::class,'index'],'login')}}">
+                <span class="menu-bullet">
+                    <span class="bullet bullet-dot"></span>
+                </span>
+                                    <span class="menu-title">Login</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+
+                            @if(\Illuminate\Support\Facades\Auth::id()==1 || env('APP_ENV')==='local')
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\RegistriController::class,'index'],'backup-db')}}">
+                    <span class="menu-bullet">
+                        <span class="bullet bullet-dot"></span>
+                    </span>
+                                        <span class="menu-title">Backup DB</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="/backend/log-viewer" target="_blank">
+                    <span class="menu-bullet">
+                        <span class="bullet bullet-dot"></span>
+                    </span>
+                                        <span class="menu-title">Log viewer</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                            @endif
+                        </div>
+                        <!--end:Menu sub-->
                     </div>
                 @endif
 
@@ -419,10 +348,7 @@
                data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click"
                title="200+ in-house components and 3rd-party plugins">
                 <span class="btn-label">Docs & Components</span>
-                <i class="ki-duotone ki-document btn-icon fs-2 m-0">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                </i>
+                <i class="fas fa-book fs-2 btn-icon m-0"></i>
             </a>
         </div>
         <!--end::Footer-->

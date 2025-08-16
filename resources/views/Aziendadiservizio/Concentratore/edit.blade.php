@@ -21,7 +21,7 @@
                         @include('Metronic._inputs_v.inputText',['campo'=>'matricola', 'required'=>true])
                     </div>
                     <div class="col-md-6">
-                        @include('Metronic._inputs_v.inputSelect2Enum',['campo'=>'frequenza_scansione', 'required'=>true,'classeEnum' => \App\Enums\FrequenzaScansionEnum::class])
+                        @include('Metronic._inputs_v.inputSelect2Enum',['campo'=>'frequenza_scansione', 'required'=>true,'classeEnum' => \App\Enums\FrequenzaScansioneDispositivoEnum::class])
                     </div>
                     <div class="col-md-6">
                         @include('Metronic._inputsProgetto.inputSwitchAttivo',['campo'=>'stato'])

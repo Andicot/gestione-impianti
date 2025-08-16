@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Enums\FrequenzaScansionEnum;
+use App\Enums\FrequenzaScansioneDispositivoEnum;
 use App\Enums\StatoImpiantoEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Concentratore;
@@ -103,7 +103,7 @@ class ConcentratoreController extends Controller
     public function create()
     {
         $record = new Concentratore();
-        $record->frequenza_scansione = FrequenzaScansionEnum::settimanale->value;
+        $record->frequenza_scansione = FrequenzaScansioneDispositivoEnum::settimanale->value;
         $record->stato = 'attivo';
         return view('Aziendadiservizio.Concentratore.edit', [
             'record' => $record,

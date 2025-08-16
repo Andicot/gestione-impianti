@@ -132,56 +132,8 @@ enum RuoliOperatoreEnum: string
         };
     }
 
-    /**
-     * Verifica se può accedere a una sezione specifica
-     */
-    public function puo_accedere_sezione(string $sezione): bool
-    {
-        $accessi = match ($this) {
-            self::admin => [
-                'dashboard_admin', 'gestione_aziende_servizio', 'gestione_responsabili',
-                'statistiche_globali', 'backup', 'configurazioni_sistema',
-                'tutti_impianti', 'tutti_condomini', 'log_sistema'
-            ],
-            self::azienda_di_servizio => [
-                'dashboard_azienda', 'gestione_amministratori', 'gestione_condomini',
-                'gestione_impianti', 'concentratori', 'importazioni_csv',
-                'report_azienda', 'tickets_azienda'
-            ],
-            self::amministratore_condominio => [
-                'dashboard_amministratore', 'gestione_condominio', 'bollettini',
-                'pagamenti', 'letture_manuali', 'report_condominio',
-                'tickets_condominio', 'documenti'
-            ],
-            self::responsabile_impianto => [
-                'dashboard_responsabile', 'impianti_assegnati', 'dispositivi_misura',
-                'concentratori_gestiti', 'anomalie_rilevate', 'manutenzioni',
-                'report_tecnici', 'tickets_tecnici', 'validazione_letture',
-                'monitoraggio_stato_impianti'
-            ],
-            self::condomino => [
-                'dashboard_condomino', 'mie_bollette', 'miei_consumi',
-                'storico_letture', 'grafici_consumo', 'miei_tickets',
-                'documenti_personali'
-            ]
-        };
 
-        return in_array($sezione, $accessi);
-    }
 
-    /**
-     * Rotta di default dopo il login
-     */
-    public function dashboard_route(): string
-    {
-        return match ($this) {
-            self::admin => 'dashboard.admin',
-            self::azienda_di_servizio => 'dashboard.azienda',
-            self::amministratore_condominio => 'dashboard.amministratore',
-            self::responsabile_impianto => 'dashboard.responsabile',
-            self::condomino => 'dashboard.condomino'
-        };
-    }
 
     /**
      * Menu di navigazione per il tipo utente

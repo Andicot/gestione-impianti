@@ -77,6 +77,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->foreignId('azienda_servizio_id')->nullable()->constrained('aziende_servizio')->nullOnDelete();
             $table->foreignId('amministratore_id')->nullable()->constrained('amministratori')->nullOnDelete();
+            $table->foreignId('responsabile_impianto_id')->nullable()->constrained('responsabili_impianto')->nullOnDelete();
             $table->string('matricola_impianto')->index();
             $table->string('nome_impianto');
             $table->string('indirizzo');

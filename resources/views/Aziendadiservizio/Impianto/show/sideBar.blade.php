@@ -44,7 +44,7 @@
                 @if($record->amministratore_id)
                     <div class="fw-bolder mt-5">Amministratore</div>
                     <div class="text-gray-600">
-                        <a href="{{action([\App\Http\Controllers\Aziendadiservizio\AmministratoreController::class,'show'],$record->amministratore_id)}}"
+                        <a href="{{action([\App\Http\Controllers\Backend\AmministratoreController::class,'show'],$record->amministratore_id)}}"
                            class="text-gray-600 text-hover-primary">
                             {{$record->amministratore->ragione_sociale ?: ($record->amministratore->user->nome . ' ' . $record->amministratore->user->cognome)}}
                         </a>

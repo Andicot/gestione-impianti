@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
 use App\Models\Amministratore;
 use App\Models\Comune;
+use App\Models\DispositivoMisura;
 use App\Models\Impianto;
 use App\Models\NazioneDiNascita;
 use App\Models\Provincia;
@@ -12,7 +14,6 @@ use App\Rules\CodiceFiscaleRule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use robertogallea\LaravelCodiceFiscale\CodiceFiscale;
 
 class Select2 extends Controller
@@ -76,17 +77,20 @@ class Select2 extends Controller
 
                 return $res;
 
+            case 'dispositivo_id':
+                $queryBuilder = DispositivoMisura::query()
+                    ->orderBy('matricola')
+                    ->select(['id', DB::raw('matricola as text')]);;
 
-            case 'cliente_id':
-                $queryBuilder = Cliente::orderBy('cognome')
-                    ->orderBy('nome')
-                    ->select(['id', DB::raw('concat_ws(" ",cognome,nome,codice_fiscale) as text')]);
+                if ($request->input('unita_immobiliare_id')) {
+                    $queryBuilder->where('unita_immobiliare_id', $request->input('unita_immobiliare_id'));
+                }
 
+                if ($request->input('impianto_id')) {
+                    $queryBuilder->where('impianto_id', $request->input('impianto_id'));
+                }
                 if ($term) {
-                    $arrTerm = explode(' ', $term);
-                    foreach ($arrTerm as $t) {
-                        $queryBuilder->whereRaw('concat_ws(\' \',cognome,nome,email,telefono,codice_fiscale) like ?', "%$t%");
-                    }
+                    $queryBuilder->whereRaw('matricola like ?', "$term%");
                 }
                 return $queryBuilder->get();
 

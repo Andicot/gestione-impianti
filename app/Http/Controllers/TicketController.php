@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RuoliOperatoreEnum;
+use App\Models\Impianto;
 use App\Models\Ticket;
 use App\Models\TicketRisposta;
 use App\Models\UnitaImmobiliare;
-use App\Models\Impianto;
-use App\Models\DispositivoMisura;
-use App\Models\AnomaliaRilevata;
 use App\Models\User;
-use App\Enums\RuoliOperatoreEnum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
+    protected $conFiltro = false;
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
         $records = Ticket::with(['creadoDa', 'assegnatoA', 'unitaImmobiliare', 'impianto'])
-            ->where(function($query) {
+            ->where(function ($query) {
                 $user = Auth::user();
                 $ruolo = RuoliOperatoreEnum::from($user->ruolo);
 
@@ -31,16 +31,16 @@ class TicketController extends Controller
                         break;
                     case RuoliOperatoreEnum::azienda_di_servizio:
                         // Vede tickets degli impianti della sua azienda
-                        $query->whereHas('impianto', function($q) use ($user) {
-                            $q->whereHas('aziendaServizio', function($subq) use ($user) {
+                        $query->whereHas('impianto', function ($q) use ($user) {
+                            $q->whereHas('aziendaServizio', function ($subq) use ($user) {
                                 $subq->where('user_id', $user->id);
                             });
                         });
                         break;
                     case RuoliOperatoreEnum::amministratore_condominio:
                         // Vede tickets degli impianti che amministra
-                        $query->whereHas('impianto', function($q) use ($user) {
-                            $q->whereHas('amministratore', function($subq) use ($user) {
+                        $query->whereHas('impianto', function ($q) use ($user) {
+                            $q->whereHas('amministratore', function ($subq) use ($user) {
                                 $subq->where('user_id', $user->id);
                             });
                         });
@@ -56,17 +56,17 @@ class TicketController extends Controller
                         break;
                 }
             })
-            ->when($request->filled('stato'), function($query) use ($request) {
+            ->when($request->filled('stato'), function ($query) use ($request) {
                 $query->where('stato', $request->stato);
             })
-            ->when($request->filled('priorita'), function($query) use ($request) {
+            ->when($request->filled('priorita'), function ($query) use ($request) {
                 $query->where('priorita', $request->priorita);
             })
-            ->when($request->filled('categoria'), function($query) use ($request) {
+            ->when($request->filled('categoria'), function ($query) use ($request) {
                 $query->where('categoria', $request->categoria);
             })
-            ->when($request->filled('cerca'), function($query) use ($request) {
-                $query->where(function($q) use ($request) {
+            ->when($request->filled('cerca'), function ($query) use ($request) {
+                $query->where(function ($q) use ($request) {
                     $q->where('titolo', 'like', '%' . $request->cerca . '%')
                         ->orWhere('descrizione', 'like', '%' . $request->cerca . '%');
                 });
@@ -81,7 +81,9 @@ class TicketController extends Controller
             'records' => $records,
             'controller' => TicketController::class,
             'titoloPagina' => 'Elenco ' . Ticket::NOME_PLURALE,
-            'statistiche' => $statistiche
+            'statistiche' => $statistiche,
+            'conFiltro' => $this->conFiltro,
+            'testoNuovo' => $this->puoCreareTicket() ? 'Nuovo ticket' : null,
         ]);
     }
 
@@ -103,17 +105,17 @@ class TicketController extends Controller
                 $impianti = Impianto::where('stato_impianto', 'attivo')->orderBy('nome_impianto')->get();
                 break;
             case RuoliOperatoreEnum::azienda_di_servizio:
-                $impianti = Impianto::whereHas('aziendaServizio', function($q) use ($user) {
+                $impianti = Impianto::whereHas('aziendaServizio', function ($q) use ($user) {
                     $q->where('user_id', $user->id);
                 })->where('stato_impianto', 'attivo')->orderBy('nome_impianto')->get();
                 break;
             case RuoliOperatoreEnum::amministratore_condominio:
-                $impianti = Impianto::whereHas('amministratore', function($q) use ($user) {
+                $impianti = Impianto::whereHas('amministratore', function ($q) use ($user) {
                     $q->where('user_id', $user->id);
                 })->where('stato_impianto', 'attivo')->orderBy('nome_impianto')->get();
                 break;
             case RuoliOperatoreEnum::condomino:
-                $unitaImmobiliari = UnitaImmobiliare::whereHas('condomini', function($q) use ($user) {
+                $unitaImmobiliari = UnitaImmobiliare::whereHas('condomini', function ($q) use ($user) {
                     $q->where('user_id', $user->id);
                 })->with('impianto')->get();
                 break;
@@ -396,8 +398,8 @@ class TicketController extends Controller
                 return;
                 if ($ticket->impianto_id) {
                     $responsabile = User::where('ruolo', 'responsabile_impianto')
-                        ->whereHas('responsabileImpianto', function($q) use ($ticket) {
-                            $q->whereHas('impiantiAssegnati', function($subq) use ($ticket) {
+                        ->whereHas('responsabileImpianto', function ($q) use ($ticket) {
+                            $q->whereHas('impiantiAssegnati', function ($subq) use ($ticket) {
                                 $subq->where('impianto_id', $ticket->impianto_id);
                             });
                         })
@@ -415,7 +417,7 @@ class TicketController extends Controller
                 // Assegna all'amministratore del condominio
                 if ($ticket->impianto_id) {
                     $amministratore = User::where('ruolo', 'amministratore_condominio')
-                        ->whereHas('amministratore.impianti', function($q) use ($ticket) {
+                        ->whereHas('amministratore.impianti', function ($q) use ($ticket) {
                             $q->where('id', $ticket->impianto_id);
                         })
                         ->first();
@@ -504,5 +506,19 @@ class TicketController extends Controller
     protected function backToIndex()
     {
         return redirect()->action([TicketController::class, 'index']);
+    }
+
+    private function puoCreareTicket(): bool
+    {
+        $user = Auth::user();
+        $ruolo = RuoliOperatoreEnum::from($user->ruolo);
+
+        return match ($ruolo) {
+            RuoliOperatoreEnum::admin => true,
+            RuoliOperatoreEnum::azienda_di_servizio => false, // Non crea ticket direttamente
+            RuoliOperatoreEnum::amministratore_condominio => true,
+            RuoliOperatoreEnum::condomino => true,
+            RuoliOperatoreEnum::responsabile_impianto => true,
+        };
     }
 }

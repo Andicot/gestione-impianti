@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum FrequenzaScansionEnum: string
+enum FrequenzaScansioneDispositivoEnum: string
 {
     case giornaliera = 'giornaliera';
     case settimanale = 'settimanale';

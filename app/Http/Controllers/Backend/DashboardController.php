@@ -85,9 +85,9 @@ class DashboardController extends Controller
 
         // Statistiche specifiche per l'azienda
         $statistiche = [
-            'impianti' => $this->getStatisticheImpiantiAzienda($azienda->id),
-            'amministratori' => $this->getStatisticheAmministratoriAzienda($azienda->id),
-            'dispositivi' => $this->getStatisticheDispositiviAzienda($azienda->id),
+            'impianti' => $this->getStatisticheImpianti(),
+            'amministratori' => $this->getStatisticheAmministratori(),
+            'dispositivi' => $this->getStatisticheDispositivi(),
         ];
 
         $impianti_recenti = Impianto::where('azienda_servizio_id', $azienda->id)
@@ -108,23 +108,18 @@ class DashboardController extends Controller
 
     protected function showAmministratore()
     {
-        $user = Auth::user();
-        $amministratoreId = $user->amministratore?->id;
 
-        if (!$amministratoreId) {
-            return redirect()->action([DashboardController::class, 'show'])->with('error', 'Profilo amministratore non configurato');
-        }
 
         // Recupera l'amministratore completo
-        $amministratore = Amministratore::find($amministratoreId);
+        $amministratore = Auth::user()->amministratore()->select('*')->first();
 
         // Statistiche specifiche per l'amministratore
         $statistiche = [
-            'impianti' => $this->getStatisticheImpiantiAmministratore($amministratoreId),
-            'dispositivi' => $this->getStatisticheDispositiviAmministratore($amministratoreId),
+            'impianti' => $this->getStatisticheImpianti(),
+            'dispositivi' => $this->getStatisticheDispositivi(),
         ];
 
-        $impianti_gestiti = Impianto::where('amministratore_id', $amministratoreId)
+        $impianti_gestiti = Impianto::where('amministratore_id', $amministratore->id)
             ->withCount('unitaImmobiliari')
             ->latest()
             ->take(5)
@@ -141,12 +136,8 @@ class DashboardController extends Controller
 
     protected function showResponsabileImpianto()
     {
-        $user = Auth::user();
-        $responsabile = $user->responsabileImpianto;
 
-        if (!$responsabile) {
-            return redirect()->route('backend.impostazioni')->with('error', 'Profilo responsabile non configurato');
-        }
+        $responsabile = Auth::user()->responsabileImpianto;
 
         $impianti_gestiti = Impianto::where('responsabile_impianto_id', $responsabile->id)->get();
 
@@ -259,94 +250,5 @@ class DashboardController extends Controller
         ];
     }
 
-    /**
-     * Statistiche impianti per azienda specifica
-     */
-    private function getStatisticheImpiantiAzienda($aziendaId)
-    {
-        $query = Impianto::where('azienda_servizio_id', $aziendaId);
 
-        $totale = $query->count();
-        $attivi = (clone $query)->where('stato_impianto', 'attivo')->count();
-
-        return [
-            'totale' => $totale,
-            'attivi' => $attivi,
-            'dismessi' => $totale - $attivi,
-        ];
-    }
-
-    /**
-     * Statistiche amministratori per azienda specifica
-     */
-    private function getStatisticheAmministratoriAzienda($aziendaId)
-    {
-        $query = Amministratore::where('azienda_servizio_id', $aziendaId);
-
-        $totale = $query->count();
-        $attivi = (clone $query)->where('attivo', true)->count();
-
-        return [
-            'totale' => $totale,
-            'attivi' => $attivi,
-        ];
-    }
-
-    /**
-     * Statistiche dispositivi per azienda specifica
-     */
-    private function getStatisticheDispositiviAzienda($aziendaId)
-    {
-        $query = DispositivoMisura::where('azienda_servizio_id', $aziendaId);
-
-        $totale = $query->count();
-        $attivi = (clone $query)->where('stato', 'attivo')->count();
-
-        return [
-            'totale' => $totale,
-            'attivi' => $attivi,
-        ];
-    }
-
-    /**
-     * Statistiche impianti per amministratore specifico
-     */
-    private function getStatisticheImpiantiAmministratore($amministratoreId)
-    {
-        $query = Impianto::where('amministratore_id', $amministratoreId);
-
-        $totale = $query->count();
-        $attivi = (clone $query)->where('stato_impianto', 'attivo')->count();
-
-        return [
-            'totale' => $totale,
-            'attivi' => $attivi,
-        ];
-    }
-
-    /**
-     * Statistiche dispositivi per amministratore specifico
-     */
-    private function getStatisticheDispositiviAmministratore($amministratoreId)
-    {
-        $query = DispositivoMisura::whereHas('impianto', function ($q) use ($amministratoreId) {
-            $q->where('amministratore_id', $amministratoreId);
-        });
-
-        $totale = $query->count();
-        $attivi = (clone $query)->where('stato', 'attivo')->count();
-
-        // Statistiche per tipo dispositivo
-        $per_tipo = (clone $query)
-            ->selectRaw('tipo, COUNT(*) as count')
-            ->groupBy('tipo')
-            ->pluck('count', 'tipo')
-            ->toArray();
-
-        return [
-            'totale' => $totale,
-            'attivi' => $attivi,
-            'per_tipo' => $per_tipo,
-        ];
-    }
 }

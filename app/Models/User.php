@@ -71,7 +71,7 @@ class User extends Authenticatable
 
     public function responsabileImpianto(): HasOne
     {
-        return $this->hasOne(ResponsabileImpianto::class, 'user_id');
+        return $this->hasOne(ResponsabileImpianto::class, 'user_id')->senzaFiltroOperatore();
     }
 
     public function condomino(): HasOne

@@ -141,34 +141,6 @@
                     </div>
                 </div>
 
-                <!-- Filtri Rapidi -->
-                <div class="col-md-6">
-                    <label class="form-label">Filtri Rapidi</label>
-                    <div class="btn-group btn-group-sm w-100" data-kt-buttons="true" data-kt-buttons-target="[data-kt-button]">
-                        <label class="btn btn-sm btn-outline btn-color-muted btn-active-primary {{ request('filtro_rapido') == 'attivi' ? 'active' : '' }}"
-                               data-kt-button="true">
-                            <input class="btn-check" type="radio" name="filtro_rapido" value="attivi"
-                                {{ request('filtro_rapido') == 'attivi' ? 'checked' : '' }}/>
-                            Solo Attivi
-                        </label>
-
-                        <label
-                            class="btn btn-sm btn-outline btn-color-muted btn-active-success {{ request('filtro_rapido') == 'con_concentratore' ? 'active' : '' }}"
-                            data-kt-button="true">
-                            <input class="btn-check" type="radio" name="filtro_rapido" value="con_concentratore"
-                                {{ request('filtro_rapido') == 'con_concentratore' ? 'checked' : '' }}/>
-                            Con Concentratore
-                        </label>
-
-                        <label
-                            class="btn btn-sm btn-outline btn-color-muted btn-active-warning {{ request('filtro_rapido') == 'senza_concentratore' ? 'active' : '' }}"
-                            data-kt-button="true">
-                            <input class="btn-check" type="radio" name="filtro_rapido" value="senza_concentratore"
-                                {{ request('filtro_rapido') == 'senza_concentratore' ? 'checked' : '' }}/>
-                            Senza Concentratore
-                        </label>
-                    </div>
-                </div>
 
                 <!-- Pulsanti -->
                 <div class="col-md-12 d-flex align-items-end">

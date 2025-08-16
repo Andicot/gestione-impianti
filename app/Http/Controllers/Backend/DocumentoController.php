@@ -59,14 +59,14 @@ class DocumentoController extends Controller
 
         if ($request->ajax()) {
             return [
-                'html' => base64_encode(view('Amministratorecondominio.Documento.tabella', [
+                'html' => base64_encode(view('Backend.Documento.tabella', [
                     'records' => $records,
                     'controller' => $nomeClasse,
                 ]))
             ];
         }
 
-        return view('Amministratorecondominio.Documento.index', [
+        return view('Backend.Documento.index', [
             'records' => $records,
             'controller' => $nomeClasse,
             'titoloPagina' => 'Elenco ' . Documento::NOME_PLURALE,
@@ -98,7 +98,7 @@ class DocumentoController extends Controller
             $query->where(function ($q) use ($cerca) {
                 $q->where('nome_file', 'LIKE', "%$cerca%")
                     ->orWhere('descrizione', 'LIKE', "%$cerca%")
-                    ->orWhere('nome_originale', 'LIKE', "%$cerca%");
+                    ->orWhere('nome_file_originale', 'LIKE', "%$cerca%");
             });
         }
 
@@ -169,7 +169,7 @@ class DocumentoController extends Controller
                 ->get();
         }
 
-        return view('Amministratorecondominio.Documento.edit', [
+        return view('Backend.Documento.edit', [
             'controller' => DocumentoController::class,
             'titoloPagina' => 'Nuovo ' . Documento::NOME_SINGOLARE,
             'breadcrumbs' => [action([DocumentoController::class, 'index']) => 'Torna a elenco ' . Documento::NOME_PLURALE],
@@ -207,7 +207,7 @@ class DocumentoController extends Controller
 
         $record->incrementa_visualizzazioni(Auth::id());
 
-        return view('Amministratorecondominio.Documento.show', [
+        return view('Backend.Documento.show', [
             'record' => $record,
             'controller' => DocumentoController::class,
             'titoloPagina' => ucfirst(Documento::NOME_SINGOLARE),
@@ -239,7 +239,7 @@ class DocumentoController extends Controller
                 ->get();
         }
 
-        return view('Amministratorecondominio.Documento.edit', [
+        return view('Backend.Documento.edit', [
             'record' => $record,
             'controller' => DocumentoController::class,
             'titoloPagina' => 'Modifica ' . Documento::NOME_SINGOLARE,
@@ -308,7 +308,7 @@ class DocumentoController extends Controller
 
         $record->segna_come_scaricato(Auth::id());
 
-        return Storage::download($record->path_file, $record->nome_originale);
+        return Storage::download($record->path_file, $record->nome_file_originale);
     }
 
 
@@ -329,7 +329,7 @@ class DocumentoController extends Controller
             $pathFile = $file->storeAs('documenti', $nomeFile);
 
             $record->nome_file = $nomeFile;
-            $record->nome_originale = $file->getClientOriginalName();
+            $record->nome_file_originale = $file->getClientOriginalName();
             $record->path_file = $pathFile;
             $record->mime_type = $file->getMimeType();
             $record->dimensione_file = $file->getSize();

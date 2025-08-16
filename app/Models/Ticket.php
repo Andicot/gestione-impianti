@@ -6,6 +6,7 @@ use App\Enums\RuoliOperatoreEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 
 class Ticket extends Model
@@ -64,6 +65,11 @@ class Ticket extends Model
     public function risposte(): HasMany
     {
         return $this->hasMany(TicketRisposta::class, 'ticket_id')->orderBy('created_at');
+    }
+
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class,'id','creato_da_id');
     }
 
     public function risposteVisibili(): HasMany

@@ -39,8 +39,8 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="fw-bold text-gray-800">{{$record->nome_originale}}</div>
-                                    <div class="text-muted fs-7">{{$record->dimensione_leggibile()}} • {{strtoupper(pathinfo($record->nome_originale, PATHINFO_EXTENSION))}}</div>
+                                    <div class="fw-bold text-gray-800">{{$record->nome_file_originale}}</div>
+                                    <div class="text-muted fs-7">{{$record->dimensione_leggibile()}} • {{strtoupper(pathinfo($record->nome_file_originale, PATHINFO_EXTENSION))}}</div>
                                 </div>
                             </div>
                         </div>

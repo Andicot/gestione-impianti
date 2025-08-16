@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Backend;
 
 use App\Enums\RuoliOperatoreEnum;
 use App\Enums\StatoImpiantoEnum;
-use App\Http\Controllers\Aziendadiservizio\Bollettino;
-use App\Http\Controllers\Aziendadiservizio\PeriodoContabilizzazione;
 use App\Http\Controllers\Controller;
+use App\Models\Bollettino;
 use App\Models\DispositivoMisura;
 use App\Models\Impianto;
 use App\Models\UnitaImmobiliare;
@@ -506,30 +505,67 @@ class ImpiantoController extends Controller
     private function tabBollettiniRecords(string $id, string $tab, Request $request)
     {
         $query = Bollettino::query()
-            ->whereHas('unitaImmobiliare', function ($q) use ($id) {
-                $q->where('impianto_id', $id);
-            })
+            ->where('impianto_id', $id)
             ->with(['unitaImmobiliare', 'periodo', 'caricatoDa']);
 
-        // Filtro per ricerca
-        if ($request->filled('search')) {
-            $search = $request->get('search');
-            $query->where(function ($q) use ($search) {
-                $q->whereHas('unitaImmobiliare', function ($subQ) use ($search) {
-                    $subQ->where('nominativo_unita', 'like', "%{$search}%")
-                        ->orWhere('scala', 'like', "%{$search}%")
-                        ->orWhere('piano', 'like', "%{$search}%")
-                        ->orWhere('interno', 'like', "%{$search}%");
-                });
+        // Filtro di ricerca generale
+        if ($request->filled('cerca_no_ajax')) {
+            $cerca = $request->get('cerca_no_ajax');
+            $query->where(function ($q) use ($cerca) {
+                $q->whereHas('unitaImmobiliare', function ($subQ) use ($cerca) {
+                    $subQ->where('nominativo_unita', 'like', "%{$cerca}%")
+                        ->orWhere('scala', 'like', "%{$cerca}%")
+                        ->orWhere('piano', 'like', "%{$cerca}%")
+                        ->orWhere('interno', 'like', "%{$cerca}%");
+                })
+                    ->orWhereHas('periodo', function ($subQ) use ($cerca) {
+                        $subQ->where('codice', 'like', "%{$cerca}%");
+                    });
             });
+            $this->conFiltro = true;
         }
 
         // Filtro per stato pagamento
         if ($request->filled('stato_pagamento')) {
             $query->where('stato_pagamento', $request->get('stato_pagamento'));
+            $this->conFiltro = true;
         }
 
-        return $query->orderBy('data_caricamento', 'desc')->paginate(20);
+        // Filtro per periodo
+        if ($request->filled('periodo_id')) {
+            $query->where('periodo_id', $request->get('periodo_id'));
+            $this->conFiltro = true;
+        }
+
+        // Filtro per scadenza
+        if ($request->filled('scadenza')) {
+            $scadenza = $request->get('scadenza');
+
+            switch ($scadenza) {
+                case 'scaduti':
+                    $query->where('data_scadenza', '<', now())
+                        ->where('stato_pagamento', '!=', 'pagato');
+                    break;
+                case 'in_scadenza':
+                    $query->where('data_scadenza', '>=', now())
+                        ->where('data_scadenza', '<=', now()->addDays(7))
+                        ->where('stato_pagamento', '!=', 'pagato');
+                    break;
+                case 'future':
+                    $query->where('data_scadenza', '>', now()->addDays(7));
+                    break;
+            }
+            $this->conFiltro = true;
+        }
+
+        // Filtro per visualizzazione
+        if ($request->filled('visualizzato')) {
+            $visualizzato = $request->get('visualizzato');
+            $query->where('visualizzato', $visualizzato === '1');
+            $this->conFiltro = true;
+        }
+
+        return $query->orderByDesc('id')->paginate(20);
     }
 
     /**

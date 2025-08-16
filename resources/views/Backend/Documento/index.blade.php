@@ -122,7 +122,7 @@
             {{-- Card Principale --}}
             <div class="card">
                 <div class="card-body pt-0" id="div_elenco">
-                    @include('Amministratorecondominio.Documento.tabella')
+                    @include('Backend.Documento.tabella')
                 </div>
             </div>
         </div>

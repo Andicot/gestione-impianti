@@ -96,6 +96,7 @@
     <script src="/assets_backend/js-miei/moment_it.js"></script>
     <script src="/assets_backend/js-miei/flatPicker_it.js"></script>
     <script src="/assets_backend/js-miei/select2_it.js"></script>
+    <script src="/assets_backend/js-progetto/select2Comuni.js"></script>
     <script>
         $(function () {
             eliminaHandler('Questa risorsa verrà eliminata definitivamente');
@@ -139,43 +140,7 @@
                 select2UniversaleUnita('unita_immobiliare_id', 'un UnitaImmobiliare', 1, 'unita_immobiliare_id');
             }
 
-            function select2UniversaleUnita(idSenzaCancelletto, testo, minimumInputLength, select2) {
-                var url = urlSelect2;
-                if (minimumInputLength === undefined) {
-                    minimumInputLength = 2;
-                }
-                if (select2 === undefined) {
-                    select2 = idSenzaCancelletto;
-                }
-                $obj = $('#' + idSenzaCancelletto);
-                if ($obj.data('url')) {
-                    url = $obj.data('url');
-                }
-                return $obj.select2({
-                    placeholder: 'Seleziona ' + testo,
-                    minimumInputLength: minimumInputLength,
-                    allowClear: true,
-                    width: '100%',
-                    dropdownParent: dentroLaModal($obj),
-                    ajax: {
-                        quietMillis: 150,
-                        url: url + "?" + select2,
-                        dataType: 'json',
-                        data: function (term, page) {
-                            var impiantoId = $('#impianto_id').val();
-                            return {
-                                term: term.term,
-                                impianto_id: impiantoId // Passa l'impianto_id come parametro
-                            };
-                        },
-                        processResults: function (data) {
-                            return {
-                                results: data
-                            };
-                        }
-                    }
-                });
-            }
+
         });
     </script>
 @endpush

@@ -220,11 +220,6 @@ return new class extends Migration {
 
         });
 
-
-
-
-
-
         // Tabella Anomalie Rilevate (Dati dal campo)
         Schema::create('anomalie_rilevate', function (Blueprint $table) {
             $table->id();
@@ -285,31 +280,33 @@ return new class extends Migration {
         Schema::create('bollettini', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+
+            // RELAZIONI INDISPENSABILI
+            $table->foreignId('azienda_servizio_id')->nullable()->constrained('aziende_servizio')->nullOnDelete();
+            $table->foreignId('impianto_id')->constrained('impianti')->cascadeOnDelete();
             $table->foreignId('unita_immobiliare_id')->constrained('unita_immobiliari')->cascadeOnDelete();
-            $table->foreignId('periodo_id')->constrained('periodi_contabilizzazione')->cascadeOnDelete();
-            $table->decimal('importo_totale', 10, 2);
-            $table->decimal('quota_fissa', 10, 2)->default(0);
-            $table->decimal('quota_variabile', 10, 2)->default(0);
-            $table->decimal('importo_riscaldamento', 10, 2)->default(0);
-            $table->decimal('importo_acs', 10, 2)->default(0);
-            $table->decimal('importo_gas', 10, 2)->default(0);
-            $table->decimal('importo_luce', 10, 2)->default(0);
-            $table->string('pdf_allegato')->nullable();
+            $table->foreignId('periodo_id')->nullable()->constrained('periodi_contabilizzazione')->cascadeOnDelete();
+
+            // IMPORTO UNICO RICHIESTO DAL CLIENTE
+            $table->decimal('importo', 10, 2);
+
+            $table->string('metodo_pagamento')->nullable();
+            $table->text('note')->nullable();
+
+            // GESTIONE FILE PDF (CORE FUNCTIONALITY)
             $table->string('nome_file_originale')->nullable();
             $table->string('mime_type')->nullable();
+            $table->string('path_file')->nullable();
             $table->unsignedBigInteger('dimensione_file')->nullable();
-            $table->integer('numero_download')->default(0);
-            $table->timestamp('ultimo_download')->nullable();
             $table->foreignId('caricato_da_id')->constrained('users')->cascadeOnDelete();
-            $table->timestamp('data_caricamento');
-            $table->boolean('visualizzato')->default(false)->index();
-            $table->timestamp('data_visualizzazione')->nullable();
-            $table->string('metodo_pagamento', 20)->nullable()->index(); // bonifico, contanti, carta, altro
-            $table->string('iban_condominio')->nullable();
-            $table->string('intestatario_conto')->nullable();
-            $table->text('note')->nullable();
+
+            // TRACCIAMENTO VISUALIZZAZIONE CONDOMINO
+
+            $table->timestamp('data_visualizzazione')->nullable()->index();
+
+            // STATO PAGAMENTO ESSENZIALE
             $table->string('stato_pagamento', 20)->default('non_pagato')->index(); // non_pagato, pagato, parziale
-            $table->decimal('importo_pagato', 10, 2)->default(0);
+            $table->decimal('importo_pagato', 10, 2)->nullable()->default(0);
             $table->date('data_scadenza')->nullable()->index();
 
         });
@@ -320,7 +317,7 @@ return new class extends Migration {
             $table->id();
             $table->timestamps();
             $table->string('nome_file');
-            $table->string('nome_originale');
+            $table->string('nome_file_originale');
             $table->string('path_file');
             $table->string('tipo_documento', 30)->index(); // bolletta, contratto, verbale, comunicazione, altro
             $table->string('mime_type', 50);

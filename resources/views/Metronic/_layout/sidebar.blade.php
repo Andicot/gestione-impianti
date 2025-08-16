@@ -137,7 +137,7 @@
 
                 @if(in_array('bollettino',$ruoloOperatore->menu_navigazione()))
                     <div class="menu-item">
-                        <a class="menu-link" href="#">
+                        <a class="menu-link" href="{{route('bollettino.index')}}">
                         <span class="menu-icon">
                             {!! \App\Enums\IconeEnum::bollettino->render() !!}
                         </span>
@@ -263,13 +263,9 @@
                             {!! \App\Enums\IconeEnum::ticket->render() !!}
                         </span>
                             <span class="menu-title">
-                            @if(in_array('ticket_tecnico',$ruoloOperatore->menu_navigazione()))
-                                    Tickets Tecnici
-                                @elseif(in_array('comunicazione',$ruoloOperatore->menu_navigazione()))
-                                    Comunicazioni
-                                @else
-                                    Tickets
-                                @endif
+
+                                    Tickets Assistenza
+
                         </span>
                         </a>
                     </div>

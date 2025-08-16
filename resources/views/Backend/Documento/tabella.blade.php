@@ -18,7 +18,7 @@
                 {{-- Documento --}}
                 <td>
                     <div class="d-flex flex-column">
-                        <span class="text-gray-800 fw-bold mb-1">{{Str::limit($record->nome_originale, 35)}}</span>
+                        <span class="text-gray-800 fw-bold mb-1">{{Str::limit($record->nome_file_originale, 35)}}</span>
                         @if($record->descrizione)
                             <span class="text-muted fs-7">{{Str::limit($record->descrizione, 50)}}</span>
                         @endif

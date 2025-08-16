@@ -71,7 +71,10 @@ Route::group(['middleware' => 'role:admin|azienda_di_servizio|amministratore_con
     // Unità immobiliari (legate agli impianti)
     Route::resource('unita_immobiliari', \App\Http\Controllers\Backend\UnitaImmobiliareController::class);
 
-
+    //Bollettino
+    Route::resource('bollettino', \App\Http\Controllers\Backend\BollettinoController::class)->except(['create']);
+    Route::get('bollettino/create/{impiantoId}',[\App\Http\Controllers\Backend\BollettinoController::class,'create']);
+    Route::get('bollettino/{id}/download',[\App\Http\Controllers\Backend\BollettinoController::class,'download'])->name('bollettino.download');
 
     //Documenti
     Route::resource('documento',\App\Http\Controllers\Backend\DocumentoController::class);
@@ -82,7 +85,7 @@ Route::group(['middleware' => 'role:admin|azienda_di_servizio|amministratore_con
 
 /*
 |--------------------------------------------------------------------------
-| GESTIONE IMPIANTI - Admin, Aziende di servizio e Amministratori condominio
+| GESTIONE IMPIANTI - Admin, Aziende di servizio, Amministratori condominio, Responsabile Impianto
 |--------------------------------------------------------------------------
 */
 Route::group(['middleware' => 'role:admin|azienda_di_servizio|amministratore_condominio|responsabile_impianto'], function () {

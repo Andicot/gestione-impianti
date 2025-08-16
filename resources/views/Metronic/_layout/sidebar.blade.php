@@ -52,7 +52,7 @@
                 <div class="menu-item">
                     <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\DashboardController::class,'show'])}}">
                         <span class="menu-icon">
-                            <i class="fas fa-tachometer-alt fs-2"></i>
+                            {!! \App\Enums\IconeEnum::dashboard->render() !!}
                         </span>
                         <span class="menu-title">Dashboard</span>
                     </a>
@@ -62,7 +62,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\AziendaServizioController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="fas fa-briefcase fs-2"></i>
+                            {!! \App\Enums\IconeEnum::azienda_servizio->render() !!}
                         </span>
                             <span class="menu-title">{{ucwords(\App\Models\AziendaServizio::NOME_PLURALE)}}</span>
                         </a>
@@ -73,7 +73,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\AmministratoreController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="fas fa-user-tie fs-2"></i>
+                            {!! \App\Enums\IconeEnum::amministratore->render() !!}
                         </span>
                             <span class="menu-title">Amministratori</span>
                         </a>
@@ -84,7 +84,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\ImpiantoController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="fas fa-building fs-2"></i>
+                            {!! \App\Enums\IconeEnum::impianto->render() !!}
                         </span>
                             <span class="menu-title">Impianti</span>
                         </a>
@@ -95,7 +95,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\ConcentratoreController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="fas fa-wifi fs-2"></i>
+                            {!! \App\Enums\IconeEnum::concentratore->render() !!}
                         </span>
                             <span class="menu-title">Concentratori</span>
                         </a>
@@ -106,7 +106,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\DispositivoMisuraController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="fas fa-microchip fs-2"></i>
+                            {!! \App\Enums\IconeEnum::dispositivo_misura->render() !!}
                         </span>
                             <span class="menu-title">Dispositivi Misura</span>
                         </a>
@@ -117,7 +117,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\ResponsabileImpiantoController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="fas fa-hard-hat fs-2"></i>
+                            {!! \App\Enums\IconeEnum::responsabile_impianto->render() !!}
                         </span>
                             <span class="menu-title">Responsabili Impianto</span>
                         </a>
@@ -128,7 +128,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="fas fa-home fs-2"></i>
+                            {!! \App\Enums\IconeEnum::mio_condominio->render() !!}
                         </span>
                             <span class="menu-title">Il Mio Condominio</span>
                         </a>
@@ -139,7 +139,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="fas fa-file-invoice fs-2"></i>
+                            {!! \App\Enums\IconeEnum::bollettino->render() !!}
                         </span>
                             <span class="menu-title">Bollettini</span>
                         </a>
@@ -150,7 +150,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="fas fa-credit-card fs-2"></i>
+                            {!! \App\Enums\IconeEnum::pagamento->render() !!}
                         </span>
                             <span class="menu-title">Pagamenti</span>
                         </a>
@@ -161,7 +161,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="fas fa-router fs-2"></i>
+                            {!! \App\Enums\IconeEnum::concentratore_gestiti->render() !!}
                         </span>
                             <span class="menu-title">Concentratori Gestiti</span>
                         </a>
@@ -172,7 +172,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="fas fa-exclamation-triangle fs-2"></i>
+                            {!! \App\Enums\IconeEnum::anomalia->render() !!}
                         </span>
                             <span class="menu-title">Anomalie</span>
                         </a>
@@ -183,7 +183,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="fas fa-tools fs-2"></i>
+                            {!! \App\Enums\IconeEnum::manutenzione->render() !!}
                         </span>
                             <span class="menu-title">Manutenzioni</span>
                         </a>
@@ -194,7 +194,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="fas fa-receipt fs-2"></i>
+                            {!! \App\Enums\IconeEnum::mie_bollette->render() !!}
                         </span>
                             <span class="menu-title">Le Mie Bollette</span>
                         </a>
@@ -205,7 +205,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="fas fa-chart-line fs-2"></i>
+                            {!! \App\Enums\IconeEnum::miei_consumi->render() !!}
                         </span>
                             <span class="menu-title">I Miei Consumi</span>
                         </a>
@@ -216,7 +216,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{route('lettura-consumo.index')}}">
                         <span class="menu-icon">
-                            <i class="fas fa-list-ul fs-2"></i>
+                            {!! \App\Enums\IconeEnum::storico_letture->render() !!}
                         </span>
                             <span class="menu-title">Letture Consumi</span>
                         </a>
@@ -227,7 +227,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                         <span class="menu-icon">
-                            <i class="fas fa-chart-bar fs-2"></i>
+                            {!! \App\Enums\IconeEnum::grafici->render() !!}
                         </span>
                             <span class="menu-title">Grafici</span>
                         </a>
@@ -238,7 +238,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\DocumentoController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="fas fa-file-alt fs-2"></i>
+                            {!! \App\Enums\IconeEnum::documento->render() !!}
                         </span>
                             <span class="menu-title">Documenti</span>
                         </a>
@@ -249,7 +249,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{action([\App\Http\Controllers\Backend\ImportazioneController::class,'index'])}}">
                         <span class="menu-icon">
-                            <i class="fas fa-upload fs-2"></i>
+                            {!! \App\Enums\IconeEnum::importazione->render() !!}
                         </span>
                             <span class="menu-title">Importazioni</span>
                         </a>
@@ -260,7 +260,7 @@
                     <div class="menu-item">
                         <a class="menu-link" href="{{route('tickets.index')}}">
                         <span class="menu-icon">
-                            <i class="fas fa-ticket-alt fs-2"></i>
+                            {!! \App\Enums\IconeEnum::ticket->render() !!}
                         </span>
                             <span class="menu-title">
                             @if(in_array('ticket_tecnico',$ruoloOperatore->menu_navigazione()))
@@ -280,7 +280,7 @@
                         <!--begin:Menu link-->
                         <span class="menu-link {{ request()->routeIs('registro') ? 'active' : '' }}">
                         <span class="menu-icon">
-                            <i class="fas fa-clipboard-list fs-2"></i>
+                            {!! \App\Enums\IconeEnum::registri->render() !!}
                         </span>
                         <span class="menu-title">Registri</span>
                         <span class="menu-arrow"></span>

@@ -43,6 +43,19 @@ class ResponsabileImpianto extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function nominativo()
+    {
+        return $this->cognome.' '.$this->nome;
+    }
+
+    public static function selected($id)
+    {
+        $record = self::find($id);
+        if ($record) {
+            return "<option value='$id' selected>{$record->cognome} {$record->nome}</option>";
+        }
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ALTRO

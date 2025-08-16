@@ -49,14 +49,14 @@ class UnitaImmobiliareController extends Controller
 
         if ($request->ajax()) {
             return [
-                'html' => base64_encode(view('Aziendadiservizio.UnitaImmobiliare.tabella', [
+                'html' => base64_encode(view('Backend.UnitaImmobiliare.tabella', [
                     'records' => $records,
                     'controller' => $nomeClasse,
                 ]))
             ];
         }
 
-        return view('Aziendadiservizio.UnitaImmobiliare.index', [
+        return view('Backend.UnitaImmobiliare.index', [
             'records' => $records,
             'controller' => $nomeClasse,
             'titoloPagina' => 'Elenco ' . \App\Models\UnitaImmobiliare::NOME_PLURALE,
@@ -114,7 +114,7 @@ class UnitaImmobiliareController extends Controller
     {
         $record = new UnitaImmobiliare();
         $record->impianto_id = 1;
-        return view('Aziendadiservizio.UnitaImmobiliare.edit', [
+        return view('Backend.UnitaImmobiliare.edit', [
             'record' => $record,
             'titoloPagina' => 'Nuova ' . UnitaImmobiliare::NOME_SINGOLARE,
             'controller' => get_class($this),
@@ -141,7 +141,7 @@ class UnitaImmobiliareController extends Controller
     {
         $record = UnitaImmobiliare::find($id);
         abort_if(!$record, 404, 'Questa unitaimmobiliare non esiste');
-        return view('Aziendadiservizio.UnitaImmobiliare.show', [
+        return view('Backend.UnitaImmobiliare.show', [
             'record' => $record,
             'controller' => UnitaImmobiliareController::class,
             'titoloPagina' => ucfirst(UnitaImmobiliare::NOME_SINGOLARE),
@@ -161,7 +161,7 @@ class UnitaImmobiliareController extends Controller
         } else {
             $eliminabile = true;
         }
-        return view('Aziendadiservizio.UnitaImmobiliare.edit', [
+        return view('Backend.UnitaImmobiliare.edit', [
             'record' => $record,
             'controller' => UnitaImmobiliareController::class,
             'titoloPagina' => 'Modifica ' . UnitaImmobiliare::NOME_SINGOLARE,

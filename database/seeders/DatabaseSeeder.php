@@ -37,6 +37,8 @@ class DatabaseSeeder extends Seeder
             $user->email_verified_at = now();
             $user->save();
 
+            $user->assignRole('responsabile_impianto');
+
             // Aggiorna il responsabile con l'ID del user creato
             $responsabile->user_id = $user->id;
             $responsabile->save();

@@ -11,9 +11,7 @@
                 @method($record->id?'PATCH':'POST')
 
                 <div class="row">
-                    <div class="col-md-6">
-                        @include('Metronic._inputs_v.inputSelect2',['campo'=>'amministratore_id', 'label' => 'Amministratore','selected' => \App\Models\Amministratore::selected(old('amministratore_id',$record->amministratore_id))])
-                    </div>
+
                     <div class="col-md-6">
                         @include('Metronic._inputs_v.inputText',['campo'=>'matricola_impianto', 'required'=>true,'classe' => 'uppercase'])
                     </div>
@@ -43,6 +41,12 @@
                     </div>
                     <div class="col-md-6">
                         @include('Metronic._inputs_v.inputText',['campo'=>'servizio'])
+                    </div>
+                    <div class="col-md-6">
+                        @include('Metronic._inputs_v.inputSelect2',['campo'=>'amministratore_id', 'label' => 'Amministratore','selected' => \App\Models\Amministratore::selected(old('amministratore_id',$record->amministratore_id))])
+                    </div>
+                    <div class="col-md-6">
+                        @include('Metronic._inputs_v.inputSelect2',['campo'=>'responsabile_impianto_id', 'label' => 'Responsabile Impianto','selected' => \App\Models\ResponsabileImpianto::selected(old('responsabile_impianto_id',$record->responsabile_impianto_id))])
                     </div>
                     <div class="col-12">
                         @include('Metronic._inputs_v.inputTextAreaCol',['campo'=>'note', 'col'=>2])
@@ -79,8 +83,9 @@
     <script>
         $(function () {
             eliminaHandler('Questa risorsa verrà eliminata definitivamente');
-            select2Universale('azienda_servizio_id', 'un AziendaServizio', 1, 'azienda_servizio_id');
-            select2Universale('amministratore_id', 'un Amministratore', 1, 'amministratore_id');
+            select2Universale('azienda_servizio_id', 'un AziendaServizio', 1,);
+            select2Universale('amministratore_id', 'un Amministratore', 1);
+            select2Universale('responsabile_impianto_id', 'un Responsabile Impianto', 1);
             select2Citta('citta', 'il Citta', 1, 'citta');
             autonumericImporto('importo');
         });

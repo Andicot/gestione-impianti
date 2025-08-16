@@ -178,7 +178,7 @@
 
 {{-- Tabella Unità Immobiliari --}}
 <div class="pt-0" id="tabella">
-    @include('Aziendadiservizio.Impianto.show.tabUnitaimmobiliariTabella')
+    @include('Backend.Impianto.show.tabUnitaimmobiliariTabella')
 </div>
 
 {{-- Script per filtri e ricerca --}}

@@ -63,9 +63,7 @@ Route::group(['middleware' => 'role:admin|azienda_di_servizio'], function () {
 */
 Route::group(['middleware' => 'role:admin|azienda_di_servizio|amministratore_condominio'], function () {
 
-    // Impianti (tutti e tre i ruoli possono vedere, ma con scope diversi)
-    Route::resource('impianto', \App\Http\Controllers\Backend\ImpiantoController::class);
-    Route::get('impianto/{id}/tab/{tab}', [\App\Http\Controllers\Backend\ImpiantoController::class, 'tab']);
+
 
     // Concentratori
     Route::resource('concentratore', \App\Http\Controllers\Backend\ConcentratoreController::class);
@@ -82,6 +80,7 @@ Route::group(['middleware' => 'role:admin|azienda_di_servizio|amministratore_con
 });
 
 
+
 /*
 |--------------------------------------------------------------------------
 | GESTIONE IMPIANTI - Admin, Aziende di servizio e Amministratori condominio
@@ -89,7 +88,13 @@ Route::group(['middleware' => 'role:admin|azienda_di_servizio|amministratore_con
 */
 Route::group(['middleware' => 'role:admin|azienda_di_servizio|amministratore_condominio|responsabile_impianto'], function () {
 
-    // Impianti (tutti e tre i ruoli possono vedere, ma con scope diversi)
+
+    // Impianti
+    Route::resource('impianto', \App\Http\Controllers\Backend\ImpiantoController::class);
+    Route::get('impianto/{id}/tab/{tab}', [\App\Http\Controllers\Backend\ImpiantoController::class, 'tab']);
+
+
+    // Letture
     Route::resource('lettura-consumo', \App\Http\Controllers\Backend\LetturaConsumoController::class);
 
 });

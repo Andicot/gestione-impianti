@@ -3,7 +3,7 @@
     <div class="d-flex align-items-center">
         <div class="symbol symbol-40px symbol-circle me-3">
             <div class="symbol-label bg-light-primary">
-                <i class="fas fa-microchip text-primary fs-4"></i>
+                {!! \App\Enums\IconeEnum::dispositivo_misura->render('fs-4','text-primary') !!}
             </div>
         </div>
         <div>
@@ -160,7 +160,7 @@
 
 {{-- Tabella Dispositivi --}}
 <div class="pt-0" id="tabella">
-    @include('Aziendadiservizio.Impianto.show.tabDispositiviTabella')
+    @include('Backend.Impianto.show.tabDispositiviTabella')
 </div>
 
 {{-- Script per filtri e ricerca --}}

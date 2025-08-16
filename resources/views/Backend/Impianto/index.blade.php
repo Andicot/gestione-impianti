@@ -59,12 +59,12 @@
             </div>
         </div>
     </div>
-    @include('Aziendadiservizio.Impianto.indexFiltri')
+    @include('Backend.Impianto.indexFiltri')
 
     <!-- Tabella -->
     <div class="card pt-4">
         <div class="card-body pt-0 pb-5 fs-6 px-2 px-md-6" id="tabella">
-            @include('Aziendadiservizio.Impianto.tabella')
+            @include('Backend.Impianto.tabella')
         </div>
     </div>
 

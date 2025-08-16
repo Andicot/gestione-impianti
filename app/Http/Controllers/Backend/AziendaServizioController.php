@@ -411,8 +411,8 @@ class AziendaServizioController extends Controller
 
         return [
             'totale_impianti' => $query->count(),
-            'totale_attivi' => $query->where('stato', 'attivo')->count(),
-            'totale_dismessi' => $query->where('stato', 'dismesso')->count(),
+            'totale_attivi' => $query->where('stato_impianto', 'attivo')->count(),
+            'totale_dismessi' => $query->where('stato_impianto', 'dismesso')->count(),
             'totale_unita_immobiliari' => UnitaImmobiliare::whereHas('impianto', function ($query) use ($aziendaId) {
                 $query->where('azienda_servizio_id', $aziendaId);
             })->count(),

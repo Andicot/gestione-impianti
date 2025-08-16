@@ -23,7 +23,7 @@ class ImportazioneController extends Controller
      */
     public function index()
     {
-        return view('Aziendadiservizio.Importazione.index', [
+        return view('Backend.Importazione.index', [
             'titoloPagina' => 'Importazione File',
             'controller' => self::class
         ]);
@@ -230,7 +230,7 @@ class ImportazioneController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return view('Aziendadiservizio.Importazione.storico', [
+        return view('Backend.Importazione.storico', [
             'importazioni' => $importazioni,
             'titoloPagina' => 'Storico Importazioni',
             'controller' => self::class
@@ -245,7 +245,7 @@ class ImportazioneController extends Controller
         $importazione = ImportazioneCsv::with(['impianto', 'concentratore', 'caricatoDa'])
             ->findOrFail($id);
 
-        return view('Aziendadiservizio.Importazione.dettaglio', [
+        return view('Backend.Importazione.dettaglio', [
             'importazione' => $importazione,
             'titoloPagina' => 'Dettaglio Importazione #' . $importazione->id,
             'controller' => self::class

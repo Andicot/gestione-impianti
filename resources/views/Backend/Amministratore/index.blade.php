@@ -35,7 +35,7 @@
    <div class="card">
     <div class="card-body">
         <div id="tabella">
-    @include('Aziendadiservizio.Amministratore.tabella')
+    @include('Backend.Amministratore.tabella')
 </div>
     </div>
 </div>

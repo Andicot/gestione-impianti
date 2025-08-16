@@ -54,14 +54,14 @@ class ConcentratoreController extends Controller
 
         if ($request->ajax()) {
             return [
-                'html' => base64_encode(view('Aziendadiservizio.Concentratore.tabella', [
+                'html' => base64_encode(view('Backend.Concentratore.tabella', [
                     'records' => $records,
                     'controller' => $nomeClasse,
                 ]))
             ];
         }
 
-        return view('Aziendadiservizio.Concentratore.index', [
+        return view('Backend.Concentratore.index', [
             'records' => $records,
             'controller' => $nomeClasse,
             'titoloPagina' => 'Elenco ' . \App\Models\Concentratore::NOME_PLURALE,
@@ -105,7 +105,7 @@ class ConcentratoreController extends Controller
         $record = new Concentratore();
         $record->frequenza_scansione = FrequenzaScansioneDispositivoEnum::settimanale->value;
         $record->stato = 'attivo';
-        return view('Aziendadiservizio.Concentratore.edit', [
+        return view('Backend.Concentratore.edit', [
             'record' => $record,
             'titoloPagina' => 'Nuovo ' . Concentratore::NOME_SINGOLARE,
             'controller' => get_class($this),
@@ -132,7 +132,7 @@ class ConcentratoreController extends Controller
     {
         $record = Concentratore::find($id);
         abort_if(!$record, 404, 'Questo concentratore non esiste');
-        return view('Aziendadiservizio.Concentratore.show', [
+        return view('Backend.Concentratore.show', [
             'record' => $record,
             'controller' => ConcentratoreController::class,
             'titoloPagina' => ucfirst(Concentratore::NOME_SINGOLARE),
@@ -152,7 +152,7 @@ class ConcentratoreController extends Controller
         } else {
             $eliminabile = true;
         }
-        return view('Aziendadiservizio.Concentratore.edit', [
+        return view('Backend.Concentratore.edit', [
             'record' => $record,
             'controller' => ConcentratoreController::class,
             'titoloPagina' => 'Modifica ' . Concentratore::NOME_SINGOLARE,

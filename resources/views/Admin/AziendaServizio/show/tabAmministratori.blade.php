@@ -3,7 +3,7 @@
     <div class="d-flex align-items-center">
         <div class="symbol symbol-40px symbol-circle me-3">
             <div class="symbol-label bg-light-primary">
-                <i class="fas fa-user-tie text-primary fs-4"></i>
+                {!! \App\Enums\IconeEnum::amministratore->render(' fs-4','text-primary') !!}
             </div>
         </div>
         <div>

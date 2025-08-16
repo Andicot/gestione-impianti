@@ -60,14 +60,14 @@ class AmministratoreController extends Controller
 
         if ($request->ajax()) {
             return [
-                'html' => base64_encode(view('Aziendadiservizio.Amministratore.tabella', [
+                'html' => base64_encode(view('Backend.Amministratore.tabella', [
                     'records' => $records,
                     'controller' => $nomeClasse,
                 ]))
             ];
         }
 
-        return view('Aziendadiservizio.Amministratore.index', [
+        return view('Backend.Amministratore.index', [
             'records' => $records,
             'controller' => $nomeClasse,
             'titoloPagina' => 'Elenco ' . \App\Models\Amministratore::NOME_PLURALE,
@@ -118,7 +118,7 @@ class AmministratoreController extends Controller
     public function create()
     {
         $record = new Amministratore();
-        return view('Aziendadiservizio.Amministratore.edit', [
+        return view('Backend.Amministratore.edit', [
             'record' => $record,
             'titoloPagina' => 'Nuovo ' . Amministratore::NOME_SINGOLARE,
             'controller' => get_class($this),
@@ -160,7 +160,7 @@ class AmministratoreController extends Controller
         } else {
             $eliminabile = true;
         }
-        return view('Aziendadiservizio.Amministratore.edit', [
+        return view('Backend.Amministratore.edit', [
             'record' => $record,
             'controller' => AmministratoreController::class,
             'titoloPagina' => 'Modifica ' . Amministratore::NOME_SINGOLARE,
@@ -231,7 +231,7 @@ class AmministratoreController extends Controller
             ]);
         }
 
-        return view('Aziendadiservizio.Amministratore.show', [
+        return view('Backend.Amministratore.show', [
             'record' => $record,
             'records' => $records,
             'controller' => AmministratoreController::class,

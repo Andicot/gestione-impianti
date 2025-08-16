@@ -53,14 +53,14 @@ class DispositivoMisuraController extends Controller
 
         if ($request->ajax()) {
             return [
-                'html' => base64_encode(view('Aziendadiservizio.DispositivoMisura.tabella', [
+                'html' => base64_encode(view('Backend.DispositivoMisura.tabella', [
                     'records' => $records,
                     'controller' => $nomeClasse,
                 ]))
             ];
         }
 
-        return view('Aziendadiservizio.DispositivoMisura.index', [
+        return view('Backend.DispositivoMisura.index', [
             'records' => $records,
             'controller' => $nomeClasse,
             'titoloPagina' => 'Elenco ' . \App\Models\DispositivoMisura::NOME_PLURALE,
@@ -117,7 +117,7 @@ class DispositivoMisuraController extends Controller
     public function create()
     {
         $record = new DispositivoMisura();
-        return view('Aziendadiservizio.DispositivoMisura.edit', [
+        return view('Backend.DispositivoMisura.edit', [
             'record' => $record,
             'titoloPagina' => 'Nuovo ' . DispositivoMisura::NOME_SINGOLARE,
             'controller' => get_class($this),
@@ -143,7 +143,7 @@ class DispositivoMisuraController extends Controller
     {
         $record = DispositivoMisura::find($id);
         abort_if(!$record, 404, 'Questo dispositivomisura non esiste');
-        return view('Aziendadiservizio.DispositivoMisura.show', [
+        return view('Backend.DispositivoMisura.show', [
             'record' => $record,
             'records'=>LetturaConsumo::where('dispositivo_id',$id)->paginate(25),
             'controller' => DispositivoMisuraController::class,
@@ -164,7 +164,7 @@ class DispositivoMisuraController extends Controller
         } else {
             $eliminabile = true;
         }
-        return view('Aziendadiservizio.DispositivoMisura.edit', [
+        return view('Backend.DispositivoMisura.edit', [
             'record' => $record,
             'controller' => DispositivoMisuraController::class,
             'titoloPagina' => 'Modifica ' . DispositivoMisura::NOME_SINGOLARE,

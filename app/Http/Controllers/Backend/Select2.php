@@ -9,6 +9,7 @@ use App\Models\DispositivoMisura;
 use App\Models\Impianto;
 use App\Models\NazioneDiNascita;
 use App\Models\Provincia;
+use App\Models\ResponsabileImpianto;
 use App\Models\UnitaImmobiliare;
 use App\Rules\CodiceFiscaleRule;
 use Carbon\Carbon;
@@ -46,6 +47,21 @@ class Select2 extends Controller
                     foreach ($arrTerm as $t) {
                         $queryBuilder->whereRaw('concat_ws(\' \',ragione_sociale,cognome_referente,nome_referente) like ?', "%$t%");
                     }
+                }
+                return $queryBuilder->get();
+
+
+            case 'responsabile_impianto_id':
+                $queryBuilder = ResponsabileImpianto::orderBy('cognome')->orderBy('nome')
+                    ->select(['id', DB::raw('concat_ws(" ",cognome, nome) as text')]);
+
+                if ($term) {
+                    $arrTerm = explode(' ', $term);
+                    foreach ($arrTerm as $t) {
+                        $queryBuilder->where(function($q) use ($t) {
+                            $q->where('cognome', 'like', "%$t%")
+                                ->orWhere('nome', 'like', "%$t%");
+                        });                    }
                 }
                 return $queryBuilder->get();
 

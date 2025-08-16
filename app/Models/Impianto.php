@@ -48,6 +48,12 @@ class Impianto extends Model
                     }
                     return $builder->where('amministratore_id', $user->amministratore->id);
 
+                case RuoliOperatoreEnum::responsabile_impianto->value:
+                    if (!$user->responsabileImpianto) {
+                        return $builder->whereRaw('1 = 0');
+                    }
+                    return $builder->where('responsabile_impianto_id', $user->responsabileImpianto->id);
+
 
                 default:
                     return $builder->whereRaw('1 = 0');
@@ -90,6 +96,11 @@ class Impianto extends Model
     {
         return $this->hasMany(DispositivoMisura::class, 'impianto_id', 'id');
     }
+
+    public function responsabileImpianto(): HasOne
+    {
+        return $this->hasOne(ResponsabileImpianto::class,'id','responsabile_impianto_id')->select(['id', 'cognome', 'nome']);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPE
@@ -126,5 +137,7 @@ class Impianto extends Model
     | ALTRO
     |--------------------------------------------------------------------------
     */
+
+
 
 }

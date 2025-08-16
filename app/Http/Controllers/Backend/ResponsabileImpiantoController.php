@@ -57,14 +57,14 @@ class ResponsabileImpiantoController extends Controller
 
         if ($request->ajax()) {
             return [
-                'html' => base64_encode(view('Aziendadiservizio.ResponsabileImpianto.tabella', [
+                'html' => base64_encode(view('Backend.ResponsabileImpianto.tabella', [
                     'records' => $records,
                     'controller' => $nomeClasse,
                 ]))
             ];
         }
 
-        return view('Aziendadiservizio.ResponsabileImpianto.index', [
+        return view('Backend.ResponsabileImpianto.index', [
             'records' => $records,
             'controller' => $nomeClasse,
             'titoloPagina' => 'Elenco ' . \App\Models\ResponsabileImpianto::NOME_PLURALE,
@@ -123,7 +123,7 @@ class ResponsabileImpiantoController extends Controller
     public function create()
     {
         $record = new ResponsabileImpianto();
-        return view('Aziendadiservizio.ResponsabileImpianto.edit', [
+        return view('Backend.ResponsabileImpianto.edit', [
             'record' => $record,
             'titoloPagina' => 'Nuovo ' . ResponsabileImpianto::NOME_SINGOLARE,
             'controller' => get_class($this),
@@ -150,7 +150,7 @@ class ResponsabileImpiantoController extends Controller
     {
         $record = ResponsabileImpianto::find($id);
         abort_if(!$record, 404, 'Questo responsabileimpianto non esiste');
-        return view('Aziendadiservizio.ResponsabileImpianto.show', [
+        return view('Backend.ResponsabileImpianto.show', [
             'record' => $record,
             'controller' => ResponsabileImpiantoController::class,
             'titoloPagina' => ucfirst(ResponsabileImpianto::NOME_SINGOLARE),
@@ -170,7 +170,7 @@ class ResponsabileImpiantoController extends Controller
         } else {
             $eliminabile = true;
         }
-        return view('Aziendadiservizio.ResponsabileImpianto.edit', [
+        return view('Backend.ResponsabileImpianto.edit', [
             'record' => $record,
             'controller' => ResponsabileImpiantoController::class,
             'titoloPagina' => 'Modifica ' . ResponsabileImpianto::NOME_SINGOLARE,

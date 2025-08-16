@@ -205,7 +205,7 @@
                     <h3 class="card-title">Letture Dispositivo</h3>
                 </div>
                 <div class="card-body">
-                    @include('Aziendadiservizio.DispositivoMisura.show.tabLetture')
+                    @include('Backend.DispositivoMisura.show.tabLetture')
                 </div>
             </div>
         </div>

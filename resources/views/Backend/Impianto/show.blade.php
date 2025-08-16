@@ -18,7 +18,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-4">
-            @include('Aziendadiservizio.Impianto.show.sideBar')
+            @include('Backend.Impianto.show.sideBar')
         </div>
         <div class="col-lg-8">
             <div class="card">
@@ -41,7 +41,7 @@
                     <div class="tab-content" id="tabContent">
                         <div class="tab-pane fade show active" role="tabpanel">
 
-                            @include('Aziendadiservizio.Impianto.show.tab'.Str::of($tab)->remove('tab_')->title()->remove('_'))
+                            @include('Backend.Impianto.show.tab'.Str::of($tab)->remove('tab_')->title()->remove('_'))
 
                         </div>
                     </div>

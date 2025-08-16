@@ -157,7 +157,7 @@
                     <div class="col-6">
                         <div class="fw-bolder mt-5">Impianti Attivi</div>
                         <div class="text-gray-600 fs-2 fw-bold text-success">
-                            {{$record->impianti()->where('stato', 'attivo')->count()}}
+                            {{$record->impianti()->where('stato_impianto', 'attivo')->count()}}
                         </div>
                     </div>
                     <div class="col-6">

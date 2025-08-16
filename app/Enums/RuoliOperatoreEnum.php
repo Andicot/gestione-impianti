@@ -172,7 +172,7 @@ enum RuoliOperatoreEnum: string
                 'storico_letture'
             ],
             self::responsabile_impianto => [
-                'miei_impianti',
+                'impianto',
                 'dispositivo_misura',
                 'concentratore_gestiti',
                 'anomalia',

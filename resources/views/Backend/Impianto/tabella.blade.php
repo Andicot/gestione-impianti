@@ -7,6 +7,9 @@
             @if($mostraAmministratore)
                 <th class="">Amministratore</th>
             @endif
+            @if($mostraResponsabile)
+                <th class="">Responsabile Impianto</th>
+                @endif
             <th class="">Indirizzo</th>
             <th class="">Stato</th>
             <th class="">Tipologia</th>
@@ -23,6 +26,9 @@
                 </td>
                 @if($mostraAmministratore)
                     <td class="">{{$record->amministratore?->ragione_sociale}}</td>
+                @endif
+                @if($mostraResponsabile)
+                    <td class="">{{$record->responsabileImpianto?->nominativo()}}</td>
                 @endif
                 <td class="">
                     @if($record->citta)

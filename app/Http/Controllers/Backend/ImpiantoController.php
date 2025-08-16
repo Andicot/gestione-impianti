@@ -27,6 +27,7 @@ class ImpiantoController extends Controller
      */
     public function index(Request $request)
     {
+
         $nomeClasse = get_class($this);
         $recordsQB = $this->applicaFiltri($request);
 
@@ -56,18 +57,20 @@ class ImpiantoController extends Controller
 
         $records = $recordsQB->paginate(25)->withQueryString();
 
-        $mostraAmministratore=$this->mostraAmministratore();
+        $mostraAmministratore = $this->mostraAmministratore();
+        $mostraResponsabile = $this->mostraResponsabileImpianto();
         if ($request->ajax()) {
             return [
-                'html' => base64_encode(view('Aziendadiservizio.Impianto.tabella', [
+                'html' => base64_encode(view('Backend.Impianto.tabella', [
                     'records' => $records,
                     'controller' => $nomeClasse,
-                    'mostraAmministratore'=>$mostraAmministratore,
+                    'mostraAmministratore' => $mostraAmministratore,
+                    'mostraResponsabile' => $mostraResponsabile,
                 ]))
             ];
         }
 
-        return view('Aziendadiservizio.Impianto.index', [
+        return view('Backend.Impianto.index', [
             'records' => $records,
             'controller' => $nomeClasse,
             'titoloPagina' => 'Elenco ' . \App\Models\Impianto::NOME_PLURALE,
@@ -75,10 +78,11 @@ class ImpiantoController extends Controller
             'ordinamenti' => $ordinamenti,
             'filtro' => $filtro ?? 'tutti',
             'conFiltro' => $this->conFiltro,
-            'testoNuovo' => 'Nuovo ' . \App\Models\Impianto::NOME_SINGOLARE,
+            'testoNuovo' => $this->puoCreareImpianto() ? 'Nuovo ' . \App\Models\Impianto::NOME_SINGOLARE : null,
             'testoCerca' => 'Cerca in nome impianto',
             'statistiche' => $this->statisticheImpianti(),
-            'mostraAmministratore'=>$mostraAmministratore,
+            'mostraAmministratore' => $mostraAmministratore,
+            'mostraResponsabile' => $mostraResponsabile,
         ]);
     }
 
@@ -90,6 +94,7 @@ class ImpiantoController extends Controller
     {
         $queryBuilder = \App\Models\Impianto::query()
             ->with('amministratore:id,ragione_sociale')
+            ->with('responsabileImpianto')
             ->with('comune');
         // Filtro per ricerca AJAX (mantieni così)
         $term = $request->input('cerca');
@@ -198,7 +203,7 @@ class ImpiantoController extends Controller
     {
         $record = new Impianto();
         $record->stato_impianto = StatoImpiantoEnum::attivo->value;
-        return view('Aziendadiservizio.Impianto.edit', [
+        return view('Backend.Impianto.edit', [
             'record' => $record,
             'titoloPagina' => 'Nuovo ' . Impianto::NOME_SINGOLARE,
             'controller' => get_class($this),
@@ -238,7 +243,7 @@ class ImpiantoController extends Controller
         } else {
             $eliminabile = true;
         }
-        return view('Aziendadiservizio.Impianto.edit', [
+        return view('Backend.Impianto.edit', [
             'record' => $record,
             'controller' => ImpiantoController::class,
             'titoloPagina' => 'Modifica ' . Impianto::NOME_SINGOLARE,
@@ -278,7 +283,7 @@ class ImpiantoController extends Controller
     public function tab(Request $request, string $id, string $tab)
     {
         $record = Impianto::query()
-            ->withCount(['unitaImmobiliari','dispositivi'])
+            ->withCount(['unitaImmobiliari', 'dispositivi'])
             //->withCount(['unitaImmobiliari', 'dispositiviMisura', 'periodiContabilizzazione'])
             ->find($id);
 
@@ -319,7 +324,7 @@ class ImpiantoController extends Controller
         if ($request->ajax()) {
 
             return [
-                'html' => base64_encode(view('Aziendadiservizio.Impianto.show.tab' . \Str::of($tab)->remove('tab_')->title()->remove('_') . 'tabella', [
+                'html' => base64_encode(view('Backend.Impianto.show.tab' . \Str::of($tab)->remove('tab_')->title()->remove('_') . 'tabella', [
                     'record' => $record,
                     'records' => $records,
                     'controller' => ImpiantoController::class,
@@ -328,7 +333,7 @@ class ImpiantoController extends Controller
 
         }
 
-        return view('Aziendadiservizio.Impianto.show', [
+        return view('Backend.Impianto.show', [
             'record' => $record,
             'records' => $records,
             'controller' => ImpiantoController::class,
@@ -549,6 +554,7 @@ class ImpiantoController extends Controller
             'cap' => '',
             'citta' => '',
             'stato_impianto' => '',
+            'responsabile_impianto_id' => '',
             'tipologia' => '',
             'criterio_ripartizione_numerica' => 'app\getInputNumero',
             'percentuale_quota_fissa' => 'app\getInputNumero',
@@ -641,7 +647,17 @@ class ImpiantoController extends Controller
 
     private function mostraAmministratore()
     {
-        return Auth::user()->ruolo!==RuoliOperatoreEnum::amministratore_condominio->value;
+        return Auth::user()->ruolo !== RuoliOperatoreEnum::amministratore_condominio->value;
+    }
+
+    private function mostraResponsabileImpianto()
+    {
+        return Auth::user()->ruolo !== RuoliOperatoreEnum::responsabile_impianto->value;
+    }
+
+    private function puoCreareImpianto()
+    {
+        return in_array(Auth::user()->ruolo, [RuoliOperatoreEnum::admin->value, RuoliOperatoreEnum::azienda_di_servizio->value]);
     }
 
 }

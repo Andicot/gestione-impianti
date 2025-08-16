@@ -12,7 +12,7 @@
    <div class="card">
     <div class="card-body">
         <div id="tabella">
-    @include('Aziendadiservizio.Concentratore.tabella')
+    @include('Backend.UnitaImmobiliare.tabella')
 </div>
     </div>
 </div>
